@@ -2,7 +2,7 @@
 #define _PRE_H
 
 #include <base.h>
-
+#include <matrix.h>
 //pre.h头文件的架构
 
 //提供多种单元
@@ -15,12 +15,38 @@
 //边界条件接口：用于确定结点的自由度，
 
 //前处理第一个模块：单元刚度矩阵形成
-//线性近似的形函数的使用
-                
+
+//梁单元属性的输入:
+//输入：梁单元属性（包括E，A，I，l）
+//输出：梁单元属性矩阵指针
+
+ELEMENT_ATTRIBUTE* Input_E_A(double A,
+                           float E,
+                           float G,
+                           double I,
+                           double L);
+
+//平面梁单元刚度矩阵计算：createplanbeamelementstiffnessmatrix
+//输入：梁单元属性结构体
+//输出：平面单元刚度矩阵
+Matrix* CrPBES(ELEMENT_ATTRIBUTE* );
+
+
+//空间梁单元刚度矩阵计算：createplanbeamelementstiffnessmatrix
+//输入：梁单元属性（包括E，A，I，l）
+//输出：空间单元刚度矩阵
+Matrix* CrPBES(ELEMENT_ATTRIBUTE* );
+
 
 //前处理第二个模块：坐标转换模块
 //目的：将局部坐标系下的单元刚度矩阵转换为总体坐标系下的单元刚度矩阵。
 //方法：采用SO（3）进行坐标变换
+
+//得到单元与总体坐标系的夹角
+//输入：两单元梁两端结点的指针
+//输出：X,Y,Z的欧拉角矩阵
+
+
 
 //前处理第三个模块：总体刚度矩阵形成
 //目的：组装所有的单元刚度矩阵，形成总体刚度矩阵。

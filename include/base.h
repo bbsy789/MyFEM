@@ -31,6 +31,7 @@ typedef struct element_attribute
     float E;//拉压弹性模量
     float G;//剪切弹性模量
     double I;//极惯性矩
+    double L;//单元长度
 }ELEMENT_ATTRIBUTE;//单元属性
 
 typedef struct element

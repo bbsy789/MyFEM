@@ -8,7 +8,7 @@
 #define _IN_OUT
 
 typedef unsigned int NW;//定义总节点数NW
-typedef unsigned int NR;//定义受约束的结点总数
+typedef unsigned int NR;//定义受约束的节点总数
 
 typedef unsigned int NU;//定义总单元数NU
 typedef unsigned int QQ;//定义总荷载数QQ

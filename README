@@ -1,10 +1,10 @@
-English introduction:
+Introduction:
 
-Base on variation principle and numerical anlaysis, there is a code by C/C++ language through the finite element method to compute structure mechanics problems.
+Base on variation principle and numerical anlaysis, there is a code by C/C++ language through the finite element method to compute structure mechanics problems.It is not complete.
 Graphics library used EGE,which is Easy Graphics Engine from this https://xege.org/. Of course, I donot major in computer science, and I am a master student in mechanics engineering.
 So this project maybe possess plenty of bugs. In the future, I will as far as possible get this project more complete. Thanks!
 
 中文介绍：
-这个程序是用来计算结构力学问题的，它的理论基础是变分原理和数值分析。
+这个程序采用了有限元法来计算结构力学问题，它的理论基础是变分原理和数值分析。目前还在抽空完成中。
 图形库使用了EGE，它的全称是Easy Graphics Engine,可以从该网站找到https://xege.org/. 当然，我不是计算机专业的，我是机械工程的一名研究生。
 所以这个项目可能有很多bug。将来，我会尽可能使这个项目更加完整。谢谢！

@@ -57,12 +57,17 @@
 #define _ERROR_VECTOR_DIMENSION_NOT_EQUAL 							0X00000010   //向量维数不相同
 #define _ERROR_VECTOR_NORM_TYPE_INVALID								0X00000011   //向量模类型无效
 #define _ERROR_VECTOR_CROSS_FAILED									0X00000012   //向量叉乘失败
+#define _ERROR_PTR_ERROR                    						0X00000013   //指针溢出错误
+#define _ERROR_INDEX_ERROR                  						0x00000014   //下标越界
+#define _ERROR_NO_FIND_POINT_ERROR                					0x00000015   //未能找到节点
 #define _ERROR_INPUT_PARAMETERS_ERROR								0X00010000   //输入参数错误
 
 
 /*******************************************************************************
 * (4)Struct(Data Types) Define Section
 *******************************************************************************/
+namespace common
+{
 typedef  unsigned int ERROR_ID;
 typedef int INDEX;
 typedef short FLAG;
@@ -90,11 +95,11 @@ typedef struct matrix_element_node
 	struct matrix_element_node* next;
 } MATRIX_ELEMENT_NODE;
 
-typedef struct stacks
+
+	typedef struct stacks
 {
 	MATRIX_NODE* matrixNode;
 	MATRIX_ELEMENT_NODE* matrixElementNode;
-
 	// ...
 	// 添加其他对象的指针
 } STACKS;
@@ -113,7 +118,6 @@ Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
 VOID init_stack(_IN_OUT STACKS* S);
 
-
 /**********************************************************************************************
 Function: free_stack
 Description: 释放栈
@@ -125,4 +129,5 @@ Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
 VOID free_stack(_IN STACKS* S);
 
+}
 #endif

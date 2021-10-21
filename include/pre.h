@@ -1,6 +1,8 @@
 #ifndef _PRE_H
 #define _PRE_H
 //pre.h 0.11
+namespace pre
+{
 
 //包含头文件
 #include <base.h>
@@ -13,6 +15,35 @@
 using std::vector;
 
 std::vector<MATRIX*> V;//使用stl，vector模板类创建的矩阵指针数组
+
+typedef struct stacks
+{
+	ELEMENT_ATTRIBUTE* element_attribute;
+	// ...
+	// 添加其他对象的指针
+} STACKS;
+
+/**********************************************************************************************
+Function: init_stack
+Description: 初始化栈
+Input: 无
+Output: 无
+Input_Output: 栈指针
+Return: 无
+Author: Marc Pony(marc_pony@163.com)
+***********************************************************************************************/
+void init_stack(_IN_OUT pre::STACKS* S);
+
+/**********************************************************************************************
+Function: free_stack
+Description: 释放栈
+Input: 栈指针
+Output: 无
+Input_Output: 无
+Return: 无
+Author: Marc Pony(marc_pony@163.com)
+***********************************************************************************************/
+void free_stack(_IN pre::STACKS* S);
 
 //pre.h头文件的架构
 
@@ -29,13 +60,8 @@ std::vector<MATRIX*> V;//使用stl，vector模板类创建的矩阵指针数组
 
 //梁单元属性的输入:
 //输入：梁单元属性（包括E，A，I，l）
-//输出：梁单元属性矩阵指针
-
-ELEMENT_ATTRIBUTE* Input_E_A(double A,
-                           float E,
-                           float G,
-                           double I,
-                           double L);
+//输出：梁单元属性矩阵指针，错误代码，堆栈指针。
+ELEMENT_ATTRIBUTE* Input_E_A(_IN double A,_IN float E,_IN float G,_IN double I,_IN double L,_OUT ERROR_ID,_OUT pre::STACKS* S);
 
 //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
 //输入：梁单元属性结构体
@@ -127,4 +153,6 @@ ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<double>& P,POINT_DISPLACEME
 //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)vector数组
 //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
 ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<double>& P,vector<POINT_DISPLACEMENT*>&);
+
+}
 #endif

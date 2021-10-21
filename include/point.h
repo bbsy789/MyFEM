@@ -26,6 +26,8 @@ typedef struct point_displacement
     float Zr;//Zrotation
 }POINT_DISPLACEMENT;
 
+typedef POINT_DISPLACEMENT* PPOINT_DISPLACEMENT;//定义指向POINT_DISPLACEMEN的指针类型PPOINT_DISPLACEMENT
+
 PPOINT PtCreate(int x, int y,int z,unsigned int index);
 void PtDestroy(PPOINT point);
 void PtGetValue(PPOINT point, int *x, int *y,int *z,unsigned int index);
@@ -33,5 +35,9 @@ void PtSetValue(PPOINT point, int x, int y,int z,unsigned int index);
 bool PtCompare(PPOINT point1, PPOINT point2);//只比较两个点坐标是否相等
 char const* PtTransformIntoString(const char *format, PPOINT point);
 void PtPrint(PPOINT point);
+
+PPOINT_DISPLACEMENT PtDCreate(double Xd,double Yd,double Zd,fload Xr,float Yr,float Zr,unsigned int index);
+void PtDDestroy(PPOINT_DISPLACEMENT point_displacement);
+void PtDGetValue
 
 #endif

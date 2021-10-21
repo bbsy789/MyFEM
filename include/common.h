@@ -28,6 +28,8 @@
 /*******************************************************************************
 * (3)Macro Define Section
 *******************************************************************************/
+#ifndef Macro
+#define Macro
 #define _IN
 #define _OUT
 #define _IN_OUT
@@ -62,11 +64,11 @@
 #define _ERROR_NO_FIND_POINT_ERROR                					0x00000015   //未能找到节点
 #define _ERROR_INPUT_PARAMETERS_ERROR								0X00010000   //输入参数错误
 
-
+#endif
 /*******************************************************************************
 * (4)Struct(Data Types) Define Section
 *******************************************************************************/
-namespace common
+namespace marc_pony
 {
 typedef  unsigned int ERROR_ID;
 typedef int INDEX;

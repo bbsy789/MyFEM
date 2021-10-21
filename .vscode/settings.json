@@ -2,6 +2,7 @@
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "files.associations": {
         "vector": "cpp",
-        "stl_vector.h": "c"
+        "stl_vector.h": "c",
+        "new": "cpp"
     }
 }

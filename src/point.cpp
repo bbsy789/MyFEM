@@ -10,7 +10,7 @@ using namespace std;
 
 static char * DuplicateString(const char *s);
 
-PPOINT PtCreate(int x, int y,int z,unsigned int index)
+PPOINT PtCreate(_IN int x, _IN int y, _IN int z, _IN unsigned int index)
 {
     PPOINT t = new POINT;
     t->X = x;
@@ -20,13 +20,13 @@ PPOINT PtCreate(int x, int y,int z,unsigned int index)
     return t;
 }
 
-void PtDestroy(PPOINT point)
+void PtDestroy(_IN PPOINT point)
 {
     if (point)
         delete point;
 }
 
-void PtGetValue(PPOINT point, int *x, int *y,int *z,unsigned int index)
+void PtGetValue(_IN PPOINT point, _OUT int *x, _OUT int *y, _OUT int *z, _OUT unsigned int* index)
 {
     if (point) {
         if (x) 
@@ -44,7 +44,7 @@ void PtGetValue(PPOINT point, int *x, int *y,int *z,unsigned int index)
     }
 }
 
-void PtSetValue(PPOINT point, int x, int y,int z,unsigned int index)
+void PtSetValue(_IN PPOINT point, _IN int x, _IN int y, _IN int z, _IN unsigned int index)
 {
     if (point) {
         point->X = x;
@@ -54,7 +54,7 @@ void PtSetValue(PPOINT point, int x, int y,int z,unsigned int index)
     }
 }
 
-bool PtCompare(PPOINT point1, PPOINT point2)
+bool PtCompare(_IN PPOINT point1,_IN PPOINT point2)
 {
     if (!point1 || !point2) {
         printf("PtCompare:参数非法！\n");
@@ -63,7 +63,7 @@ bool PtCompare(PPOINT point1, PPOINT point2)
     return (point1->X == point2->X) && (point1->Y == point2->Y) && (point1->Z == point2->Z) && point1->index == point2->index;
 }
 
-char const* PtTransformIntoString(const char *format, PPOINT point)
+char const* PtTransformIntoString(_IN const char *format, _IN PPOINT point)
 {
     char buf[BUFSIZ];//BUFSIZ在stdio.h中定义，linux上可能是8192
     if (point) {
@@ -91,3 +91,4 @@ char* DuplicateString(const char *s)
     t[n] = '\0';
     return t;
 }
+

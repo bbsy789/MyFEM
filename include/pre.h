@@ -2,7 +2,7 @@
 #define _PRE_H
 
 #include <base.h>
-#include <matrix.h>
+#include <matrix.>
 //pre.h头文件的架构
 
 //提供多种单元
@@ -51,10 +51,6 @@ Matrix* CrPBES(ELEMENT_ATTRIBUTE* );
 //前处理第三个模块：总体刚度矩阵形成
 //目的：组装所有的单元刚度矩阵，形成总体刚度矩阵。
 //方法：采用编码法（自由度编号法）。
-
-
-
-
 
 
 #endif

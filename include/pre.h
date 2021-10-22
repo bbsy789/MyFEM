@@ -16,14 +16,15 @@ namespace pre
 
     using namespace std;
 
-    std::vector<marc_pony::MATRIX*> V;//使用stl，vector模板类创建的矩阵指针数组
+    std::vector<MATRIX*> V;//使用stl，vector模板类创建的矩阵指针数组
 
-    typedef struct stacks
+    typedef struct stacks 
     {
-        ELEMENT_ATTRIBUTE* element_attribute;
-        // ...
-        // 添加其他对象的指针
-    } STACKS;
+        PELEMENT_ATTRIBUTE eaptr;
+        PPOINT pointptr;
+        
+    }STACKS;
+    
 
     /**********************************************************************************************
     Function: init_stack
@@ -32,7 +33,7 @@ namespace pre
     Output: 无
     Input_Output: 栈指针
     Return: 无
-    Author: Marc Pony(marc_pony@163.com)
+    Author: Wwj(bbsy789@126.com)
     ***********************************************************************************************/
     void init_stack(_IN_OUT pre::STACKS* S);
 
@@ -43,7 +44,7 @@ namespace pre
     Output: 无
     Input_Output: 无
     Return: 无
-    Author: Marc Pony(marc_pony@163.com)
+    Author: Wwj(bbsy789@126.com)
     ***********************************************************************************************/
     void free_stack(_IN pre::STACKS* S);
 
@@ -63,18 +64,18 @@ namespace pre
     //梁单元属性的输入:
     //输入：梁单元属性（包括E，A，I，l）
     //输出：梁单元属性矩阵指针，错误代码，堆栈指针。
-    ELEMENT_ATTRIBUTE* Input_E_A(_IN double A,_IN float E,_IN float G,_IN double I,_IN double L,_OUT marc_pony::ERROR_ID,_OUT pre::STACKS* S);
+    ELEMENT_ATTRIBUTE* Input_E_A(_IN double A,_IN float E,_IN float G,_IN double I,_IN double L,_OUT ERROR_ID,_OUT pre::STACKS* S);
 
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
     //输入：梁单元属性结构体
     //输出：不考虑剪切变形的平面梁单元刚度矩阵
-    marc_pony::MATRIX* Compute_PBES_NS(ELEMENT_ATTRIBUTE* );
+    MATRIX* Compute_PBES_NS(ELEMENT_ATTRIBUTE* );
 
 
     //不考虑剪切变形的空间梁单元刚度矩阵计算：compute-space-beam-element-stiffness-matrix
     //输入：梁单元属性（包括E，A，I，l）
     //输出：不考虑剪切变形的空间单元刚度矩阵
-    marc_pony::MATRIX* Compute_SBES_NS(ELEMENT_ATTRIBUTE* );
+    MATRIX* Compute_SBES_NS(ELEMENT_ATTRIBUTE* );
 
 
     //前处理第二个模块：坐标转换模块
@@ -84,7 +85,7 @@ namespace pre
     //计算坐标变换矩阵：compute-coordinate-transfer-matrix
     //输入：梁单元两端节点的指针
     //输出：该梁单元的局部坐标转整体坐标的SO（3）矩阵
-    marc_pony::MATRIX* Compute_CTM(POINT* i,POINT* j);
+    MATRIX* Compute_CTM(POINT* i,POINT* j);
 
     //前处理第三个模块：总体刚度矩阵形成: component-total-stiffness-matrix
     //目的：组装所有的单元刚度矩阵，形成总体刚度矩阵。
@@ -95,7 +96,7 @@ namespace pre
     //等带宽存储，DD=(节点号插值最大+1)*节点自由度号；变带宽存储和一维变带宽存储.目的是减少总刚矩阵在内存中存放的空间。本算例忽略
     //输入：坐标变换后的总体坐标系下的单元刚度矩阵vector数组
     //输出：总体刚度矩阵
-    marc_pony::MATRIX* Component_TSM(vector<marc_pony::MATRIX*> &V);
+    MATRIX* Component_TSM(vector<MATRIX*> &V);
 
     //前处理第四个模块
     //节点载荷计算：compute-point-load
@@ -154,7 +155,7 @@ namespace pre
     //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)
     //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
     template<typename T>
-    marc_pony::ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<T>& P,PPOINT_DISPLACEMENT);
+    ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<T>& P,PPOINT_DISPLACEMENT);
 
     //总体刚度矩阵引入边界条件
     //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
@@ -162,7 +163,7 @@ namespace pre
     //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)vector数组
     //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
     template<typename T>
-    marc_pony::ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<T>& P,vector<PPOINT_DISPLACEMENT>&);
+    ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<T>& P,vector<PPOINT_DISPLACEMENT>&);
 
     }
 #endif

@@ -44,8 +44,7 @@
 /*******************************************************************************
 * (8)Function Define Section
 *******************************************************************************/
-namespace marc_pony
-{
+
 VOID print_matrix(MATRIX* a, STRING string)
 {
 	INDEX i, j;
@@ -777,6 +776,4 @@ ERROR_ID solve_matrix_equation_by_lup_decomposition(_IN MATRIX* A, _IN_OUT MATRI
 EXIT:
 	free_stack(&S);
 	return errorID;
-}
-
 }

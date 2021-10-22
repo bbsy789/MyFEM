@@ -3,16 +3,8 @@
 
 namespace pre
 {
-    void init_stack(_IN_OUT pre::STACKS* S)
-    {
-        if (S == NULL)
-        {
-            return;
-        }
-
-        memset(S, 0, sizeof(pre::STACKS));
-    }
-    ELEMENT_ATTRIBUTE* Input_E_A(_IN double A,_IN float E,_IN float G,_IN double I,_IN double L,_OUT marc_pony::ERROR_ID* errorID,_OUT pre::STACKS* S)
+    
+    ELEMENT_ATTRIBUTE* Input_E_A(_IN double A,_IN float E,_IN float G,_IN double I,_IN double L,_OUT ERROR_ID* errorID,_OUT pre::STACKS* S)
     {
         pre::STACKS S;
         ELEMENT_ATTRIBUTE* ptr = NULL;//定义一个结构体指针，初始化为NULL
@@ -44,7 +36,7 @@ namespace pre
         }
     }
 
-    marc_pony::MATRIX* Compute_PBES_NS(ELEMENT_ATTRIBUTE* ptr)
+    MATRIX* Compute_PBES_NS(ELEMENT_ATTRIBUTE* ptr)
     {
         
     }

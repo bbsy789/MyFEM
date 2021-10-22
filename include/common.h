@@ -68,8 +68,6 @@
 /*******************************************************************************
 * (4)Struct(Data Types) Define Section
 *******************************************************************************/
-namespace marc_pony
-{
 typedef  unsigned int ERROR_ID;
 typedef int INDEX;
 typedef short FLAG;
@@ -131,5 +129,4 @@ Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
 VOID free_stack(_IN STACKS* S);
 
-}
 #endif

@@ -22,15 +22,7 @@ typedef struct element_attribute
     double L;//单元长度
 }ELEMENT_ATTRIBUTE;//单元属性
 
-namespace pre
-{
-	typedef struct stacks
-{
-	ELEMENT_ATTRIBUTE* element_attribute;
-	// ...
-	// 添加其他对象的指针
-} STACKS;
-}//namespace pre
+typedef ELEMENT_ATTRIBUTE* PELEMENT_ATTRIBUTE;
 
 //为了不失一般性，使用3维坐标表示，当遇到平面问题时，某一个坐标轴值即为0。
 typedef struct point
@@ -39,6 +31,7 @@ typedef struct point
     double X;//X轴坐标
     double Y;//Y轴坐标
     double Z;//Z轴坐标
+    PPOINT next;
 }POINT;
 
 typedef POINT* PPOINT;//定义指向POINT的指针类型为PPOINT
@@ -53,6 +46,7 @@ typedef struct point_displacement
     float Xr;//Xrotation
     float Yr;//Yrotation
     float Zr;//Zrotation
+    
 }POINT_DISPLACEMENT;
 
 typedef POINT_DISPLACEMENT* PPOINT_DISPLACEMENT;//定义指向POINT_DISPLACEMEN的指针类型PPOINT_DISPLACEMENT
@@ -68,6 +62,8 @@ typedef struct element
     PPOINT ptrj;//指向j端节点的指针
 }ELEMENT;
 
+typedef ELEMENT* PELEMENT;
+
 typedef struct load
 {
     unsigned int ET_index;//单元号
@@ -81,5 +77,7 @@ typedef struct load
     float load_ty;//载荷位置theta_y
     float load_tz;//载荷位置theta_z
 }LOAD;
+
+typedef LOAD* PLOAD;
 
  #endif

@@ -51,3 +51,8 @@ namespace pre
 
 } // namespace pre
 
+MATRIX* Compute_PBES_NS(ELEMENT_ATTRIBUTE* )
+{
+    
+}
+

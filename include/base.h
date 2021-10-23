@@ -20,10 +20,17 @@ typedef struct element_attribute
     float G;//剪切弹性模量
     double I;//极惯性矩
     double L;//单元长度
-    ELEMENT_ATTRIBUTE* next;//指针
 }ELEMENT_ATTRIBUTE;//单元属性
 
-	
+typedef ELEMENT_ATTRIBUTE* PELEMENT_ATTRIBUTE;
+
+typedef struct element_attribute_node
+{
+    PELEMENT_ATTRIBUTE data;
+    ELEMENT_ATTRIBUTE_NODE* next;
+}ELEMENT_ATTRIBUTE_NODE;
+
+
 //为了不失一般性，使用3维坐标表示，当遇到平面问题时，某一个坐标轴值即为0。
 typedef struct point
 {
@@ -31,10 +38,15 @@ typedef struct point
     double X;//X轴坐标
     double Y;//Y轴坐标
     double Z;//Z轴坐标
-    POINT* next;
 }POINT;
 
 typedef POINT* PPOINT;//定义指向POINT的指针类型为PPOINT
+
+typedef struct point_node
+{
+    PPOINT data;
+    POINT_NODE* next;
+}POINT_NODE;
 
 //定义节点位移，包含编号，六个自由度
 typedef struct point_displacement
@@ -43,10 +55,16 @@ typedef struct point_displacement
     double u;//X方向位移
     double v;//Y方向位移
     double Thetax;//关于x的转角
-    POINT_DISPLACEMENT* next;
+    
 }POINT_DISPLACEMENT;
 
 typedef POINT_DISPLACEMENT* PPOINT_DISPLACEMENT;//定义指向POINT_DISPLACEMEN的指针类型PPOINT_DISPLACEMENT
+
+typedef struct point_displacement_node
+{
+    PPOINT_DISPLACEMENT data;
+    POINT_DISPLACEMENT_NODE* next;
+}POINT_DISPLACEMENT_NODE;
 
 typedef struct element
 {
@@ -60,23 +78,37 @@ typedef struct element
     ELEMENT* next;
 }ELEMENT;
 
+typedef ELEMENT* PELEMENT;
+
+typedef struct element_node
+{
+    PELEMENT data;
+    ELEMENT_NODE* next;
+}ELEMENT_NODE;
+
 //四元载荷
 template<typename T>
-typedef struct load
+struct load
 {
     unsigned int ET_index;//单元号
-    T category;//载荷类型的结构体指针
-    LOAD* next;
-}LOAD;
+    struct T category;//载荷类型的结构体指针
+};
 
-typedef struct stacks
+template <typename T>
+using LOAD = load<T>;
+
+template <typename T>
+struct stacks
 {
     POINT* point_node;
     POINT_DISPLACEMENT* point_displacement_node;
     ELEMENT* element_node;
-	LOAD* load_node;
+	LOAD<T>* load_node;
 	// ...
 	// 添加其他对象的指针
-} STACKS;
+};
+
+template <typename T>
+using STACKs = stacks<T>;
 
  #endif

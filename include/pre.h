@@ -3,9 +3,6 @@
 
 //pre.h 0.11
 
-namespace pre
-{
-
     //包含头文件
     #include <base.h>
     #include <matrix.h>
@@ -165,5 +162,4 @@ namespace pre
     template<typename T>
     ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<T>& P,vector<PPOINT_DISPLACEMENT>&);
 
-    }
 #endif

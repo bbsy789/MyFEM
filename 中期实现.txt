@@ -1,0 +1,12 @@
+王玮杰 2021/10/23
+1.在阿里云上安装了Docker，使用Docker pull code-server lastest获得最新版的code-server。
+2.在阿里云linux系统下安装git作为版本控制工具。在docker容器内安装git失败，原因可能是docker屏蔽了公钥，导致无法正常使用。
+3.使用docker run启动code-server。
+4.配置code-server的中文界面，安装插件：code runner；
+5.docker下的系统为Debian linux11
+6.更改docker容器内的apt配置文件 /etc/apt/sourses.lish，切换为阿里云镜像。
+7.docker cp命令可以实现操作系统和容器的文件传递。
+8.在docker下使用apt-get install就可以安装各种软件了。最后配置好的容器重新docker commit 生成自己的镜像，保存环境。
+9.具体操作命令有空再补。
+
+PS：这段文档是使用ipad+蓝牙键盘+code-server完成的。

@@ -3,6 +3,9 @@
     "files.associations": {
         "vector": "cpp",
         "stl_vector.h": "c",
-        "new": "cpp"
+        "new": "cpp",
+        "stack": "cpp",
+        "stl_stack.h": "c",
+        "deque": "cpp"
     }
 }

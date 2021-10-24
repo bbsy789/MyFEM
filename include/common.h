@@ -59,7 +59,7 @@
 #define _ERROR_VECTOR_DIMENSION_NOT_EQUAL 							0X00000010   //向量维数不相同
 #define _ERROR_VECTOR_NORM_TYPE_INVALID								0X00000011   //向量模类型无效
 #define _ERROR_VECTOR_CROSS_FAILED									0X00000012   //向量叉乘失败
-#define _ERROR_PTR_ERROR                    						0X00000013   //指针溢出错误
+#define _ERROR_PTR_ERROR                    						0X00000013   //指针错误
 #define _ERROR_INDEX_ERROR                  						0x00000014   //下标越界
 #define _ERROR_NO_FIND_POINT_ERROR                					0x00000015   //未能找到节点
 #define _ERROR_INPUT_PARAMETERS_ERROR								0X00010000   //输入参数错误
@@ -95,14 +95,14 @@ typedef struct matrix_element_node
 	struct matrix_element_node* next;
 } MATRIX_ELEMENT_NODE;
 
-
-	typedef struct stacks
+template<typename T1,typename T2>
+struct stacks
 {
-	MATRIX_NODE* matrixNode;
-	MATRIX_ELEMENT_NODE* matrixElementNode;
-	// ...
-	// 添加其他对象的指针
-} STACKS;
+	T1* Node;
+	T2* ElementNode;
+};
+
+using MATRIX_STACKS = stacks<MATRIX_NODE,MATRIX_ELEMENT_NODE>;
 
 /*******************************************************************************
 * (5)Prototype Declare Section
@@ -116,7 +116,8 @@ Input_Output: 栈指针
 Return: 无
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-VOID init_stack(_IN_OUT STACKS* S);
+template<typename T1,typename T2>
+VOID init_stack(_IN_OUT stacks<T1,T2>* S);
 
 /**********************************************************************************************
 Function: free_stack
@@ -127,6 +128,7 @@ Input_Output: 无
 Return: 无
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-VOID free_stack(_IN STACKS* S);
+template<typename T1,typename T2>
+VOID free_stack(_IN stacks<T1,T2>* S);
 
 #endif

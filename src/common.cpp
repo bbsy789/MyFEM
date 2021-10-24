@@ -40,8 +40,7 @@
 * (7)File Static Variable Define Section
 *******************************************************************************/
 
-namespace marc_pony
-{
+
 /*******************************************************************************
 * (8)Function Define Section
 *******************************************************************************/
@@ -55,14 +54,15 @@ Input_Output: 栈指针
 Return: 无
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-VOID init_stack(_IN_OUT STACKS* S)
+template<typename T1,typename T2>
+VOID init_stack(_IN_OUT stacks<T1,T2>* S)
 {
 	if (S == NULL)
 	{
 		return;
 	}
 
-	memset(S, 0, sizeof(STACKS));
+	memset(S, 0, sizeof(stacks<T1,T2>));
 }
 
 
@@ -75,39 +75,39 @@ Input_Output: 无
 Return: 无
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-VOID free_stack(_IN STACKS* S)
+template<typename T1,typename T2>
+VOID free_stack(_IN stacks<T1,T2>* S)
 {
-	MATRIX_NODE* matrixNode = NULL;
-	MATRIX_ELEMENT_NODE* matrixElementNode = NULL;
+	void* Node = NULL;
+	void* ElementNode = NULL;
 
 	if (S == NULL)
 	{
 		return;
 	}
 
-	while (S->matrixNode != NULL)
+	while (S->Node != NULL)
 	{
-		matrixNode = S->matrixNode;
-		S->matrixNode = matrixNode->next;
+		Node = S->Node;
+		S->Node = Node->next;
 
-		free(matrixNode->ptr);
-		matrixNode->ptr = NULL;
-		free(matrixNode);
-		matrixNode = NULL;
+		free(Node->ptr);
+		Node->ptr = NULL;
+		free(Node);
+		Node = NULL;
 	}
 
-	while (S->matrixElementNode != NULL)
+	while (S->ElementNode != NULL)
 	{
-		matrixElementNode = S->matrixElementNode;
-		S->matrixElementNode = matrixElementNode->next;
+		ElementNode = S->ElementNode;
+		S->ElementNode = ElementNode->next;
 
-		free(matrixElementNode->ptr);
-		matrixElementNode->ptr = NULL;
-		free(matrixElementNode);
-		matrixElementNode = NULL;
+		free(ElementNode->ptr);
+		ElementNode->ptr = NULL;
+		free(ElementNode);
+		ElementNode = NULL;
 	}
 
 	// ...
 	// 释放其他指针
-}
 }

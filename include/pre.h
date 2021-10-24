@@ -12,6 +12,24 @@
 #include <vector>
 
 using namespace std;
+using namespace base;
+using namespace load;
+
+namespace pre
+{
+template <typename T>
+struct stacks
+{
+    POINT* point_node;
+    POINT_DISPLACEMENT* point_displacement_node;
+    ELEMENT* element_node;
+	LOAD<T>* load_node;
+	// ...
+	// 添加其他对象的指针
+};
+
+template <typename T>
+using STACKS = stacks<T>;
 
 std::vector<MATRIX*> V;//使用stl，vector模板类创建的矩阵指针数组
 
@@ -24,7 +42,8 @@ Input_Output: 栈指针
 Return: 无
 Author: Wwj(bbsy789@126.com)
 ***********************************************************************************************/
-void init_stack(_IN_OUT pre::STACKS* S);
+template <typename T>
+void init_stack(_IN_OUT pre::STACKS<T>* S);
 
 /**********************************************************************************************
 Function: free_stack
@@ -35,7 +54,8 @@ Input_Output: 无
 Return: 无
 Author: Wwj(bbsy789@126.com)
 ***********************************************************************************************/
-void free_stack(_IN pre::STACKS* S);
+template <typename T>
+void free_stack(_IN pre::STACKS<T>* S);
 
 //pre.h头文件的架构
 
@@ -53,18 +73,21 @@ void free_stack(_IN pre::STACKS* S);
 //梁单元属性的输入:
 //输入：梁单元属性（包括E，A，I，l）
 //输出：梁单元属性矩阵指针，错误代码，堆栈指针。
-ELEMENT_ATTRIBUTE* Input_E_A(_IN double A,_IN float E,_IN float G,_IN double I,_IN double L,_OUT ERROR_ID,_OUT pre::STACKS* S);
+template <typename T>
+ELEMENT_ATTRIBUTE* Input_E_A(_IN double A,_IN float E,_IN float G,_IN double I,_IN double L,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
 //输入：梁单元属性结构体
 //输出：不考虑剪切变形的平面梁单元刚度矩阵
-MATRIX* Compute_PBES_NS(ELEMENT_ATTRIBUTE* );
+template <typename T>
+MATRIX* Compute_PBES_NS(_IN ELEMENT_ATTRIBUTE* ,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 
 //不考虑剪切变形的空间梁单元刚度矩阵计算：compute-space-beam-element-stiffness-matrix
 //输入：梁单元属性（包括E，A，I，l）
 //输出：不考虑剪切变形的空间单元刚度矩阵
-MATRIX* Compute_SBES_NS(ELEMENT_ATTRIBUTE* );
+template <typename T>
+MATRIX* Compute_SBES_NS(_IN ELEMENT_ATTRIBUTE* ,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 
 //前处理第二个模块：坐标转换模块
@@ -74,7 +97,8 @@ MATRIX* Compute_SBES_NS(ELEMENT_ATTRIBUTE* );
 //计算坐标变换矩阵：compute-coordinate-transfer-matrix
 //输入：梁单元两端节点的指针
 //输出：该梁单元的局部坐标转整体坐标的SO（3）矩阵
-MATRIX* Compute_CTM(POINT* i,POINT* j);
+template <typename T>
+MATRIX* Compute_CTM(_IN POINT* i,_IN POINT* j,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 //前处理第三个模块：总体刚度矩阵形成: component-total-stiffness-matrix
 //目的：组装所有的单元刚度矩阵，形成总体刚度矩阵。
@@ -85,7 +109,8 @@ MATRIX* Compute_CTM(POINT* i,POINT* j);
 //等带宽存储，DD=(节点号插值最大+1)*节点自由度号；变带宽存储和一维变带宽存储.目的是减少总刚矩阵在内存中存放的空间。本算例忽略
 //输入：坐标变换后的总体坐标系下的单元刚度矩阵vector数组
 //输出：总体刚度矩阵
-MATRIX* Component_TSM(vector<MATRIX*> &V);
+template <typename T>
+MATRIX* Component_TSM(_IN vector<MATRIX*> &V,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 //前处理第四个模块
 //节点载荷计算：compute-point-load
@@ -99,26 +124,29 @@ MATRIX* Component_TSM(vector<MATRIX*> &V);
 //按照四元载荷等效原理，等效到节点载荷，
 //输入：某一单元结构体指针，该单元集中力结构体指针
 //输出：该单元节点载荷结构体指针
-POINT_LOAD* Compute_PL(ELEMENT* E,CONCENTRATED_FORCE* F);
+template <typename T>
+POINT_LOAD* Compute_PL(_IN ELEMENT* E,load::CONCENTRATED_FORCE* F,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 //节点载荷计算：compute-point-load
 //按照四元载荷等效原理，等效到节点载荷，
 //输入：某一单元结构体指针，该单元集中力矩结构体指针
 //输出：该单元节点载荷结构体指针
-POINT_LOAD* Compute_PL(ELEMENT* E,CONCENTRATED_MOMENT* M);
+template <typename T>
+POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 //节点载荷计算：compute-point-load
 //按照四元载荷等效原理，等效到节点载荷，
 //输入：某一单元结构体指针，该单元均布载荷结构体指针
 //输出：该单元节点载荷结构体指针
-POINT_LOAD* Compute_PL(ELEMENT* E,UNIFORM_LOAD* Q);
+template <typename T>
+POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 //节点载荷计算：compute-point-load
 //按照四元载荷等效原理，等效到节点载荷，
 //输入：某一单元结构体指针，模板类型T
 //输出：该单元节点载荷结构体指针
 template<typename T>
-POINT_LOAD* Compute_PL(ELEMENT *E,T t);
+POINT_LOAD* Compute_PL(_IN ELEMENT *E,T t,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 //前处理第五个模块
 //单元杆端内力与支座反力计算。
 //在结构整体刚度方程中引入边界条件。一般有限元求解中引入的是位移边界条件。
@@ -136,7 +164,7 @@ POINT_LOAD* Compute_PL(ELEMENT *E,T t);
 //输入：初始化的位移向量引用
 //输出：添加了位移边界条件的位移向量
 template<typename T>
-vector<double>& D_ADD_boundary_condition(vector<T>&);
+vector<double>& D_ADD_boundary_condition(_IN vector<T>&,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 //总体刚度矩阵引入边界条件
 //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
@@ -144,7 +172,7 @@ vector<double>& D_ADD_boundary_condition(vector<T>&);
 //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)
 //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
 template<typename T>
-ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<T>& P,PPOINT_DISPLACEMENT);
+ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN PPOINT_DISPLACEMENT,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
 
 //总体刚度矩阵引入边界条件
 //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
@@ -152,6 +180,6 @@ ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<T>& P,PPOINT_DISPLACEMENT);
 //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)vector数组
 //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
 template<typename T>
-ERROR_ID TSM_ADD_boundary_condition(MATRIX* K,vector<T>& P,vector<PPOINT_DISPLACEMENT>&);
-
+ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN vector<PPOINT_DISPLACEMENT>&,_OUT ERROR_ID,_OUT pre::STACKS<T>* S);
+}
 #endif

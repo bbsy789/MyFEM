@@ -5,7 +5,8 @@
 #define _IN
 #define _OUT
 #define _IN_OUT
-
+namespace base
+{
 typedef unsigned int NW;//定义总节点数NW
 typedef unsigned int NR;//定义受约束的节点总数
 
@@ -97,18 +98,5 @@ struct load
 template <typename T>
 using LOAD = load<T>;
 
-template <typename T>
-struct stacks
-{
-    POINT* point_node;
-    POINT_DISPLACEMENT* point_displacement_node;
-    ELEMENT* element_node;
-	LOAD<T>* load_node;
-	// ...
-	// 添加其他对象的指针
-};
-
-template <typename T>
-using STACKs = stacks<T>;
-
+}
  #endif

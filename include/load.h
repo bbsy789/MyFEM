@@ -1,6 +1,8 @@
 #ifndef LOAD_H
 #define LOAD_H
 
+namespace load
+{
 //定义节点载荷结构体： POINT_LOAD
 typedef struct point_load
 {
@@ -34,5 +36,5 @@ typedef struct uniform_load
     double positionj;//均布荷载距离单元j端的长度
 }UNIFORM_LOAD;
 
-
+}
 #endif 

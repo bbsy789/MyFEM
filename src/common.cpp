@@ -52,7 +52,7 @@ Input: 无
 Output: 无
 Input_Output: 栈指针
 Return: 无
-Author: Marc Pony(marc_pony@163.com)
+Author: Marc Pony(marc_pony@163.com),wwj(bbsy789@126.com)modify
 ***********************************************************************************************/
 template<typename T1,typename T2>
 VOID init_stack(_IN_OUT stacks<T1,T2>* S)
@@ -73,13 +73,13 @@ Input: 栈指针
 Output: 无
 Input_Output: 无
 Return: 无
-Author: Marc Pony(marc_pony@163.com)
+Author: Marc Pony(marc_pony@163.com),wwj(bbsy789@126.com)modify
 ***********************************************************************************************/
 template<typename T1,typename T2>
 VOID free_stack(_IN stacks<T1,T2>* S)
 {
-	void* Node = NULL;
-	void* ElementNode = NULL;
+	T1* Node = NULL;
+	T2* ElementNode = NULL;
 
 	if (S == NULL)
 	{

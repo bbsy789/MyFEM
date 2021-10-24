@@ -72,7 +72,7 @@ Input_Output: 无
 Return: 矩阵指针
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-MATRIX* creat_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT STACKS* S)
+MATRIX* creat_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
 {
 	MATRIX* matrix = NULL;
 	MATRIX_NODE* matrixNode = NULL;
@@ -125,12 +125,12 @@ MATRIX* creat_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* error
 	}
 
 	matrixNode->ptr = matrix;
-	matrixNode->next = S->matrixNode;
-	S->matrixNode = matrixNode;
+	matrixNode->next = S->Node;
+	S->Node = matrixNode;
 
 	matrixElementNode->ptr = matrix->p;
-	matrixElementNode->next = S->matrixElementNode;
-	S->matrixElementNode = matrixElementNode;
+	matrixElementNode->next = S->ElementNode;
+	S->ElementNode = matrixElementNode;
 
 	return matrix;
 }
@@ -145,7 +145,7 @@ Input_Output: 无
 Return: 矩阵指针
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-MATRIX* creat_multiple_matrices(_IN INTEGER rows, _IN INTEGER columns, _IN INTEGER count, _OUT ERROR_ID* errorID, _OUT STACKS* S)
+MATRIX* creat_multiple_matrices(_IN INTEGER rows, _IN INTEGER columns, _IN INTEGER count, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
 {
 	INDEX i;
 	MATRIX* matrix = NULL, *p = NULL;
@@ -194,8 +194,8 @@ MATRIX* creat_multiple_matrices(_IN INTEGER rows, _IN INTEGER columns, _IN INTEG
 	}
 
 	matrixNode->ptr = matrix;
-	matrixNode->next = S->matrixNode;
-	S->matrixNode = matrixNode;
+	matrixNode->next = S->Node;
+	S->Node = matrixNode;
 
 	return matrix;
 }
@@ -209,7 +209,7 @@ Input_Output: 无
 Return: 矩阵指针
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-MATRIX* creat_zero_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT STACKS* S)
+MATRIX* creat_zero_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
 {
 	MATRIX* matrix = NULL;
 
@@ -244,7 +244,7 @@ Input_Output: 无
 Return: 矩阵指针
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-MATRIX* creat_eye_matrix(_IN INTEGER n, _OUT ERROR_ID* errorID, _OUT STACKS* S)
+MATRIX* creat_eye_matrix(_IN INTEGER n, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
 {
 	INDEX i;
 	MATRIX* matrix = NULL;
@@ -414,7 +414,7 @@ ERROR_ID matrix_inverse(_IN MATRIX* A, _OUT MATRIX* invA)
 	INTEGER n;
 	MATRIX* ATemp = NULL;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
-	STACKS S;
+	MATRIX_STACKS S;
 
 	if (A == NULL || invA == NULL)
 	{
@@ -640,7 +640,7 @@ ERROR_ID solve_matrix_equation_by_lup_decomposition(_IN MATRIX* A, _IN_OUT MATRI
 	REAL sum, maxValue, temp;
 	MATRIX* L = NULL, * U = NULL, * y = NULL;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
-	STACKS S;
+	MATRIX_STACKS S;
 
 	if (A == NULL || B == NULL)
 	{

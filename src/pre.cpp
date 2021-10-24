@@ -3,8 +3,7 @@
 
 namespace pre
 {
-    template <typename T1,typename T2>
-    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT stack<T1,T2>* S)
+    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT ELEMENT_ATTRIBUTE_STACKS* S)
     {
         ELEMENT_ATTRIBUTE* element_attribute = NULL;//定义一个结构体指针，初始化为NULL
         ELEMENT_ATTRIBUTE_NODE* element_attribute_node = NULL;
@@ -41,13 +40,13 @@ namespace pre
         element_attribute->L = L;
         
         element_attribute_node->data = element_attribute;
-        element_attribute_node->next = S.;
+        element_attribute_node->next = S;
         S->element_attribute_node = element_attribute_node;
 
         return element_attribute;
     }
-    template <typename T1,typename T2>
-    MATRIX* Compute_PBES_NS(_IN const ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT stack<T>* S)
+
+    MATRIX* Compute_PBES_NS(_IN ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
     {
         if(element_attribute == NULL)
         {
@@ -88,8 +87,7 @@ namespace pre
         errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;//分配堆内存错误，此时主程序应该调用free_stacks函数释放堆内存防止内存泄露，野指针乱指
         return NULL;
     }
-    template <typename T1,typename T2>
-    MATRIX* Compute_CTM(_IN const ELEMENT* e,_OUT ERROR_ID* errorID,_OUT stack<T>* S)
+    MATRIX* Compute_CTM(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT MATRIX_STACKS* S)
     {
         //1.判断野指针
         if(e == NULL)

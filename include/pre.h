@@ -7,13 +7,11 @@
 #include <base.h>
 #include <matrix.h>
 #include <point.h>
-#include <load.h>
 #include <common.h>
 #include <vector>
 
 using std::vector;
 using namespace base;
-using namespace load;
 
 namespace pre
 {
@@ -33,14 +31,13 @@ namespace pre
     //梁单元属性的输入:
     //输入：平面梁单元属性（包括E，A，I，l）
     //输出：平面梁单元属性矩阵指针，错误代码，堆栈指针。
-    template <typename T1,typename T2>
-    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT ELEMENT_ATTRIBUTE_STACKS* S);
 
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
     //输入：梁单元属性结构体
     //输出：不考虑剪切变形的平面梁单元刚度矩阵
     template <typename T1,typename T2>
-    MATRIX* Compute_PBES_NS(_IN ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT stacks<T1,T2>* S);
+    MATRIX* Compute_PBES_NS(_IN ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
 
 
     /* //不考虑剪切变形的空间梁单元刚度矩阵计算：compute-space-beam-element-stiffness-matrix
@@ -57,8 +54,7 @@ namespace pre
     //计算坐标变换矩阵：compute-coordinate-transfer-matrix
     //输入：梁单元两端节点的指针
     //输出：该梁单元的局部坐标转整体坐标的SO（3）矩阵
-    template <typename T1,typename T2>
-    MATRIX* Compute_CTM(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    MATRIX* Compute_CTM(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT MATRIX_STACKS* S);
 
     //前处理第三个模块：总体刚度矩阵形成: component-total-stiffness-matrix
     //目的：组装所有的单元刚度矩阵，形成总体刚度矩阵。
@@ -84,29 +80,29 @@ namespace pre
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力结构体指针
     //输出：该单元节点载荷结构体指针
-    template <typename T1,typename T2>
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,load::CONCENTRATED_FORCE* F,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    template <typename T>
+    POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_FORCE* F,_OUT ERROR_ID* errorID);
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力矩结构体指针
     //输出：该单元节点载荷结构体指针
-    template <typename T1,typename T2>
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    template <typename T>
+    POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID);
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元均布载荷结构体指针
     //输出：该单元节点载荷结构体指针
-    template <typename T1,typename T2>
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    template <typename T>
+    POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID);
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，模板类型T
     //输出：该单元节点载荷结构体指针
-    template <typename T1,typename T2>
-    POINT_LOAD* Compute_PL(_IN ELEMENT *E,T t,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    template <typename T>
+    POINT_LOAD* Compute_PL(_IN ELEMENT *E,T t,_OUT ERROR_ID* errorID);
     //前处理第五个模块
     //单元杆端内力与支座反力计算。
     //在结构整体刚度方程中引入边界条件。一般有限元求解中引入的是位移边界条件。
@@ -123,23 +119,23 @@ namespace pre
     //已知位移边界条件修改位移向量displacement
     //输入：初始化的位移向量引用
     //输出：添加了位移边界条件的位移向量
-    template <typename T1,typename T2>
-    vector<double>& D_ADD_boundary_condition(_IN vector<T>&,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    template <typename T>
+    vector<double>& D_ADD_boundary_condition(_IN vector<T>&,_OUT ERROR_ID* errorID);
 
     //总体刚度矩阵引入边界条件
     //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
     //目的：根据约束信息改变相应刚度系数（主元素）和载荷项。
     //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)
     //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
-    template <typename T1,typename T2>
-    ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN PPOINT_DISPLACEMENT,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    template <typename T>
+    ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN PPOINT_DISPLACEMENT,_OUT ERROR_ID* errorID);
 
     //总体刚度矩阵引入边界条件
     //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
     //目的：根据约束信息改变相应刚度系数（主元素）和载荷项。
     //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)vector数组
     //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
-    template <typename T1,typename T2>
-    ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN vector<PPOINT_DISPLACEMENT>&,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    template <typename T>
+    ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN vector<PPOINT_DISPLACEMENT>&,_OUT ERROR_ID* errorID);
 }
 #endif

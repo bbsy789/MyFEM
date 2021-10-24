@@ -17,8 +17,8 @@ typedef unsigned int KE;//定义单元物理性质数KE
 typedef struct element_attribute
 {
     double A;//截面面积
-    float E;//拉压弹性模量
-    float G;//剪切弹性模量
+    double E;//拉压弹性模量
+    double G;//剪切弹性模量
     double I;//极惯性矩
     double L;//单元长度
 }ELEMENT_ATTRIBUTE;//单元属性

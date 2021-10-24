@@ -10,3 +10,75 @@
 9.具体操作命令有空再补。
 
 PS：这段文档是使用ipad+蓝牙键盘+code-server完成的。
+
+2021/10/24使用了如下命令解决了docker内git问题：
+git config --global user.name "bbsy789"
+git config --global user.email  "bbsy789@126.com"
+宿主：
+rm -rf ~/.ssh/*
+cd ~/.ssh 
+容器内：rm -rf /home/coder/.ssh/*
+cd /home/coder/.ssh
+
+ssh-keygen -t rsa -C "bbsy789@126.com"
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub
+/*将id_rsa.pub的内容复制到github中*/
+ssh -T git@github.com
+ssh-add ~/.ssh/id_rsa
+
+
+
+
+1.配置git：
+（1）设置用户名称和登录邮箱
+git config --global user.name 'bbsy789'
+git config --global user.email 'bbsy789@126.com'
+(2)生成密钥
+ssh-keygen -t rsa -C 'bbsy789@126.com'
+此时会多次要求输入密码，不要输入！
+（3）配置
+找到C:用户/wwj/.ssh/id-rsa.pub，全部复制
+进入github 右上角用户设置，ssh key，添加新的公钥。
+（4）初始化本地账户
+sudo chmod 777 MyFEM
+sudo git init初始化仓库
+添加项目
+git remote add origin git@github.com:bbsy789/MyFEM.git
+
+克隆项目
+git clone git@github.com:bbsy789/MyFEM.git
+
+暂存：
+git add .
+
+提交：
+git commit -m 'xx'
+
+推送:
+git push origin 本地分支名:github分支名
+git push origin master:GUI
+
+docker ps -a
+sudo docker exec -it -u root code /bin/bash进入交互模式
+vi /home/coder/.config/code-server/config.yaml //获得密码
+cd ./.config/code-server
+vi config.yaml
+cat ~/.ssh/id_rsa.pub //获得公钥
+docker run -it -p 80:8080  --name code -v /.ssh:/home/coder/.ssh -v /home/coder/project:/home/coder/project wwjcode
+docker run --rm -v ~/.ssh/:/root/.ssh/  -v /Users/XXXXX/:/usr/src/app/ node
+从容器里面拷文件到宿主机
+在宿主机里面执行以下命令
+docker cp 容器名：要拷贝的文件在容器里面的路径 要拷贝到宿主机的相应路径 
+从宿主机拷文件到容器
+在宿主机执行命令: docker cp 要拷贝的文件路径 容器名：要拷贝到容器里面对应的路径
+容器名就是docker ps -a 里面的name
+docker cp /root/.ssh/id_rsa.pub 容器名:/home/coder/.ssh/
+docker cp /root/.ssh/id_rsa 容器名:/home/coder/.ssh/
+docker cp /root/MyFEM 容器名:/home/coder/project/
+docker cp /etc/sources.list code:/etc/apt/sources.list 更改阿里云镜像的文件
+复制MyFEM从容器到操作系统根目录：
+docker cp code:/home/coder/project/MyFEM /root/MyFEM
+复制操作系统根目录到容器：
+docker cp  /root/MyFEM code:/home/coder/project/MyFEM

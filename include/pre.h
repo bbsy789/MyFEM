@@ -36,7 +36,6 @@ namespace pre
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
     //输入：梁单元属性结构体
     //输出：不考虑剪切变形的平面梁单元刚度矩阵
-    template <typename T1,typename T2>
     MATRIX* Compute_PBES_NS(_IN ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
 
 

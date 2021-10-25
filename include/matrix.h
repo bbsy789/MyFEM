@@ -43,7 +43,7 @@ Input_Output: 无
 Return: 矩阵指针
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-MATRIX* creat_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT STACKS* S);
+MATRIX* creat_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
 
 
 /**********************************************************************************************
@@ -55,7 +55,7 @@ Input_Output: 无
 Return: 矩阵指针
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-MATRIX* creat_multiple_matrices(_IN INTEGER rows, _IN INTEGER columns, _IN INTEGER count, _OUT ERROR_ID* errorID, _OUT STACKS* S);
+MATRIX* creat_multiple_matrices(_IN INTEGER rows, _IN INTEGER columns, _IN INTEGER count, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
 
 
 /**********************************************************************************************
@@ -67,7 +67,7 @@ Input_Output: 无
 Return: 矩阵指针
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-MATRIX* creat_zero_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT STACKS* S);
+MATRIX* creat_zero_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
 
 
 /**********************************************************************************************
@@ -79,7 +79,7 @@ Input_Output: 无
 Return: 矩阵指针
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-MATRIX* creat_eye_matrix(_IN INTEGER n, _OUT ERROR_ID* errorID, _OUT STACKS* S);
+MATRIX* creat_eye_matrix(_IN INTEGER n, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
 
 
 /**********************************************************************************************

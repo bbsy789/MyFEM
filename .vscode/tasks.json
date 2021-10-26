@@ -1,41 +1,48 @@
 {
-    // 有关 tasks.json 格式的文档，请参见
-        // https://go.microsoft.com/fwlink/?LinkId=733558
-        "version": "2.0.0",
-        "tasks": [
-            {
-                "type": "shell",
-                "label": "g++.exe build active file",
-                "command": "g++.exe",
-                "args": [
-                    "-g",
-                    //"${workspaceFolder}\\*.cpp",	//多文件编译
-                    "${file}",					//单文件编译用这个
-                    "-o",
-                    "${workspaceFolder}\\${workspaceRootFolderName}.exe",
-                    "-lgraphics64",
-                    "-luuid",
-                    "-lmsimg32",
-                    "-lgdi32",
-                    "-limm32",
-                    "-lole32",
-                    "-loleaut32",
-                    "-lwinmm",
-                    "-lgdiplus",
-                    "-IE:\\mingw64\\include",
-                    "-LE:\\mingw64\\lib"
-                ],
-                "options": {
-                    "cwd": "E:\\mingw64\\bin"
-                },
-                "problemMatcher": [
-                    "$gcc"
-                ],
-                "group": {
-                    "kind": "build",
-                    "isDefault": true
-                }
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build", //相当与名字，与后面launch.json中preLaunchTask参数要保持一致
+            "type": "shell",
+            "command": "g++", 
+            "args": [     //编译所需要的参数，包括编译方式，源文件，和生成的可执行文件
+                "-g",
+                "-Wall",
+                "-std=c++17",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "presentation": {   //控制终端显示
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "dependsOn": ["build"], //依赖的配置，运行之前需要编译链接形成可执行文件
+            "command": "${fileDirname}/${fileBasenameNoExtension}",
+            "args": [],
+            "presentation": {   //控制终端显示
+                "echo": false,  // 执行命令是否输出到集成终端
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared", //控制是否共享面板
+                "showReuseMessage": false, //是否显示"终端终端将被重用，是否显示"的提示
+                "clear": true  //执行任务前是否清除终端
+            },
+            //"problemMatcher": [],
+            "group": {           
+                "kind": "test", 
+                "isDefault": true
             }
-        ]
-    }
-    
+        }
+    ]
+}

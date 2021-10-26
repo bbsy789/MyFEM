@@ -12,12 +12,12 @@ namespace base
 {
     typedef double REAL;//
 
-    typedef unsigned int NW;//定义总节点数NW
-    typedef unsigned int NR;//定义受约束的节点总数
+    static unsigned int NW;//定义总节点数NW
+    static unsigned int NR;//定义受约束的节点总数
 
-    typedef unsigned int NU;//定义总单元数NU
-    typedef unsigned int QQ;//定义总荷载数QQ
-    typedef unsigned int KE;//定义单元物理性质数KE
+    static unsigned int NU;//定义总单元数NU
+    static unsigned int QQ;//定义总荷载数QQ
+    static unsigned int KE;//定义单元物理性质数KE
 
     typedef struct element_attribute
     {
@@ -79,7 +79,7 @@ namespace base
         unsigned int index;//单元号
         PPOINT ptri;//指向i端节点的指针
         PPOINT ptrj;//指向j端节点的指针
-        ELEMENT* next;
+        MATRIX* ESM;//指向单元刚度矩阵的指针
     }ELEMENT;
 
     typedef ELEMENT* PELEMENT;

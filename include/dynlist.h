@@ -1,5 +1,5 @@
-#ifndef DYNLIST_H
-#define DYNLIST_H
+#ifndef _DYNLIST_H
+#define _DYNLIST_H
 
 typedef struct LIST * PLIST;
 

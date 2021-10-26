@@ -36,7 +36,6 @@ namespace pre
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
     //输入：梁单元属性结构体
     //输出：不考虑剪切变形的平面梁单元刚度矩阵
-    template <typename T1,typename T2>
     MATRIX* Compute_PBES_NS(_IN ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
 
 
@@ -52,9 +51,15 @@ namespace pre
     //方法：采用SO（3）进行坐标变换
 
     //计算坐标变换矩阵：compute-coordinate-transfer-matrix
-    //输入：梁单元两端节点的指针
+    //输入：梁单元的指针
     //输出：该梁单元的局部坐标转整体坐标的SO（3）矩阵
     MATRIX* Compute_CTM(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT MATRIX_STACKS* S);
+
+    //对单元刚度矩阵进行坐标变换的函数：Transform-element-stiffness-matrix
+    //输入：该单元的坐标转换矩阵，该单元局部坐标系下的单元刚度矩阵
+    //输出：该单元整体坐标系下的单元刚度矩阵
+    MATRIX* Transform_ESM(_IN MATRIX* T , _IN MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
+    
 
     //前处理第三个模块：总体刚度矩阵形成: component-total-stiffness-matrix
     //目的：组装所有的单元刚度矩阵，形成总体刚度矩阵。
@@ -65,8 +70,7 @@ namespace pre
     //等带宽存储，DD=(节点号插值最大+1)*节点自由度号；变带宽存储和一维变带宽存储.目的是减少总刚矩阵在内存中存放的空间。本算例忽略
     //输入：坐标变换后的总体坐标系下的单元刚度矩阵vector数组
     //输出：总体刚度矩阵
-    template <typename T1,typename T2>
-    MATRIX* Component_TSM(_IN vector<MATRIX*> &V,_OUT ERROR_ID* errorID,_OUT stacks<T1,T2>* S);
+    MATRIX* Component_TSM(_IN vector<MATRIX*> &V,_OUT ERROR_ID* errorID,_OUT MATRIX_STACKS* S);
 
     //前处理第四个模块
     //节点载荷计算：compute-point-load

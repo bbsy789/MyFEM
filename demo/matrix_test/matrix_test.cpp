@@ -41,7 +41,7 @@ int main()
 	errorID = matrix_trace(A, &trace);
 
 	errorID = matrix_inverse(A, invA);
-    print_matrix(invA, "invA");
+	print_matrix(invA, "invA");
 
 	m = creat_multiple_matrices(3, 3, 2, &errorID, &S);
 	m[0].p = a;

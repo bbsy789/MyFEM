@@ -76,7 +76,7 @@ namespace pre
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //使用C++函数重载，匹配四种载荷的不同输入输出
-    //输入：某一单元结构体指针，该单元载荷结构体（四元荷载）指针
+    //输入：某一单元结构体指针，该单元载荷结构体（四元载荷）指针
     //输出：该单元节点载荷结构体指针
 
 
@@ -84,26 +84,44 @@ namespace pre
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_FORCE* F,_OUT ERROR_ID* errorID);
-
+    POINT_LOAD* Compute_PL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT POINT_LOAD_STACKS* S);
+    
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力矩结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID);
+    POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID, _OUT POINT_LOAD_STACKS* S);
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元均布载荷结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID);
+    POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT POINT_LOAD_STACKS* S);
+    
+    //得到所有节点受载荷的梁单元指针数组
+    //输入：所有的梁单元指针vector数组的引用
+    //输出：受节点载荷的两单元指针vector数组
 
-    //节点载荷计算：compute-point-load
-    //按照四元载荷等效原理，等效到节点载荷，
-    //输入：某一单元结构体指针，模板类型T
-    //输出：该单元节点载荷结构体指针
-    template <typename T>
-    POINT_LOAD* Compute_PL(_IN ELEMENT *E,T t,_OUT ERROR_ID* errorID);
+    //得到所有非节点受载荷的梁单元指针数组
+    //输入：所有的梁单元指针vector数组的引用
+    //输出：受非节点载荷的梁单元指针vector数组
+
+    //得到与第i节点相交的梁单元指针数组
+    //输入：第i个节点号，梁单元指针数组
+    //输出：与第i个节点相交的所有梁单元指针数组
+
+    //计算与i节点相交的梁单元的等效载荷之和
+    //输入：与第i个节点相交的梁单元指针vector数组的饮用
+    //输出：第i个节点的等效载荷PII
+
+    //得到总体梁单元的等效载荷PII的向量
+    //输入：所有等效载荷PII的指针数组
+    //输出：总体梁单元的等效载荷PII向量
+
+    //得到总体梁单元的等效总载荷
+    //输入：总体梁单元的节点载荷向量PI，总体梁单元的非节点等效载荷向量PII
+    //输出：总体梁单元的等效总载荷向量。
+
     //前处理第五个模块
     //单元杆端内力与支座反力计算。
     //在结构整体刚度方程中引入边界条件。一般有限元求解中引入的是位移边界条件。
@@ -115,7 +133,7 @@ namespace pre
     //置大数法：和直接引入法不同，这是数值分析中的一种近似解法：
     //该方法无需对刚度矩阵的行和列做任何调整或删去，
     //只要将初始刚度矩阵中已知位移项所对应的主元素乘以一个大系数或用更高数量级的某个大数代替，
-    //同时将对应的荷载项作适当的变化，即可直接对方程求解。
+    //同时将对应的载荷项作适当的变化，即可直接对方程求解。
 
     //已知位移边界条件修改位移向量displacement
     //输入：初始化的位移向量引用
@@ -126,16 +144,16 @@ namespace pre
     //总体刚度矩阵引入边界条件
     //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
     //目的：根据约束信息改变相应刚度系数（主元素）和载荷项。
-    //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)
-    //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
+    //输入：总体刚度矩阵指针，载荷项向量，约束节点的结构体（编号，六个自由度的位移)
+    //输出：引入边界条件后的总体刚度矩阵指针，载荷项向量
     template <typename T>
     ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN PPOINT_DISPLACEMENT,_OUT ERROR_ID* errorID);
 
     //总体刚度矩阵引入边界条件
     //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
     //目的：根据约束信息改变相应刚度系数（主元素）和载荷项。
-    //输入：总体刚度矩阵指针，荷载项向量，约束节点的结构体（编号，六个自由度的位移)vector数组
-    //输出：引入边界条件后的总体刚度矩阵指针，荷载项向量
+    //输入：总体刚度矩阵指针，载荷项向量，约束节点的结构体（编号，六个自由度的位移)vector数组
+    //输出：引入边界条件后的总体刚度矩阵指针，载荷项向量
     template <typename T>
     ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN vector<PPOINT_DISPLACEMENT>&,_OUT ERROR_ID* errorID);
 }

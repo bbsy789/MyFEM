@@ -84,21 +84,18 @@ namespace pre
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力结构体指针
     //输出：该单元节点载荷结构体指针
-    template <typename T>
     POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_FORCE* F,_OUT ERROR_ID* errorID);
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力矩结构体指针
     //输出：该单元节点载荷结构体指针
-    template <typename T>
     POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID);
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元均布载荷结构体指针
     //输出：该单元节点载荷结构体指针
-    template <typename T>
     POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID);
 
     //节点载荷计算：compute-point-load

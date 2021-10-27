@@ -1,5 +1,6 @@
 #include <pre.h>
 #include <matrix.h>
+#include <common.h>
 
 namespace pre
 {

@@ -133,4 +133,5 @@ Author: Marc Pony(marc_pony@163.com)
 template<typename T1,typename T2>
 VOID free_stack(_IN stacks<T1,T2>* S);
 
+#include "D:\MyFEM\src\common.cpp"
 #endif

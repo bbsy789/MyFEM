@@ -15,7 +15,7 @@
 * (2)Include File Section
 *******************************************************************************/
 #include "matrix.h"
-
+#include "common.h"
 /*******************************************************************************
 * (3)Macro Define Section
 *******************************************************************************/
@@ -428,7 +428,7 @@ ERROR_ID matrix_inverse(_IN MATRIX* A, _OUT MATRIX* invA)
 		return errorID;
 	}
 
-	init_stack(&S);
+	init_stack<matrix_node,matrix_element_node>(&S);
 
 	n = A->rows;
 	ATemp = creat_matrix(n, n, &errorID, &S);
@@ -444,7 +444,7 @@ ERROR_ID matrix_inverse(_IN MATRIX* A, _OUT MATRIX* invA)
 	errorID = solve_matrix_equation_by_lup_decomposition(ATemp, invA);
 
 EXIT:
-	free_stack(&S);
+	free_stack<matrix_node,matrix_element_node>(&S);
 	return errorID;
 }
 
@@ -654,7 +654,7 @@ ERROR_ID solve_matrix_equation_by_lup_decomposition(_IN MATRIX* A, _IN_OUT MATRI
 		return errorID;
 	}
 
-	init_stack(&S);
+	init_stack<matrix_node,matrix_element_node>(&S);
 
 	n = A->rows;
 	m = B->columns;
@@ -774,6 +774,6 @@ ERROR_ID solve_matrix_equation_by_lup_decomposition(_IN MATRIX* A, _IN_OUT MATRI
 	}
 
 EXIT:
-	free_stack(&S);
+	free_stack<matrix_node,matrix_element_node>(&S);
 	return errorID;
 }

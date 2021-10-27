@@ -1,0 +1,20 @@
+{
+    "C_Cpp.default.cppStandard": "c++14",
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "C_Cpp.errorSquiggles": "Disabled",
+    "editor.mouseWheelZoom": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 100,
+    "editor.tabCompletion": "on",
+    "files.useExperimentalFileWatcher": true,
+    "files.associations": {
+        "iostream": "cpp",
+        "*.tcc": "cpp"
+    },
+    "cmake.debugConfig": {
+        "externalConsole": true
+    },
+    "cmake.configureOnOpen": true,
+    "cmake-tools-helper.cmake_download_path": "/home/undefined/.vscode/extensions/maddouri.cmake-tools-helper-0.2.1/cmake_download",
+    "explorer.confirmDelete": false
+}

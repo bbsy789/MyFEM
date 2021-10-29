@@ -57,7 +57,7 @@ Author: Marc Pony(marc_pony@163.com),wwj(bbsy789@126.com)modify
 template<typename T1,typename T2>
 VOID init_stack(_IN_OUT stacks<T1,T2>* S)
 {
-	if (S == NULL)
+	if (S == nullptr)
 	{
 		return;
 	}
@@ -78,34 +78,34 @@ Author: Marc Pony(marc_pony@163.com),wwj(bbsy789@126.com)modify
 template<typename T1,typename T2>
 VOID free_stack(_IN stacks<T1,T2>* S)
 {
-	T1* Node = NULL;
-	T2* ElementNode = NULL;
+	T1* Node = nullptr;
+	T2* ElementNode = nullptr;
 
-	if (S == NULL)
+	if (S == nullptr)
 	{
 		return;
 	}
 
-	while (S->Node != NULL)
+	while (S->Node != nullptr)
 	{
 		Node = S->Node;
 		S->Node = Node->next;
 
 		free(Node->ptr);
-		Node->ptr = NULL;
+		Node->ptr = nullptr;
 		free(Node);
-		Node = NULL;
+		Node = nullptr;
 	}
 
-	while (S->ElementNode != NULL)
+	while (S->ElementNode != nullptr)
 	{
 		ElementNode = S->ElementNode;
 		S->ElementNode = ElementNode->next;
 
 		free(ElementNode->ptr);
-		ElementNode->ptr = NULL;
+		ElementNode->ptr = nullptr;
 		free(ElementNode);
-		ElementNode = NULL;
+		ElementNode = nullptr;
 	}
 
 	// ...

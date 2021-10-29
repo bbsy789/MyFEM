@@ -274,7 +274,7 @@ const char * bin(unsigned int value, int width)
 	static char binstr[33];
 	int pos;
 	
-	if(width < 0 || width > 32) return NULL;
+	if(width < 0 || width > 32) return nullptr;
 	
 	binstr[width] = 0;
 	for(pos = width - 1; pos >= 0; pos--)

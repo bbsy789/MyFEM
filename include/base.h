@@ -75,11 +75,10 @@ namespace base
         //unsigned char KEYOPT;//关键选项
         unsigned char NODE_NUMBER;//节点数
         ELEMENT_ATTRIBUTE* attribute;//单元材料属性结构体指针
-        char* ELEMENT_NAME;//单元名
+        //char* ELEMENT_NAME;//单元名
         unsigned int index;//单元号
         PPOINT ptri;//指向i端节点的指针
         PPOINT ptrj;//指向j端节点的指针
-        MATRIX* ESM;//指向单元刚度矩阵的指针
     }ELEMENT;
 
     typedef ELEMENT* PELEMENT;
@@ -136,5 +135,6 @@ namespace base
     using POINT_STACKS = stacks<POINT,POINT_NODE>;
     using ELEMENT_ATTRIBUTE_STACKS = stacks<ELEMENT_ATTRIBUTE,ELEMENT_ATTRIBUTE_NODE>;
     using ELEMENT_STACKS = stacks<ELEMENT,ELEMENT_NODE>;
+    using POINT_LOAD_STACKS = stacks<POINT_LOAD,POINT_LOAD_NODE>;
 }
  #endif

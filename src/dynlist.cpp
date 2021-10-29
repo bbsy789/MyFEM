@@ -20,8 +20,8 @@ PLIST LICreate()
 {
     PLIST p = new LIST;
     p->count = 0;
-    p->head = NULL;
-    p->tail = NULL;
+    p->head = nullptr;
+    p->tail = nullptr;
     return p;
 }
 
@@ -41,7 +41,7 @@ void LIAppend(PLIST list, ADT object)
         exit(1);
     }
     t->data = object;
-    t->next = NULL;
+    t->next = nullptr;
     if (!list->head) {//链表为空时，追加节点作为链表唯一节点
         list->head = t;
         list->tail = t;
@@ -62,7 +62,7 @@ void LIInsert(PLIST list, ADT object, int pos)
     if (pos < list->count) {
         PNODE t = new NODE;
         t->data = object;
-        t->next = NULL;
+        t->next = nullptr;
         if (pos == 0) {//如果在表头插入，就刷新头部指针
             t->next = list->head;
             list->head = t;
@@ -92,7 +92,7 @@ void LIDelete(PLIST list, int pos, DESTROY_OBJECT destroy)
         PNODE t = list->head;
         list->head = t->next;
         if (!t->next)
-            list->tail = NULL;
+            list->tail = nullptr;
         if (destroy)
             (*destroy)(t->data);
         delete t;
@@ -127,7 +127,7 @@ void LIClear(PLIST list, DESTROY_OBJECT destroy)
         delete t;
         list->count--;
     }
-    list->tail = NULL;
+    list->tail = nullptr;
 }
 
 void LITraverse(PLIST list, MANIPULATE_OBJECT manipulate, ADT tag)

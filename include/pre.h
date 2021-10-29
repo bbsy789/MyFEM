@@ -29,11 +29,6 @@ namespace pre
 
     //前处理第一个模块：单元刚度矩阵形成
 
-    //梁单元属性的输入:
-    //输入：平面梁单元属性（包括E，A，I，l）
-    //输出：平面梁单元属性矩阵指针，错误代码，堆栈指针。
-    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT ELEMENT_ATTRIBUTE_STACKS* S);
-
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
     //输入：梁单元属性结构体
     //输出：不考虑剪切变形的平面梁单元刚度矩阵

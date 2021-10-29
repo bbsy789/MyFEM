@@ -5,50 +5,10 @@
 
 namespace pre
 {
-    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT ELEMENT_ATTRIBUTE_STACKS* S)
-    {
-        ELEMENT_ATTRIBUTE* element_attribute = nullptr;//定义一个结构体指针，初始化为nullptr
-        ELEMENT_ATTRIBUTE_NODE* element_attribute_node = nullptr;
-
-        if(errorID == nullptr)
-        {
-            return nullptr;//errorID野指针
-        }
-        
-        *errorID = _ERROR_NO_ERROR;
-        
-        if(A <= 0)
-        {
-            *errorID = _ERROR_INPUT_PARAMETERS_ERROR;
-            return nullptr;//输入参数错误
-        }
-
-        element_attribute = (ELEMENT_ATTRIBUTE*)malloc(sizeof(ELEMENT_ATTRIBUTE));//分配内存空间，注意释放
-        element_attribute_node = (ELEMENT_ATTRIBUTE_NODE*)malloc(sizeof(ELEMENT_ATTRIBUTE_NODE));
-
-        if(element_attribute == nullptr || element_attribute_node == nullptr)
-        {
-            free(element_attribute);
-            element_attribute == nullptr;
-            free(element_attribute_node);
-            element_attribute_node = nullptr;
-
-            *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
-            return nullptr;
-        }    
-        //赋值
-        element_attribute->A = A;
-        element_attribute->E = E;
-        element_attribute->I = I;
-        element_attribute->L = L;
-        
-        element_attribute_node->data = element_attribute;
-        element_attribute_node->next = S->ElementNode;
-        S->ElementNode = element_attribute_node;
-
-        return element_attribute;
-    }
-
+    
+    //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
+    //输入：梁单元属性结构体
+    //输出：不考虑剪切变形的平面梁单元刚度矩阵
     MATRIX* Compute_PBES_NS(_IN ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
     {
         if(element_attribute == nullptr)
@@ -92,6 +52,10 @@ namespace pre
         *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;//分配堆内存错误，此时主程序应该调用free_stacks函数释放堆内存防止内存泄露，野指针乱指
         return nullptr;
     }
+
+    //计算坐标变换矩阵：compute-coordinate-transfer-matrix
+    //输入：梁单元的指针
+    //输出：该梁单元的局部坐标转整体坐标的SO（3）矩阵
     MATRIX* Compute_CTM(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT MATRIX_STACKS* S)
     {
         //1.判断野指针
@@ -117,7 +81,7 @@ namespace pre
         const REAL a22 = a11;
 
         
-        //3.得到旋转矩阵                1            2            3            4            5             6
+        //3.得到旋转矩阵               1            2            3            4            5             6
         REAL store_element[6*6] = {   a11         ,a12         ,0           ,0           ,0            ,0           //1
                                      ,a21         ,a22         ,0           ,0           ,0            ,0           //2
                                      ,0           ,0           ,1           ,0           ,0            ,0           //3
@@ -141,6 +105,9 @@ namespace pre
         return nullptr;
         }   
     
+    //对单元刚度矩阵进行坐标变换的函数：Transform-element-stiffness-matrix
+    //输入：该单元的坐标转换矩阵，该单元局部坐标系下的单元刚度矩阵
+    //输出：该单元整体坐标系下的单元刚度矩阵
     MATRIX* Transform_ESM(_IN MATRIX* T , _IN MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
     {
         //1.创建两个零矩阵存放转换后的矩阵，注意这里分配了内存
@@ -172,6 +139,15 @@ namespace pre
         return Transformed_Matrix;
     }
     
+    //前处理第三个模块：总体刚度矩阵形成: component-total-stiffness-matrix
+    //目的：组装所有的单元刚度矩阵，形成总体刚度矩阵。
+    //方法：采用编码法（自由度编号法）。
+    //规则：a = b*(k - 1) + c
+    //其中：b = 6;k-节点号；c-节点自由度号,[1-6]。
+    //由梁单元两个节点的单刚K12*12^e 组装成总刚 K6NW*6NW
+    //等带宽存储，DD=(节点号插值最大+1)*节点自由度号；变带宽存储和一维变带宽存储.目的是减少总刚矩阵在内存中存放的空间。本算例忽略
+    //输入：坐标变换后的总体坐标系下的单元刚度矩阵vector数组
+    //输出：总体刚度矩阵
     MATRIX* Component_TSM(_IN vector<ELEMENT*> E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
     {
             //1.创建零矩阵矩阵，行列数位节点数的3倍。
@@ -181,10 +157,6 @@ namespace pre
 
             MATRIX* matrix_ptr = nullptr;//定义指向单元刚度矩阵的指针
             REAL* matrix_element_ptr = nullptr;//定义指向单元刚度矩阵元素的指针
-
-            unsigned int i_index = 0;//定义每一次取到的单元的i节点号
-            unsigned int j_index = 0;//定义每一次取到的单元的j节点号
-
 
             //2.创建总体刚度矩阵，零矩阵，检查TSM指针
             
@@ -213,10 +185,10 @@ namespace pre
             //Kj_indexj_index:12 * j_index * NW - 12 * NW + 4 * j_index - 4           
             //Vscode部分替换方法：1.选中区域，2.cmd+opt+L
             //第n个单元的左上角矩阵
-            for(n = 1;n <= NW;i++)
+            for(int n = 1 ; n <= NW ; i++)
             {
                 //1.创建单元刚度矩阵                
-                matrix_ptr = Compute_PBES_NS(E[n-1]->attribute,errorID,S);
+                matrix_ptr = Compute_PBES_NS(E[n-1]->attribute,errorID,S);//入栈
                 if( matrix_ptr == nullptr || matrix_ptr->p == nullptr)
                 {
                     *errorID = _ERROR_CREATE_MATRIX_FAILED;
@@ -226,9 +198,9 @@ namespace pre
                 TSM_element_ptr = TSM->p;//得到总体刚度矩阵的元素指针
                 
                 //2.取Kii分块矩阵，也就是单元刚度矩阵的左上角矩阵。
-                for(int i = 1，i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
+                for(int i = 1，unsigned int i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
                 {
-                    for(int j = 1, j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
+                    for(int j = 1, unsigned int j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
                     {
                         *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * i_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
@@ -236,9 +208,9 @@ namespace pre
                 }
                 
                 //3.取Kij分块矩阵，也就是单元刚度矩阵的右上角矩阵。
-                for(int i = 1，i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
+                for(int i = 1，unsigned int i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
                 {
-                    for(int j = 1, j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
+                    for(int j = 1, unsigned int j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
                     {
                         *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * i_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
@@ -246,9 +218,9 @@ namespace pre
                 }
 
                 //4.取Kji分块矩阵，也就是单元刚度矩阵的左下角矩阵。
-                for(int i = 1，i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
+                for(int i = 1，unsigned int i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
                 {
-                    for(int j = 1, j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)    
+                    for(int j = 1, unsigned int j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)    
                     {
                         *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * j_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
@@ -256,14 +228,16 @@ namespace pre
                 }
 
                 //5.取Kjj分块矩阵，也就是单元刚度矩阵的右下角矩阵。
-                for(int i = 1，i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
+                for(int i = 1，unsigned int i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
                 {
-                    for(int j = 1, j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
+                    for(int j = 1, unsigned int j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
                     {
                         *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * j_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
                     } 
                 }
+                //这里需要调整栈指针（出栈）！！！！！！！！！10.28还未实现
+                //出栈后释放内存
                 free(matrix_element_ptr);
                 matrix_element_ptr = nullptr;
                 free(matrix_ptr);//赋值完毕立刻释放
@@ -271,7 +245,12 @@ namespace pre
             }
             *errorID = _ERROR_NO_ERROR;
             return TSM;
-        }
+    }
+    
+    //节点载荷计算：compute-point-load
+    //按照四元载荷等效原理，等效到节点载荷，
+    //输入：某一单元结构体指针，该单元集中力结构体指针
+    //输出：该单元节点载荷结构体指针
     POINT_LOAD* Compute_PL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT POINT_LOAD_STACKS* S)
     {
         double L = E->attribute->L;//取单元长度
@@ -311,6 +290,11 @@ namespace pre
 
         return point_load;
     }
+
+    //节点载荷计算：compute-point-load
+    //按照四元载荷等效原理，等效到节点载荷，
+    //输入：某一单元结构体指针，该单元集中力矩结构体指针
+    //输出：该单元节点载荷结构体指针
     POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID, _OUT POINT_LOAD_STACKS* S);
     {
         double L = E->attribute->L;//取单元长度
@@ -351,6 +335,10 @@ namespace pre
         return point_load;
     }
 
+    //节点载荷计算：compute-point-load
+    //按照四元载荷等效原理，等效到节点载荷，
+    //输入：某一单元结构体指针，该单元均布载荷结构体指针
+    //输出：该单元节点载荷结构体指针
     POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID , _OUT POINT_LOAD_STACKS* S)
      {
         double L = E->attribute->L;//取单元长度
@@ -392,7 +380,7 @@ namespace pre
 
         return point_load;
      }
-    MATRIX
+
 } // namespace pre
 
 

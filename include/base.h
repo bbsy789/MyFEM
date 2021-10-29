@@ -79,7 +79,6 @@ namespace base
         unsigned int index;//单元号
         PPOINT ptri;//指向i端节点的指针
         PPOINT ptrj;//指向j端节点的指针
-        MATRIX* ESM;//指向单元刚度矩阵的指针
     }ELEMENT;
 
     typedef ELEMENT* PELEMENT;
@@ -136,5 +135,6 @@ namespace base
     using POINT_STACKS = stacks<POINT,POINT_NODE>;
     using ELEMENT_ATTRIBUTE_STACKS = stacks<ELEMENT_ATTRIBUTE,ELEMENT_ATTRIBUTE_NODE>;
     using ELEMENT_STACKS = stacks<ELEMENT,ELEMENT_NODE>;
+    using POINT_LOAD_STACKS = stacks<POINT_LOAD,POINT_LOAD_NODE>;
 }
  #endif

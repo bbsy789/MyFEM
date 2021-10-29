@@ -31,7 +31,7 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "${workspaceFolder}",
+                "${workspaceFolder}/include",
                 "/usr/include/linux",
                 "/usr/include/c++/10"
             ],

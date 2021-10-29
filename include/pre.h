@@ -70,16 +70,15 @@ namespace pre
     //等带宽存储，DD=(节点号插值最大+1)*节点自由度号；变带宽存储和一维变带宽存储.目的是减少总刚矩阵在内存中存放的空间。本算例忽略
     //输入：坐标变换后的总体坐标系下的单元刚度矩阵vector数组
     //输出：总体刚度矩阵
-    MATRIX* Component_TSM(_IN vector<ELEMENT*> E);
+    MATRIX* Component_TSM(_IN vector<ELEMENT*> E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
 
     //前处理第四个模块
     //节点载荷计算：compute-point-load
-    //按照四元载荷等效原理，等效到节点载荷，
+    //按照四元载荷等效原理，等效到单元节点载荷，
     //使用C++函数重载，匹配四种载荷的不同输入输出
     //输入：某一单元结构体指针，该单元载荷结构体（四元载荷）指针
     //输出：该单元节点载荷结构体指针
-
-
+    
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力结构体指针

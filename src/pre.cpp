@@ -182,8 +182,8 @@ namespace pre
             MATRIX* matrix_ptr = NULL;//定义指向单元刚度矩阵的指针
             REAL* matrix_element_ptr = NULL;//定义指向单元刚度矩阵元素的指针
 
-            unsigned int i_index = 0;
-            unsigned int j_index = 0;
+            unsigned int i_index = 0;//定义每一次取到的单元的i节点号
+            unsigned int j_index = 0;//定义每一次取到的单元的j节点号
 
 
             //2.创建总体刚度矩阵，零矩阵，检查TSM指针
@@ -215,23 +215,20 @@ namespace pre
             //第n个单元的左上角矩阵
             for(n = 1;n <= NW;i++)
             {
-                //1.取节点号
-                i_index = E[n-1]->ptri->index;
-                j_index = E[n-1]->ptrj->index;
-                
-                matrix_ptr = Compute_PBES_NS(E[n-1]->attribute,errorID,S);//创建单元刚度矩阵
+                //1.创建单元刚度矩阵                
+                matrix_ptr = Compute_PBES_NS(E[n-1]->attribute,errorID,S);
                 if( matrix_ptr == NULL || matrix_ptr->p == NULL)
                 {
                     *errorID = _ERROR_CREATE_MATRIX_FAILED;
                     return NULL;
                 }
                 matrix_element_ptr = matrix_ptr->p;//得到单元刚度矩阵的元素指针
-                TSM_element_ptr = TSM->p;
+                TSM_element_ptr = TSM->p;//得到总体刚度矩阵的元素指针
                 
                 //2.取Kii分块矩阵，也就是单元刚度矩阵的左上角矩阵。
-                for(int i = 1 ;i <= 3 ; i++)
+                for(int i = 1，i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
                 {
-                    for(int j = 1;j <= 3 ; j++)
+                    for(int j = 1, j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
                     {
                         *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * i_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
@@ -239,9 +236,9 @@ namespace pre
                 }
                 
                 //3.取Kij分块矩阵，也就是单元刚度矩阵的右上角矩阵。
-                for(int i = 1 ;i <= 3 ; i++)
+                for(int i = 1，i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
                 {
-                    for(int j = 1;j <= 3 ; j++)
+                    for(int j = 1, j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
                     {
                         *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * i_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
@@ -249,9 +246,9 @@ namespace pre
                 }
 
                 //4.取Kji分块矩阵，也就是单元刚度矩阵的左下角矩阵。
-                for(int i = 1 ;i <= 3 ; i++)
+                for(int i = 1，i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
                 {
-                    for(int j = 1;j <= 3 ; j++)
+                    for(int j = 1, j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)    
                     {
                         *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * j_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
@@ -259,9 +256,9 @@ namespace pre
                 }
 
                 //5.取Kjj分块矩阵，也就是单元刚度矩阵的右下角矩阵。
-                for(int i = 1 ;i <= 3 ; i++)
+                for(int i = 1，i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
                 {
-                    for(int j = 1;j <= 3 ; j++)
+                    for(int j = 1, j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
                     {
                         *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * j_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
@@ -395,7 +392,7 @@ namespace pre
 
         return point_load;
      }
-
+    MATRIX
 } // namespace pre
 
 

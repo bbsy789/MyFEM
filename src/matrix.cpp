@@ -74,54 +74,54 @@ Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
 MATRIX* creat_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
 {
-	MATRIX* matrix = NULL;
-	MATRIX_NODE* matrixNode = NULL;
-	MATRIX_ELEMENT_NODE* matrixElementNode = NULL;
+	MATRIX* matrix = nullptr;
+	MATRIX_NODE* matrixNode = nullptr;
+	MATRIX_ELEMENT_NODE* matrixElementNode = nullptr;
 
-	if (errorID == NULL)
+	if (errorID == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	*errorID = _ERROR_NO_ERROR;
-	if (rows <= 0 || columns <= 0 || S == NULL)
+	if (rows <= 0 || columns <= 0 || S == nullptr)
 	{
 		*errorID = _ERROR_INPUT_PARAMETERS_ERROR;
-		return NULL;
+		return nullptr;
 	}
 
 	matrix = (MATRIX*)malloc(sizeof(MATRIX));
 	matrixNode = (MATRIX_NODE*)malloc(sizeof(MATRIX_NODE));
 	matrixElementNode = (MATRIX_ELEMENT_NODE*)malloc(sizeof(MATRIX_ELEMENT_NODE));
-	if (matrix == NULL || matrixNode == NULL || matrixElementNode == NULL)
+	if (matrix == nullptr || matrixNode == nullptr || matrixElementNode == nullptr)
 	{
 		free(matrix);
-		matrix = NULL;
+		matrix = nullptr;
 		free(matrixNode);
-		matrixNode = NULL;
+		matrixNode = nullptr;
 		free(matrixElementNode);
-		matrixElementNode = NULL;
+		matrixElementNode = nullptr;
 
 		*errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
-		return NULL;
+		return nullptr;
 	}
 
 	matrix->rows = rows;
 	matrix->columns = columns;
 	matrix->p = (REAL*)malloc(rows * columns * sizeof(REAL));  //确保matrix非空才能执行指针操作
-	if (matrix->p == NULL)
+	if (matrix->p == nullptr)
 	{
 		free(matrix->p);
-		matrix->p = NULL;
+		matrix->p = nullptr;
 		free(matrix);
-		matrix = NULL;
+		matrix = nullptr;
 		free(matrixNode);
-		matrixNode = NULL;
+		matrixNode = nullptr;
 		free(matrixElementNode);
-		matrixElementNode = NULL;
+		matrixElementNode = nullptr;
 
 		*errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
-		return NULL;
+		return nullptr;
 	}
 
 	matrixNode->ptr = matrix;
@@ -148,46 +148,46 @@ Author: Marc Pony(marc_pony@163.com)
 MATRIX* creat_multiple_matrices(_IN INTEGER rows, _IN INTEGER columns, _IN INTEGER count, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
 {
 	INDEX i;
-	MATRIX* matrix = NULL, *p = NULL;
-	MATRIX_NODE* matrixNode = NULL;
+	MATRIX* matrix = nullptr, *p = nullptr;
+	MATRIX_NODE* matrixNode = nullptr;
 
-	if (errorID == NULL)
+	if (errorID == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	*errorID = _ERROR_NO_ERROR;
-	if (rows <= 0 || columns <= 0 || count <= 0 || S == NULL)
+	if (rows <= 0 || columns <= 0 || count <= 0 || S == nullptr)
 	{
 		*errorID = _ERROR_INPUT_PARAMETERS_ERROR;
-		return NULL;
+		return nullptr;
 	}
 
 	matrix = (MATRIX*)malloc(count * sizeof(MATRIX));
 	matrixNode = (MATRIX_NODE*)malloc(sizeof(MATRIX_NODE));
-	if (matrix == NULL || matrixNode == NULL)
+	if (matrix == nullptr || matrixNode == nullptr)
 	{
 		free(matrix);
-		matrix = NULL;
+		matrix = nullptr;
 		free(matrixNode);
-		matrixNode = NULL;
+		matrixNode = nullptr;
 
 		*errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
-		return NULL;
+		return nullptr;
 	}
 
 	for (i = 0; i < count; i++)
 	{
 		p = creat_matrix(rows, columns, errorID, S);
-		if (p == NULL)
+		if (p == nullptr)
 		{
 			free(matrix);
-			matrix = NULL;
+			matrix = nullptr;
 			free(matrixNode);
-			matrixNode = NULL;
+			matrixNode = nullptr;
 
 			*errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
-			return NULL;
+			return nullptr;
 		}
 
 		matrix[i] = *p;
@@ -211,18 +211,18 @@ Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
 MATRIX* creat_zero_matrix(_IN INTEGER rows, _IN INTEGER columns, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
 {
-	MATRIX* matrix = NULL;
+	MATRIX* matrix = nullptr;
 
-	if (errorID == NULL)
+	if (errorID == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	*errorID = _ERROR_NO_ERROR;
-	if (rows <= 0 || columns <= 0 || S == NULL)
+	if (rows <= 0 || columns <= 0 || S == nullptr)
 	{
 		*errorID = _ERROR_INPUT_PARAMETERS_ERROR;
-		return NULL;
+		return nullptr;
 	}
 
 	matrix = creat_matrix(rows, columns, errorID, S);
@@ -247,18 +247,18 @@ Author: Marc Pony(marc_pony@163.com)
 MATRIX* creat_eye_matrix(_IN INTEGER n, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
 {
 	INDEX i;
-	MATRIX* matrix = NULL;
+	MATRIX* matrix = nullptr;
 
-	if (errorID == NULL)
+	if (errorID == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	*errorID = _ERROR_NO_ERROR;
-	if (n <= 0 || S == NULL)
+	if (n <= 0 || S == nullptr)
 	{
 		*errorID = _ERROR_INPUT_PARAMETERS_ERROR;
-		return NULL;
+		return nullptr;
 	}
 
 	matrix = creat_matrix(n, n, errorID, S);
@@ -290,7 +290,7 @@ ERROR_ID matrix_add(_IN MATRIX* A, _IN MATRIX* B, _OUT MATRIX* C)
 	INTEGER rows, columns;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 
-	if (A == NULL || B == NULL || C == NULL)
+	if (A == nullptr || B == nullptr || C == nullptr)
 	{
 		errorID = _ERROR_INPUT_PARAMETERS_ERROR;
 		return errorID;
@@ -331,7 +331,7 @@ ERROR_ID matrix_subtraction(_IN MATRIX* A, _IN MATRIX* B, _OUT MATRIX* C)
 	INTEGER rows, columns;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 
-	if (A == NULL || B == NULL || C == NULL)
+	if (A == nullptr || B == nullptr || C == nullptr)
 	{
 		errorID = _ERROR_INPUT_PARAMETERS_ERROR;
 		return errorID;
@@ -372,7 +372,7 @@ ERROR_ID matrix_multiplication(_IN MATRIX* A, _IN MATRIX* B, _OUT MATRIX* C)
 	REAL sum;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 
-	if (A == NULL || B == NULL || C == NULL)
+	if (A == nullptr || B == nullptr || C == nullptr)
 	{
 		errorID = _ERROR_INPUT_PARAMETERS_ERROR;
 		return errorID;
@@ -412,11 +412,11 @@ ERROR_ID matrix_inverse(_IN MATRIX* A, _OUT MATRIX* invA)
 {
 	INDEX i;
 	INTEGER n;
-	MATRIX* ATemp = NULL;
+	MATRIX* ATemp = nullptr;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 	MATRIX_STACKS S;
 
-	if (A == NULL || invA == NULL)
+	if (A == nullptr || invA == nullptr)
 	{
 		errorID = _ERROR_INPUT_PARAMETERS_ERROR;
 		return errorID;
@@ -463,7 +463,7 @@ ERROR_ID matrix_transpose(_IN MATRIX* A, _OUT MATRIX* transposeA)
 	INDEX i, j;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 
-	if (A == NULL || transposeA == NULL)
+	if (A == nullptr || transposeA == nullptr)
 	{
 		errorID = _ERROR_INPUT_PARAMETERS_ERROR;
 		return errorID;
@@ -500,7 +500,7 @@ ERROR_ID matrix_trace(_IN MATRIX* A, _OUT REAL *trace)
 	INDEX i;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 
-	if (A == NULL || trace == NULL)
+	if (A == nullptr || trace == nullptr)
 	{
 		errorID = _ERROR_INPUT_PARAMETERS_ERROR;
 		return errorID;
@@ -538,7 +538,7 @@ ERROR_ID lup_decomposition(_IN MATRIX* A, _OUT MATRIX* L, _OUT MATRIX* U, _OUT M
 	REAL maxValue, temp;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 
-	if (A == NULL || L == NULL || U == NULL || P == NULL)
+	if (A == nullptr || L == nullptr || U == nullptr || P == nullptr)
 	{
 		errorID = _ERROR_INPUT_PARAMETERS_ERROR;
 		return errorID;
@@ -638,11 +638,11 @@ ERROR_ID solve_matrix_equation_by_lup_decomposition(_IN MATRIX* A, _IN_OUT MATRI
 	INDEX i, j, k, index, s, t;
 	INTEGER n, m;
 	REAL sum, maxValue, temp;
-	MATRIX* L = NULL, * U = NULL, * y = NULL;
+	MATRIX* L = nullptr, * U = nullptr, * y = nullptr;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 	MATRIX_STACKS S;
 
-	if (A == NULL || B == NULL)
+	if (A == nullptr || B == nullptr)
 	{
 		errorID = _ERROR_INPUT_PARAMETERS_ERROR;
 		return errorID;

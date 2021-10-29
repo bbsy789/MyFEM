@@ -7,12 +7,12 @@ namespace pre
 {
     ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT ELEMENT_ATTRIBUTE_STACKS* S)
     {
-        ELEMENT_ATTRIBUTE* element_attribute = NULL;//定义一个结构体指针，初始化为NULL
-        ELEMENT_ATTRIBUTE_NODE* element_attribute_node = NULL;
+        ELEMENT_ATTRIBUTE* element_attribute = nullptr;//定义一个结构体指针，初始化为nullptr
+        ELEMENT_ATTRIBUTE_NODE* element_attribute_node = nullptr;
 
-        if(errorID == NULL)
+        if(errorID == nullptr)
         {
-            return NULL;//errorID野指针
+            return nullptr;//errorID野指针
         }
         
         *errorID = _ERROR_NO_ERROR;
@@ -20,21 +20,21 @@ namespace pre
         if(A <= 0)
         {
             *errorID = _ERROR_INPUT_PARAMETERS_ERROR;
-            return NULL;//输入参数错误
+            return nullptr;//输入参数错误
         }
 
         element_attribute = (ELEMENT_ATTRIBUTE*)malloc(sizeof(ELEMENT_ATTRIBUTE));//分配内存空间，注意释放
         element_attribute_node = (ELEMENT_ATTRIBUTE_NODE*)malloc(sizeof(ELEMENT_ATTRIBUTE_NODE));
 
-        if(element_attribute == NULL || element_attribute_node == NULL)
+        if(element_attribute == nullptr || element_attribute_node == nullptr)
         {
             free(element_attribute);
-            element_attribute == NULL;
+            element_attribute == nullptr;
             free(element_attribute_node);
-            element_attribute_node = NULL;
+            element_attribute_node = nullptr;
 
             *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
-            return NULL;
+            return nullptr;
         }    
         //赋值
         element_attribute->A = A;
@@ -51,10 +51,10 @@ namespace pre
 
     MATRIX* Compute_PBES_NS(_IN ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
     {
-        if(element_attribute == NULL)
+        if(element_attribute == nullptr)
         {
             *errorID = _ERROR_PTR_ERROR;
-            return NULL;
+            return nullptr;
         }
         // 1.直接计算EA/l，EI/I^3,EI/l^2,EI/l
         const REAL E = element_attribute->E;
@@ -77,11 +77,11 @@ namespace pre
         //3.定义传入create_matrix的参数
         const INTEGER rows = 6;
         const INTEGER columns = 6;
-        MATRIX* m = NULL;
+        MATRIX* m = nullptr;
 
         m = creat_matrix(rows,columns,errorID,S);//创建一个6X6的矩阵，返回矩阵指针，此处矩阵链表已压入栈S中
 
-        if(m == NULL) goto EXIT;//错误处理 
+        if(m == nullptr) goto EXIT;//错误处理 
 
         m->p = store_element;
         print_matrix(m, "m");
@@ -90,20 +90,20 @@ namespace pre
         
         EXIT:
         *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;//分配堆内存错误，此时主程序应该调用free_stacks函数释放堆内存防止内存泄露，野指针乱指
-        return NULL;
+        return nullptr;
     }
     MATRIX* Compute_CTM(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT MATRIX_STACKS* S)
     {
         //1.判断野指针
-        if(e == NULL)
+        if(e == nullptr)
         {
             *errorID = _ERROR_PTR_ERROR;
-            return NULL;
+            return nullptr;
         }
-        if(e->ptri == NULL || e->ptrj == NULL || e->attribute == NULL)
+        if(e->ptri == nullptr || e->ptrj == nullptr || e->attribute == nullptr)
         {
             *errorID = _ERROR_PTR_ERROR;
-            return NULL;
+            return nullptr;
         }
         //2.计算
         const REAL xi = e->ptri->X;
@@ -127,9 +127,9 @@ namespace pre
 
         const INTEGER rows = 6;
         const INTEGER columns = 6;
-        MATRIX* Rotation_Matrix = NULL;
+        MATRIX* Rotation_Matrix = nullptr;
         Rotation_Matrix = creat_matrix(rows,columns,errorID,S);//创建一个6X6的矩阵，返回矩阵指针，矩阵节点的指针被压入栈S中
-        if(Rotation_Matrix == NULL) goto EXIT;//错误处理 
+        if(Rotation_Matrix == nullptr) goto EXIT;//错误处理 
 
         Rotation_Matrix->p = store_element;
         print_matrix(Rotation_Matrix, "Rotation_Matrix");
@@ -138,35 +138,35 @@ namespace pre
         
         EXIT:
         *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;//分配堆内存错误，此时主程序应该调用free_stacks函数释放堆内存防止内存泄露，野指针乱指
-        return NULL;
+        return nullptr;
         }   
     
     MATRIX* Transform_ESM(_IN MATRIX* T , _IN MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
     {
         //1.创建两个零矩阵存放转换后的矩阵，注意这里分配了内存
-        MATRIX* Process_Matrix = NULL;
-        MATRIX* Transformed_Matrix = NULL;
+        MATRIX* Process_Matrix = nullptr;
+        MATRIX* Transformed_Matrix = nullptr;
         const INTEGER rows = 6;
         const INTEGER columns = 6;
 
         Process_Matrix = creat_zero_matrix(rows,columns,errorID,S);//已入栈
         Transformed_Matrix = creat_zero_matrix(rows,columns,errorID,S);//已入栈
 
-        if(Transformed_Matrix == NULL || Process_Matrix)
+        if(Transformed_Matrix == nullptr || Process_Matrix)
         {
             *errorID = _ERROR_CREATE_MATRIX_FAILED;//创建矩阵失败
-            return NULL;
+            return nullptr;
         }
         //2.执行两步矩阵乘法，分别用变换矩阵左乘和右乘单元刚度矩阵
         *errorID = matrix_multiplication(T,ESM,Process_Matrix);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR || *errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
-            return NULL;
+            return nullptr;
         }
         *errorID = matrix_multiplication(Process_Matrix,T,Transformed_Matrix);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR || *errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
-            return NULL;
+            return nullptr;
         }
         //返回变换后的矩阵
         return Transformed_Matrix;
@@ -175,12 +175,12 @@ namespace pre
     MATRIX* Component_TSM(_IN vector<ELEMENT*> E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
     {
             //1.创建零矩阵矩阵，行列数位节点数的3倍。
-            MATRIX* TSM = NULL;//定义总体刚度矩阵的结构体指针
+            MATRIX* TSM = nullptr;//定义总体刚度矩阵的结构体指针
             INTEGER rows = 3 * NW;//定义总体刚度矩阵的行数
             INTEGER columns = 3 * NW;//定义总体刚度矩阵的列数
 
-            MATRIX* matrix_ptr = NULL;//定义指向单元刚度矩阵的指针
-            REAL* matrix_element_ptr = NULL;//定义指向单元刚度矩阵元素的指针
+            MATRIX* matrix_ptr = nullptr;//定义指向单元刚度矩阵的指针
+            REAL* matrix_element_ptr = nullptr;//定义指向单元刚度矩阵元素的指针
 
             unsigned int i_index = 0;//定义每一次取到的单元的i节点号
             unsigned int j_index = 0;//定义每一次取到的单元的j节点号
@@ -189,10 +189,10 @@ namespace pre
             //2.创建总体刚度矩阵，零矩阵，检查TSM指针
             
             TSM = creat_zero_matrix(rows,columns,errorID,S);//已入栈
-            if(TSM == NULL || TSM->p == NULL)
+            if(TSM == nullptr || TSM->p == nullptr)
             {
                 *errorID = _ERROR_CREATE_MATRIX_FAILED;
-                return NULL;
+                return nullptr;
             }
             //3.创建单元刚度矩阵并转换为整体坐标系下的单元刚度矩阵再成整体坐标系下的总刚度矩阵。
             //假设元素为i行j列，
@@ -217,10 +217,10 @@ namespace pre
             {
                 //1.创建单元刚度矩阵                
                 matrix_ptr = Compute_PBES_NS(E[n-1]->attribute,errorID,S);
-                if( matrix_ptr == NULL || matrix_ptr->p == NULL)
+                if( matrix_ptr == nullptr || matrix_ptr->p == nullptr)
                 {
                     *errorID = _ERROR_CREATE_MATRIX_FAILED;
-                    return NULL;
+                    return nullptr;
                 }
                 matrix_element_ptr = matrix_ptr->p;//得到单元刚度矩阵的元素指针
                 TSM_element_ptr = TSM->p;//得到总体刚度矩阵的元素指针
@@ -265,9 +265,9 @@ namespace pre
                     } 
                 }
                 free(matrix_element_ptr);
-                matrix_element_ptr = NULL;
+                matrix_element_ptr = nullptr;
                 free(matrix_ptr);//赋值完毕立刻释放
-                matrix_ptr = NULL;//每次循环结束变为NULL
+                matrix_ptr = nullptr;//每次循环结束变为nullptr
             }
             *errorID = _ERROR_NO_ERROR;
             return TSM;
@@ -286,16 +286,16 @@ namespace pre
         double qejy = -P*a*a*(L+2*b)/pow(L,3);
         double qej  = -P*a*a*b/pow(L,2);
         
-        POINT_LOAD* point_load = NULL;
-        POINT_LOAD_NODE* point_load_node = NULL;
+        POINT_LOAD* point_load = nullptr;
+        POINT_LOAD_NODE* point_load_node = nullptr;
         
         point_load = (POINT_LOAD*)malloc(sizeof(POINT_LOAD));
         point_load_node = (POINT_LOAD_NODE*)malloc(sizeof(POINT_LOAD_NODE));
         
-        if(point_load == NULL || point_load_node == NULL)
+        if(point_load == nullptr || point_load_node == nullptr)
         {
             *errorID = _ERROR_POINT_ERROR;
-            return NULL;
+            return nullptr;
         }
         
         point_load->qix = qeix;
@@ -325,16 +325,16 @@ namespace pre
         double qejy = -qeiy;
         double qej  = -a*(3*b-l)*M/pow(L,2);
         
-        POINT_LOAD* point_load = NULL;
-        POINT_LOAD_NODE* point_load_node = NULL;
+        POINT_LOAD* point_load = nullptr;
+        POINT_LOAD_NODE* point_load_node = nullptr;
         
         point_load = (POINT_LOAD*)malloc(sizeof(POINT_LOAD));
         point_load_node = (POINT_LOAD_NODE*)malloc(sizeof(POINT_LOAD_NODE));
         
-        if(point_load == NULL || point_load_node == NULL)
+        if(point_load == nullptr || point_load_node == nullptr)
         {
             *errorID = _ERROR_POINT_ERROR;
-            return NULL;
+            return nullptr;
         }
         
         point_load->qix = qeix;
@@ -367,16 +367,16 @@ namespace pre
         double qejy = -q*pow(a,3)*(2*L - a)/2/pow(L,3);
         double qej  = q*pow(a,3)*(4*L - 3*a)/12/pow(L,2);
         
-        POINT_LOAD* point_load = NULL;
-        POINT_LOAD_NODE* point_load_node = NULL;
+        POINT_LOAD* point_load = nullptr;
+        POINT_LOAD_NODE* point_load_node = nullptr;
         
         point_load = (POINT_LOAD*)malloc(sizeof(POINT_LOAD));
         point_load_node = (POINT_LOAD_NODE*)malloc(sizeof(POINT_LOAD_NODE));
         
-        if(point_load == NULL || point_load_node == NULL)
+        if(point_load == nullptr || point_load_node == nullptr)
         {
             *errorID = _ERROR_POINT_ERROR;
-            return NULL;
+            return nullptr;
         }
         
         point_load->qix = qeix;

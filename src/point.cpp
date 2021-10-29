@@ -71,7 +71,7 @@ char const* PtTransformIntoString(_IN const char *format, _IN PPOINT point)
         return DuplicateString(buf);
     }
     else
-        return "NULL";
+        return "nullptr";
 }
 
 void PtPrint(PPOINT point)
@@ -79,7 +79,7 @@ void PtPrint(PPOINT point)
     if (point)
         printf("(X:%.6lf, Y:%.6lf, Z:%.6lf, index:%d)", point->X, point->Y, point->Z, point->index);
     else
-        printf("NULL");
+        printf("nullptr");
 }
 
 char* DuplicateString(const char *s)

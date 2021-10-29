@@ -11,6 +11,7 @@
 #include <vector>
 
 using std::vector;
+
 using namespace base;
 
 namespace pre
@@ -97,29 +98,10 @@ namespace pre
     //输出：该单元节点载荷结构体指针
     POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT POINT_LOAD_STACKS* S);
     
-    //得到所有节点受载荷的梁单元指针数组
-    //输入：所有的梁单元指针vector数组的引用
-    //输出：受节点载荷的两单元指针vector数组
-
-    //得到所有非节点受载荷的梁单元指针数组
-    //输入：所有的梁单元指针vector数组的引用
-    //输出：受非节点载荷的梁单元指针vector数组
-
-    //得到与第i节点相交的梁单元指针数组
-    //输入：第i个节点号，梁单元指针数组
-    //输出：与第i个节点相交的所有梁单元指针数组
-
-    //计算与i节点相交的梁单元的等效载荷之和
-    //输入：与第i个节点相交的梁单元指针vector数组的饮用
-    //输出：第i个节点的等效载荷PII
-
-    //得到总体梁单元的等效载荷PII的向量
-    //输入：所有等效载荷PII的指针数组
-    //输出：总体梁单元的等效载荷PII向量
-
-    //得到总体梁单元的等效总载荷
-    //输入：总体梁单元的节点载荷向量PI，总体梁单元的非节点等效载荷向量PII
-    //输出：总体梁单元的等效总载荷向量。
+    //使用C++ vector迭代器，循环遍历整个单元数组
+    //每一次遍历进行如下操作：1.节点载荷直接进行坐标转换，再按照自由度编号法，赋值累加进总节点载荷向量。
+    //                      2.非节点载荷先进行等效转换，再进行坐标转换，再按照自由度编号法，赋值累加进总节点载荷向量。
+    //最后输出总节点载荷向量。
 
     //前处理第五个模块
     //单元杆端内力与支座反力计算。
@@ -155,5 +137,6 @@ namespace pre
     //输出：引入边界条件后的总体刚度矩阵指针，载荷项向量
     template <typename T>
     ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN vector<PPOINT_DISPLACEMENT>&,_OUT ERROR_ID* errorID);
-}
+} //namespace pre
+
 #endif

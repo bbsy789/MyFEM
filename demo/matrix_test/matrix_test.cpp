@@ -6,7 +6,7 @@ int main()
 
 	REAL a[3 * 3] = { 1,2,3,6,5,5,8,7,2 };
 	REAL b[3 * 3] = {1,2,3,6,5,4,3,2,1};
-	MATRIX *A = NULL, * B = NULL, * C = NULL, * D = NULL, * E = NULL, * Z = NULL, * invA = NULL, *m = NULL;
+	MATRIX *A = nullptr, * B = nullptr, * C = nullptr, * D = nullptr, * E = nullptr, * Z = nullptr, * invA = nullptr, *m = nullptr;
 	ERROR_ID errorID = _ERROR_NO_ERROR;
 	REAL trace;
 	MATRIX_STACKS S;

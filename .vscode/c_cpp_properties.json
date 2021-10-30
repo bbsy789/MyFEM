@@ -54,7 +54,9 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}"
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/include",
+                "E:/mingw64/bin/"
             ],
             "defines": [
                 "_DEBUG",

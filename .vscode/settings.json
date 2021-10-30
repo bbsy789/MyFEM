@@ -9,7 +9,8 @@
     "files.useExperimentalFileWatcher": true,
     "files.associations": {
         "iostream": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "climits": "cpp"
     },
     "cmake.debugConfig": {
         "externalConsole": true

@@ -2,6 +2,7 @@
 #include <matrix.h>
 #include <common.h>
 #include <cmath>
+#include <base.h>
 
 namespace pre
 {
@@ -277,12 +278,12 @@ namespace pre
             return nullptr;
         }
         
-        point_load->qix = qeix;
-        point_load->qiy = qeiy;
-        point_load->qi = qei;
-        point_load->qjx = qejx;
-        point_load->qjy = qejy;
-        point_load->qj = qej;
+        point_load->ui = qeix;
+        point_load->vi = qeiy;
+        point_load->thetai = qei;
+        point_load->uj = qejx;
+        point_load->vj = qejy;
+        point_load->thetaj = qej;
         
         point_load_node->data = point_load;
         point_load_node->next = S->point_load_node;
@@ -321,12 +322,12 @@ namespace pre
             return nullptr;
         }
         
-        point_load->qix = qeix;
-        point_load->qiy = qeiy;
-        point_load->qi = qei;
-        point_load->qjx = qejx;
-        point_load->qjy = qejy;
-        point_load->qj = qej;
+        point_load->ui = qeix;
+        point_load->vi = qeiy;
+        point_load->thetai = qei;
+        point_load->uj = qejx;
+        point_load->vj = qejy;
+        point_load->thetaj = qej;
         
         point_load_node->data = point_load;
         point_load_node->next = S->point_load_node;
@@ -367,12 +368,12 @@ namespace pre
             return nullptr;
         }
         
-        point_load->qix = qeix;
-        point_load->qiy = qeiy;
-        point_load->qi = qei;
-        point_load->qjx = qejx;
-        point_load->qjy = qejy;
-        point_load->qj = qej;
+        point_load->ui = qeix;
+        point_load->vi = qeiy;
+        point_load->thetai = qei;
+        point_load->uj = qejx;
+        point_load->vj = qejy;
+        point_load->thetaj = qej;
         
         point_load_node->data = point_load;
         point_load_node->next = S->point_load_node;

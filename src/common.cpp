@@ -2,7 +2,9 @@
 *     File Name :                        common.c
 *     Library/Module Name :              MatrixComputation
 *     Author :                           Marc Pony(marc_pony@163.com)
+										 wwj(bbsy789@126.com)
 *     Create Date :                      2021/7/16
+*     Modify Date :                      2021/10/30
 *     Abstract Description :            矩阵运算库公用源文件
 *******************************************************************************/
 
@@ -111,3 +113,28 @@ VOID free_stack(_IN stacks<T1,T2>* S)
 	// ...
 	// 释放其他指针
 }
+
+#ifndef  __COMMON_H__
+#define  __COMMON_H__
+/**********************************************************************************************
+Function: Is_NoError
+Description: 判断是否错误
+Input: 错误号指针
+Output: 无
+Input_Output: 无
+Return: true or false
+Author: wwj(bbsy789@126.com)
+***********************************************************************************************/
+bool Is_no_Error(_IN ERROR_ID* errorID)
+{
+	if(errorID == _ERROR_NO_ERROR)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+#endif

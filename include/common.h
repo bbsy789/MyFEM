@@ -104,8 +104,6 @@ struct stacks
 
 using MATRIX_STACKS = stacks<MATRIX_NODE,MATRIX_ELEMENT_NODE>;
 
-
-
 /*******************************************************************************
 * (5)Prototype Declare Section
 *******************************************************************************/
@@ -133,5 +131,17 @@ Author: Marc Pony(marc_pony@163.com)
 template<typename T1,typename T2>
 VOID free_stack(_IN stacks<T1,T2>* S);
 
+/**********************************************************************************************
+Function: Is_NoError
+Description: 判断是否错误
+Input: 错误号指针
+Output: 无
+Input_Output: 无
+Return: true or false
+Author: wwj(bbsy789@126.com)
+***********************************************************************************************/
+bool Is_no_Error(_IN ERROR_ID* errorID);
+
 #include "D:\MyFEM\src\common.cpp"
+
 #endif

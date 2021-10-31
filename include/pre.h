@@ -11,6 +11,7 @@
 #include <vector>
 
 using std::vector;
+
 using namespace base;
 
 namespace pre
@@ -27,11 +28,6 @@ namespace pre
     //边界条件接口：用于确定节点的自由度。
 
     //前处理第一个模块：单元刚度矩阵形成
-
-    //梁单元属性的输入:
-    //输入：平面梁单元属性（包括E，A，I，l）
-    //输出：平面梁单元属性矩阵指针，错误代码，堆栈指针。
-    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT ELEMENT_ATTRIBUTE_STACKS* S);
 
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
     //输入：梁单元属性结构体
@@ -103,8 +99,10 @@ namespace pre
     //输出：1.错误变量，2.节点载荷
     //返回类型：
 
-
-
+    //使用C++ vector迭代器，循环遍历整个单元数组
+    //每一次遍历进行如下操作：1.节点载荷直接进行坐标转换，再按照自由度编号法，赋值累加进总节点载荷向量。
+    //                      2.非节点载荷先进行等效转换，再进行坐标转换，再按照自由度编号法，赋值累加进总节点载荷向量。
+    //最后输出总节点载荷向量。
 
     //前处理第五个模块
     //单元杆端内力与支座反力计算。
@@ -140,5 +138,6 @@ namespace pre
     //输出：引入边界条件后的总体刚度矩阵指针，载荷项向量
     template <typename T>
     ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN vector<PPOINT_DISPLACEMENT>&,_OUT ERROR_ID* errorID);
-}
+} //namespace pre
+
 #endif

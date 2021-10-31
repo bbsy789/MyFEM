@@ -12,12 +12,11 @@ namespace base
 {
     typedef double REAL;//
 
-    static unsigned int NW;//定义总节点数NW
-    static unsigned int NR;//定义受约束的节点总数
+    static unsigned int NW = 0;//定义总节点数NW
+    static unsigned int NR = 0;//定义受约束的节点总数
 
-    static unsigned int NU;//定义总单元数NU
-    static unsigned int QQ;//定义总荷载数QQ
-    static unsigned int KE;//定义单元物理性质数KE
+    static unsigned int NU = 0;//定义总单元数NU
+    static unsigned int QQ = 0;//定义总荷载数QQ
 
     typedef struct element_attribute
     {
@@ -89,24 +88,17 @@ namespace base
         ELEMENT_NODE* next;
     }ELEMENT_NODE;
 
-    //四元载荷
+    //四元载荷的实现
+    //load结构体封装了载荷作用的单元，载荷类型
+    //通过定义模版，实现载荷类型的多态性
+    //再通过封装不同的载荷类型的结构体，实现四元荷载。
     template<typename T>
     struct load
     {
         unsigned int ET_index;//单元号
         struct T category;//载荷类型的结构体指针
     };
-    //定义节点载荷结构体： POINT_LOAD
-    typedef struct point_load
-    {
-        double ui;
-        double vi;
-        double thetai;
-        double uj;
-        double vj;
-        double thetaj;
-    }POINT_LOAD;
-
+    
     //定义集中力载荷结构体：Concentrated force
     typedef struct concentrated_force
     {
@@ -131,6 +123,27 @@ namespace base
 
     template <typename T>
     using LOAD = load<T>;
+
+    //定义节点载荷结构体： POINT_LOAD
+    typedef struct point_load
+    {
+        double ui;
+        double vi;
+        double thetai;
+        double uj;
+        double vj;
+        double thetaj;
+    }POINT_LOAD;
+    //定义非节点载荷结构体： NO_POINT_LOAD
+    typedef struct no_point_load
+    {
+        double ui;
+        double vi;
+        double thetai;
+        double uj;
+        double vj;
+        double thetaj;
+    }NO_POINT_LOAD;
 
     using POINT_STACKS = stacks<POINT,POINT_NODE>;
     using ELEMENT_ATTRIBUTE_STACKS = stacks<ELEMENT_ATTRIBUTE,ELEMENT_ATTRIBUTE_NODE>;

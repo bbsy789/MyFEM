@@ -73,53 +73,38 @@ namespace pre
     MATRIX* Component_TSM(_IN vector<ELEMENT*> E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
 
     //前处理第四个模块
-    //节点载荷计算：compute-point-load
+    //非节点节点载荷计算：compute-no-point-load
     //按照四元载荷等效原理，等效到单元节点载荷，
     //使用C++函数重载，匹配四种载荷的不同输入输出
     //输入：某一单元结构体指针，该单元载荷结构体（四元载荷）指针
     //输出：该单元节点载荷结构体指针
     
-    //节点载荷计算：compute-point-load
+    //非节点载荷计算：compute-no-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT POINT_LOAD_STACKS* S);
+    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT POINT_LOAD_STACKS* S);
     
-    //节点载荷计算：compute-point-load
+    //非节点载荷计算：compute-no-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力矩结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID, _OUT POINT_LOAD_STACKS* S);
+    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID, _OUT POINT_LOAD_STACKS* S);
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元均布载荷结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT POINT_LOAD_STACKS* S);
+    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT POINT_LOAD_STACKS* S);
     
-    //得到所有节点受载荷的梁单元指针数组
-    //输入：所有的梁单元指针vector数组的引用
-    //输出：受节点载荷的两单元指针vector数组
+    //总载荷向量{P}计算: compute-total-load
+    //函数名：Compute_TL
+    //输入：1.
+    //输出：1.错误变量，2.节点载荷
+    //返回类型：
 
-    //得到所有非节点受载荷的梁单元指针数组
-    //输入：所有的梁单元指针vector数组的引用
-    //输出：受非节点载荷的梁单元指针vector数组
 
-    //得到与第i节点相交的梁单元指针数组
-    //输入：第i个节点号，梁单元指针数组
-    //输出：与第i个节点相交的所有梁单元指针数组
 
-    //计算与i节点相交的梁单元的等效载荷之和
-    //输入：与第i个节点相交的梁单元指针vector数组的饮用
-    //输出：第i个节点的等效载荷PII
-
-    //得到总体梁单元的等效载荷PII的向量
-    //输入：所有等效载荷PII的指针数组
-    //输出：总体梁单元的等效载荷PII向量
-
-    //得到总体梁单元的等效总载荷
-    //输入：总体梁单元的节点载荷向量PI，总体梁单元的非节点等效载荷向量PII
-    //输出：总体梁单元的等效总载荷向量。
 
     //前处理第五个模块
     //单元杆端内力与支座反力计算。

@@ -23,9 +23,9 @@ int main()
     MATRIX* TSM = nullptr;
 
     p1 = PtCreate(0,0,1);
-    p2 = PtCreate(10,0,2);
+    p2 = PtCreate(10000,0,2);
 
-    ea1 = Input_E_A(10,20000,1000,1000,&errorID);
+    ea1 = Input_E_A(100,2000000000,1000,10000,&errorID);
     e1 = Input_E(2,ea1,1,p1,p2,&errorID,&element_stacks);
     TSM = Component_TSM(e1,&errorID,&matrix_stacks);
     print_matrix(TSM,"TSM:");

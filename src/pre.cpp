@@ -24,8 +24,8 @@ namespace wwj
         const REAL EI_L3 = E*I/pow(L,3);
         const REAL EI_L2 = E*I/pow(L,2);
         const REAL EI_L = E*I/L;
-        //2.存放矩阵元素:              1            2            3            4            5             6
-        REAL store_element[6*6] = {  EA_L        ,0           ,0           ,-EA_L       ,0            ,0           //1
+        //2.存放矩阵元素:             1            2            3            4            5             6
+        REAL ESM_element[6*6] = {    EA_L        ,0           ,0           ,-EA_L       ,0            ,0           //1
                                     ,0           ,12*EI_L3    ,6*EI_L2     ,0           ,-12*EI_L3    ,6*EI_L2     //2
                                     ,0           ,6*EI_L2     ,4*EI_L      ,0           ,-6*EI_L2     ,2*EI_L      //3
                                     ,-EA_L       ,0           ,0           ,EA_L        ,0            ,0           //4
@@ -36,16 +36,15 @@ namespace wwj
         //3.定义传入create_matrix的参数
         const INTEGER rows = 6;
         const INTEGER columns = 6;
-        MATRIX* m = nullptr;
+        MATRIX* ESM = nullptr;
 
-        m = creat_matrix(rows,columns,errorID,S);//创建一个6X6的矩阵，返回矩阵指针，此处矩阵链表已压入栈S中
+        ESM = creat_matrix(rows,columns,errorID,S);//创建一个6X6的矩阵，返回矩阵指针，此处矩阵链表已压入栈S中
 
-        if(m == nullptr) goto EXIT;//错误处理 
+        if(ESM == nullptr) goto EXIT;//错误处理 
 
-        m->p = store_element;
-        print_matrix(m, "m");
+        ESM->p = ESM_element;
         *errorID = _ERROR_NO_ERROR;//程序正常执行，无错误
-        return m;
+        return ESM;
         
         EXIT:
         *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;//分配堆内存错误，此时主程序应该调用free_stacks函数释放堆内存防止内存泄露，野指针乱指
@@ -80,13 +79,13 @@ namespace wwj
         const REAL a22 = a11;
 
         
-        //3.得到旋转矩阵               1            2            3            4            5             6
-        REAL store_element[6*6] = {   a11         ,a12         ,0           ,0           ,0            ,0           //1
-                                     ,a21         ,a22         ,0           ,0           ,0            ,0           //2
-                                     ,0           ,0           ,1           ,0           ,0            ,0           //3
-                                     ,0           ,0           ,0           ,a11         ,a12          ,0           //4
-                                     ,0           ,0           ,0           ,a21         ,a22          ,0           //5
-                                     ,0           ,0           ,0           ,0           ,0            ,1   };      //6
+        //3.得到旋转矩阵                         1            2            3            4            5             6
+        REAL rotation_matrix_element[6*6] = {   a11         ,a12         ,0           ,0           ,0            ,0           //1
+                                               ,a21         ,a22         ,0           ,0           ,0            ,0           //2
+                                               ,0           ,0           ,1           ,0           ,0            ,0           //3
+                                               ,0           ,0           ,0           ,a11         ,a12          ,0           //4
+                                               ,0           ,0           ,0           ,a21         ,a22          ,0           //5
+                                               ,0           ,0           ,0           ,0           ,0            ,1   };      //6
 
         const INTEGER rows = 6;
         const INTEGER columns = 6;
@@ -94,7 +93,7 @@ namespace wwj
         Rotation_Matrix = creat_matrix(rows,columns,errorID,S);//创建一个6X6的矩阵，返回矩阵指针，矩阵节点的指针被压入栈S中
         if(Rotation_Matrix == nullptr) goto EXIT;//错误处理 
 
-        Rotation_Matrix->p = store_element;
+        Rotation_Matrix->p = rotation_matrix_element;
         print_matrix(Rotation_Matrix, "Rotation_Matrix");
         *errorID = _ERROR_NO_ERROR;//程序正常执行，无错误
         return Rotation_Matrix;
@@ -118,7 +117,7 @@ namespace wwj
         Process_Matrix = creat_zero_matrix(rows,columns,errorID,S);//已入栈
         Transformed_Matrix = creat_zero_matrix(rows,columns,errorID,S);//已入栈
 
-        if(Transformed_Matrix == nullptr || Process_Matrix)
+        if(Transformed_Matrix == nullptr || Process_Matrix == nullptr)
         {
             *errorID = _ERROR_CREATE_MATRIX_FAILED;//创建矩阵失败
             return nullptr;
@@ -149,17 +148,18 @@ namespace wwj
     //输出：总体刚度矩阵
     MATRIX* Component_TSM(_IN ELEMENT* E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
     {
-            //1.创建零矩阵矩阵，行列数位节点数的3倍。
+            //1.创建零矩阵矩阵，行列数位节点数的6倍。
             MATRIX* TSM = nullptr;//定义总体刚度矩阵的结构体指针
-            INTEGER rows = 3 * NW;//定义总体刚度矩阵的行数
-            INTEGER columns = 3 * NW;//定义总体刚度矩阵的列数
+            INTEGER rows = 6 * NW;//定义总体刚度矩阵的行数
+            INTEGER columns = 6 * NW;//定义总体刚度矩阵的列数
 
-            MATRIX* matrix_ptr = nullptr;//定义指向单元刚度矩阵的指针
-            REAL* matrix_element_ptr = nullptr;//定义指向单元刚度矩阵元素的指针
-            REAL* TSM_element_ptr = nullptr;//定义指向总体刚度矩阵元素的指针
-
-            //2.创建总体刚度矩阵，零矩阵，检查TSM指针
+            MATRIX* ESM = nullptr;//定义指向局部坐标单元刚度矩阵的指针
+            MATRIX* T = nullptr;//定义指向坐标变换矩阵的指针
+            MATRIX* TESM = nullptr;//定义指向整体坐标单元刚度矩阵的指针
+            REAL* TESM_data;//定义指向单元刚度矩阵元素的指针
+            REAL* TSM_data = nullptr;//定义指向总体刚度矩阵元素的指针
             
+            //2.创建总体刚度矩阵，零矩阵，检查TSM指针
             TSM = creat_zero_matrix(rows,columns,errorID,S);//已入栈
             if(TSM == nullptr || TSM->p == nullptr)
             {
@@ -188,76 +188,76 @@ namespace wwj
             for(unsigned int n = 1 ; n <= NW ; n++)
             {
                 //1.创建单元刚度矩阵                
-                matrix_ptr = Compute_PBES_NS(((E + n - 1)->attribute),errorID,S);//入栈
-                if( matrix_ptr == nullptr || matrix_ptr->p == nullptr)
+                ESM = Compute_PBES_NS(((E + n - 1)->attribute),errorID,S);//入栈
+                if( ESM == nullptr || ESM->p == nullptr)
                 {
                     *errorID = _ERROR_CREATE_MATRIX_FAILED;
                     return nullptr;
                 }
-                matrix_element_ptr = matrix_ptr->p;//得到单元刚度矩阵的元素指针
-                TSM_element_ptr = TSM->p;//得到总体刚度矩阵的元素指针
+                //2.创建该单元的坐标变换矩阵并对单元刚度矩阵进行坐标转换
+                T = Compute_CTM((E + n -1),errorID,S);
+                TESM = Transform_ESM(T,ESM,errorID,S);
+                TESM_data = TESM->p;//得到总体坐标单元刚度矩阵的元素指针
+                TSM_data = TSM->p;//得到总体刚度矩阵的元素指针
                 
-                //2.取Kii分块矩阵，也就是单元刚度矩阵的左上角矩阵。
+                //3.取Kii分块矩阵，也就是单元刚度矩阵的左上角矩阵。
                 for(int i = 1 ; i <= 3 ; i++)
                 {
                     unsigned int i_index = (E + n - 1)->ptri->index;
                     for(int j = 1 ; j <= 3 ; j++ )
                     {
                         unsigned int j_index = (E + n - 1)->ptrj->index;
-                        *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * i_index - 4 ) 
-                        += *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        *( TSM_data + 12 * i_index * NW - 12 * NW + 4 * i_index - 4 ) 
+                        += *( TESM_data + 6 * i + j - 7 );//核心算法
                         j_index++;
                     } 
                     i_index++;
                 }
                 
-                //3.取Kij分块矩阵，也就是单元刚度矩阵的右上角矩阵。
+                //4.取Kij分块矩阵，也就是单元刚度矩阵的右上角矩阵。
                 for(int i = 1 ; i <= 3 ; i++)
                 {
                     unsigned int i_index = (E + n - 1)->ptri->index;
                     for(int j = 1 ; j <= 3 ; j++ )
                     {
                         unsigned int j_index = (E + n - 1)->ptrj->index;
-                        *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * i_index - 4 ) 
-                        += *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        *( TSM_data + 12 * j_index * NW - 12 * NW + 4 * i_index - 4 ) 
+                        += *( TESM_data + 6 * i + j - 4);//核心算法
                         j_index++;
                     } 
                     i_index++;
                 }
 
-                //4.取Kji分块矩阵，也就是单元刚度矩阵的左下角矩阵。
+                //5.取Kji分块矩阵，也就是单元刚度矩阵的左下角矩阵。
                 for(int i = 1 ; i <= 3 ; i++)
                 {
                     unsigned int i_index = (E + n - 1)->ptri->index;
                     for(int j = 1 ; j <= 3 ; j++ )
                     {
                         unsigned int j_index = (E + n - 1)->ptrj->index;
-                        *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * j_index - 4 ) 
-                        += *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        *( TSM_data + 12 * i_index * NW - 12 * NW + 4 * j_index - 4 ) 
+                        += *( TESM_data + 6 * i + j + 11 );//核心算法
                         j_index++;
                     } 
                     i_index++;
                 }
 
-                //5.取Kjj分块矩阵，也就是单元刚度矩阵的右下角矩阵。
+                //6.取Kjj分块矩阵，也就是单元刚度矩阵的右下角矩阵。
                 for(int i = 1 ; i <= 3 ; i++)
                 {
                     unsigned int i_index = (E + n - 1)->ptri->index;
                     for(int j = 1 ; j <= 3 ; j++ )
                     {
                         unsigned int j_index = (E + n - 1)->ptrj->index;
-                        *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * j_index - 4 ) 
-                        += *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        *( TSM_data + 12 * j_index * NW - 12 * NW + 4 * j_index - 4 ) 
+                        += *( TESM_data + 6 * i + j - 10 );//核心算法
                         j_index++;
                     } 
                     i_index++;
                 }
+                //7.释放单元刚度矩阵
                 //这里需要调整栈指针（出栈）！！！！！！！！！10.28还未实现
-                //出栈后释放内存,此处出错！！！11.1
-                //free(matrix_element_ptr);
-                //matrix_element_ptr = nullptr;
-                //free(matrix_ptr);//赋值完毕立刻释放
-                //matrix_ptr = nullptr;//每次循环结束变为nullptr
+                //出栈后释放内存,暂时先不释放内存11.1
             }
             *errorID = _ERROR_NO_ERROR;
             return TSM;

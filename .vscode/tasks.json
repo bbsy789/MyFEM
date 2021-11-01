@@ -12,7 +12,6 @@
                 "-Wall",
                 "-std=c++17",
                 "${file}",
-                "d:\\MyFEM\\src\\matrix.cpp",
                 "-I${workspaceFolder}\\include\\",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"

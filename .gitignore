@@ -99,4 +99,12 @@ _deps
 output/main.exe
 CPackConfig.cmake
 CPackSourceConfig.cmake
-./build/
+./build/*
+build/.cmake/api/v1/query/client-vscode/query.json
+build/.cmake/api/v1/reply/cache-v2-c6d5c470e99cb3fdbc38.json
+build/.cmake/api/v1/reply/codemodel-v2-63bcfcf19872f3a62982.json
+build/.cmake/api/v1/reply/directory-.-DEBUG-d0094a50bb2071803777.json
+build/.cmake/api/v1/reply/directory-src-DEBUG-c94b7c2814d5a21df52c.json
+build/.cmake/api/v1/reply/index-2021-11-01T01-55-24-0618.json
+build/.cmake/api/v1/reply/target-MyFEM-DEBUG-b07ef92cd7e1004d7baa.json
+build/.cmake/api/v1/reply/toolchains-v1-c8aeb068f93ece6c57b7.json

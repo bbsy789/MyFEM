@@ -35,12 +35,25 @@ namespace base
         ELEMENT_ATTRIBUTE_NODE* next;
     }ELEMENT_ATTRIBUTE_NODE;
 
+    enum point_dof
+    {
+        full_dof;
+        no_ux;
+        no_uy;
+        no_rx;
+        no_ux_uy;
+        no_ux_rx;
+        no_uy_rx;
+        no_dof;
+    };
+
     typedef struct point
     {
         unsigned int index;//节点号
         double X;//X轴坐标
         double Y;//Y轴坐标
         //double Z;//Z轴坐标
+
     }POINT;
 
     typedef POINT* PPOINT;//定义指向POINT的指针类型为PPOINT
@@ -88,17 +101,6 @@ namespace base
         ELEMENT_NODE* next;
     }ELEMENT_NODE;
 
-    //四元载荷的实现
-    //load结构体封装了载荷作用的单元，载荷类型
-    //通过定义模版，实现载荷类型的多态性
-    //再通过封装不同的载荷类型的结构体，实现四元荷载。
-    template<typename T>
-    struct load
-    {
-        unsigned int ET_index;//单元号
-        struct T category;//载荷类型的结构体指针
-    };
-    
     //定义集中力载荷结构体：Concentrated force
     typedef struct concentrated_force
     {
@@ -121,8 +123,23 @@ namespace base
         double positionj;//均布荷载距离单元j端的长度
     }UNIFORM_LOAD;
 
-    template <typename T>
-    using LOAD = load<T>;
+    //四元载荷的实现
+    //LOAD结构体封装了载荷作用的单元，载荷类型，载荷集度，载荷位置
+    typedef struct load
+    {
+        unsigned int ET_index;//单元号
+        CONCENTRATED_FORCE* CONCENTRATED_FORCE_ptr//集中力的结构体指针
+        CONCENTRATED_MOMENT* CONCENTRATED_MOMENT_ptr;//集中力矩的结构体指针
+        UNIFORM_LOAD* UNIFORM_LOAD_ptr;//均布载荷的结构体指针
+    }LOAD;
+    
+    typedef LOAD* PLOAD;
+
+    typedef struct load_node
+    {
+        PLOAD data;
+        LOAD_NODE* next;
+    }LOAD_NODE;
 
     //定义节点载荷结构体： POINT_LOAD
     typedef struct point_load
@@ -145,9 +162,20 @@ namespace base
         double thetaj;
     }NO_POINT_LOAD;
 
+    typedef struct total_load
+    {
+        double ui;
+        double vi;
+        double thetai;
+        double uj;
+        double vj;
+        double thetaj;
+    }TOTAL_LOAD;
+
     using POINT_STACKS = stacks<POINT,POINT_NODE>;
     using ELEMENT_ATTRIBUTE_STACKS = stacks<ELEMENT_ATTRIBUTE,ELEMENT_ATTRIBUTE_NODE>;
     using ELEMENT_STACKS = stacks<ELEMENT,ELEMENT_NODE>;
     using POINT_LOAD_STACKS = stacks<POINT_LOAD,POINT_LOAD_NODE>;
+    using LOAD_STACKS = stacks<LOAD,LOAD_NODE>;
 }
  #endif

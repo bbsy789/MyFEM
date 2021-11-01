@@ -8,7 +8,7 @@
 
 #include <common.h>
 
-namespace base
+namespace wwj
 {
     typedef double REAL;//
 
@@ -32,19 +32,18 @@ namespace base
     typedef struct element_attribute_node
     {
         PELEMENT_ATTRIBUTE data;
-        ELEMENT_ATTRIBUTE_NODE* next;
+        struct element_attribute_node* next;
     }ELEMENT_ATTRIBUTE_NODE;
 
     enum point_dof
-    {
-        full_dof;
-        no_ux;
-        no_uy;
-        no_rx;
-        no_ux_uy;
-        no_ux_rx;
-        no_uy_rx;
-        no_dof;
+    {   full_dof,
+        no_ux,
+        no_uy,
+        no_rx,
+        no_ux_uy,
+        no_ux_rx,
+        no_uy_rx,
+        no_dof
     };
 
     typedef struct point
@@ -61,7 +60,7 @@ namespace base
     typedef struct point_node
     {
         PPOINT data;
-        POINT_NODE* next;
+        struct point_node* next;
     }POINT_NODE;
 
     //定义节点位移，包含编号，六个自由度
@@ -79,14 +78,14 @@ namespace base
     typedef struct point_displacement_node
     {
         PPOINT_DISPLACEMENT data;
-        POINT_DISPLACEMENT_NODE* next;
+        struct point_displacement_node* next;
     }POINT_DISPLACEMENT_NODE;
 
     typedef struct element
     {
         //unsigned char KEYOPT;//关键选项
         unsigned char NODE_NUMBER;//节点数
-        ELEMENT_ATTRIBUTE* attribute;//单元材料属性结构体指针
+        struct element_attribute_node* attribute;//单元材料属性结构体指针
         //char* ELEMENT_NAME;//单元名
         unsigned int index;//单元号
         PPOINT ptri;//指向i端节点的指针
@@ -98,7 +97,7 @@ namespace base
     typedef struct element_node
     {
         PELEMENT data;
-        ELEMENT_NODE* next;
+        struct element_node* next;
     }ELEMENT_NODE;
 
     //定义集中力载荷结构体：Concentrated force
@@ -128,7 +127,7 @@ namespace base
     typedef struct load
     {
         unsigned int ET_index;//单元号
-        CONCENTRATED_FORCE* CONCENTRATED_FORCE_ptr//集中力的结构体指针
+        CONCENTRATED_FORCE* CONCENTRATED_FORCE_ptr;//集中力的结构体指针
         CONCENTRATED_MOMENT* CONCENTRATED_MOMENT_ptr;//集中力矩的结构体指针
         UNIFORM_LOAD* UNIFORM_LOAD_ptr;//均布载荷的结构体指针
     }LOAD;
@@ -138,7 +137,7 @@ namespace base
     typedef struct load_node
     {
         PLOAD data;
-        LOAD_NODE* next;
+        struct load_node* next;
     }LOAD_NODE;
 
     //定义节点载荷结构体： POINT_LOAD
@@ -151,6 +150,15 @@ namespace base
         double vj;
         double thetaj;
     }POINT_LOAD;
+
+    typedef POINT_LOAD* PPOINT_LOAD;
+
+    typedef struct point_load_node
+    {
+        PPOINT_LOAD data;
+        struct point_load_node* next;
+    }POINT_LOAD_NODE;
+
     //定义非节点载荷结构体： NO_POINT_LOAD
     typedef struct no_point_load
     {
@@ -162,6 +170,14 @@ namespace base
         double thetaj;
     }NO_POINT_LOAD;
 
+    typedef NO_POINT_LOAD* PNO_POINT_LOAD;
+
+    typedef struct no_point_load_node
+    {
+        PNO_POINT_LOAD data;
+        struct no_point_load_node* next;
+    }NO_POINT_LOAD_NODE;
+
     typedef struct total_load
     {
         double ui;
@@ -172,10 +188,12 @@ namespace base
         double thetaj;
     }TOTAL_LOAD;
 
-    using POINT_STACKS = stacks<POINT,POINT_NODE>;
-    using ELEMENT_ATTRIBUTE_STACKS = stacks<ELEMENT_ATTRIBUTE,ELEMENT_ATTRIBUTE_NODE>;
-    using ELEMENT_STACKS = stacks<ELEMENT,ELEMENT_NODE>;
-    using POINT_LOAD_STACKS = stacks<POINT_LOAD,POINT_LOAD_NODE>;
-    using LOAD_STACKS = stacks<LOAD,LOAD_NODE>;
+    //使用using定义栈别名
+    using POINT_STACKS = stacks1<POINT_NODE>;
+    using ELEMENT_ATTRIBUTE_STACKS = stacks1<ELEMENT_ATTRIBUTE_NODE>;
+    using ELEMENT_STACKS = stacks1<ELEMENT_NODE>;
+    using POINT_LOAD_STACKS = stacks1<POINT_LOAD_NODE>;
+    using NO_POINT_LOAD_STACKS = stacks1<NO_POINT_LOAD_NODE>;
+    using LOAD_STACKS = stacks1<LOAD_NODE>;
 }
  #endif

@@ -8,7 +8,6 @@
 
 #ifndef  __COMMON_H__
 #define  __COMMON_H__
-
 /*******************************************************************************
 * (1)Debug Switch Section
 *******************************************************************************/
@@ -23,7 +22,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <memory.h>
-
 
 /*******************************************************************************
 * (3)Macro Define Section
@@ -74,7 +72,6 @@ typedef short FLAG;
 typedef int INTEGER;
 typedef double REAL;
 typedef char* STRING;
-typedef void VOID;
 
 typedef  struct matrix
 {
@@ -95,14 +92,20 @@ typedef struct matrix_element_node
 	struct matrix_element_node* next;
 } MATRIX_ELEMENT_NODE;
 
+template<typename T>
+struct stacks1
+{
+	T* Node;
+};
+
 template<typename T1,typename T2>
-struct stacks
+struct stacks2
 {
 	T1* Node;
 	T2* ElementNode;
 };
 
-using MATRIX_STACKS = stacks<MATRIX_NODE,MATRIX_ELEMENT_NODE>;
+using MATRIX_STACKS = stacks2<MATRIX_NODE,MATRIX_ELEMENT_NODE>;
 
 /*******************************************************************************
 * (5)Prototype Declare Section
@@ -114,10 +117,29 @@ Input: 无
 Output: 无
 Input_Output: 栈指针
 Return: 无
-Author: Marc Pony(marc_pony@163.com)
+Author: Marc Pony(marc_pony@163.com),wwj(bbsy789@126.com)modify
 ***********************************************************************************************/
 template<typename T1,typename T2>
-VOID init_stack(_IN_OUT stacks<T1,T2>* S);
+void init_stack2(_IN_OUT stacks2<T1,T2>* S)
+{
+	if (S == nullptr)
+	{
+		return;
+	}
+
+	memset(S, 0, sizeof(stacks2<T1,T2>));
+}
+
+template<typename T>
+void init_stack1(_IN_OUT stacks1<T>* S)
+{
+	if (S == nullptr)
+	{
+		return;
+	}
+
+	memset(S, 0, sizeof(stacks1<T>));
+}
 
 /**********************************************************************************************
 Function: free_stack
@@ -126,10 +148,63 @@ Input: 栈指针
 Output: 无
 Input_Output: 无
 Return: 无
-Author: Marc Pony(marc_pony@163.com)
+Author: Marc Pony(marc_pony@163.com),wwj(bbsy789@126.com)modify
 ***********************************************************************************************/
 template<typename T1,typename T2>
-VOID free_stack(_IN stacks<T1,T2>* S);
+void free_stack2(_IN stacks2<T1,T2>* S)
+{
+	T1* Node = nullptr;
+	T2* ElementNode = nullptr;
+
+	if (S == nullptr)
+	{
+		return;
+	}
+
+	while (S->Node != nullptr)
+	{
+		Node = S->Node;
+		S->Node = Node->next;
+
+		free(Node->ptr);
+		Node->ptr = nullptr;
+		free(Node);
+		Node = nullptr;
+	}
+
+	while (S->ElementNode != nullptr)
+	{
+		ElementNode = S->ElementNode;
+		S->ElementNode = ElementNode->next;
+
+		free(ElementNode->ptr);
+		ElementNode->ptr = nullptr;
+		free(ElementNode);
+		ElementNode = nullptr;
+	}
+}
+
+template<typename T>
+void free_stack1(_IN stacks1<T>* S)
+{
+	T* Node = nullptr;
+
+	if (S == nullptr)
+	{
+		return;
+	}
+
+	while (S->Node != nullptr)
+	{
+		Node = S->Node;
+		S->Node = Node->next;
+
+		free(Node->data);
+		Node->data = nullptr;
+		free(Node);
+		Node = nullptr;
+	}
+}
 
 /**********************************************************************************************
 Function: Is_NoError
@@ -141,7 +216,5 @@ Return: true or false
 Author: wwj(bbsy789@126.com)
 ***********************************************************************************************/
 bool Is_no_Error(_IN ERROR_ID* errorID);
-
-#include "D:\MyFEM\src\common.cpp"
 
 #endif

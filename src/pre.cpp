@@ -2,11 +2,9 @@
 #include <matrix.h>
 #include <common.h>
 #include <cmath>
-#include <base.h>
 
-namespace pre
-{
-    
+namespace wwj
+{    
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
     //输入：梁单元属性结构体
     //输出：不考虑剪切变形的平面梁单元刚度矩阵
@@ -75,7 +73,7 @@ namespace pre
         const REAL yi = e->ptri->Y;
         const REAL xj = e->ptrj->X;
         const REAL yj = e->ptrj->Y;
-        const REAL Le = e->attribute->L;
+        const REAL Le = e->attribute->data->L;
         const REAL a11 = (xj - xi) / Le;
         const REAL a12 = (yj - yi) / Le;
         const REAL a21 = -a12;
@@ -149,7 +147,7 @@ namespace pre
     //等带宽存储，DD=(节点号插值最大+1)*节点自由度号；变带宽存储和一维变带宽存储.目的是减少总刚矩阵在内存中存放的空间。本算例忽略
     //输入：坐标变换后的总体坐标系下的单元刚度矩阵vector数组
     //输出：总体刚度矩阵
-    MATRIX* Component_TSM(_IN vector<ELEMENT*> E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
+    MATRIX* Component_TSM(_IN ELEMENT* E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
     {
             //1.创建零矩阵矩阵，行列数位节点数的3倍。
             MATRIX* TSM = nullptr;//定义总体刚度矩阵的结构体指针
@@ -158,6 +156,7 @@ namespace pre
 
             MATRIX* matrix_ptr = nullptr;//定义指向单元刚度矩阵的指针
             REAL* matrix_element_ptr = nullptr;//定义指向单元刚度矩阵元素的指针
+            REAL* TSM_element_ptr = nullptr;//定义指向总体刚度矩阵元素的指针
 
             //2.创建总体刚度矩阵，零矩阵，检查TSM指针
             
@@ -186,10 +185,10 @@ namespace pre
             //Kj_indexj_index:12 * j_index * NW - 12 * NW + 4 * j_index - 4           
             //Vscode部分替换方法：1.选中区域，2.cmd+opt+L
             //第n个单元的左上角矩阵
-            for(int n = 1 ; n <= NW ; i++)
+            for(int n = 1 ; n <= NW ; n++)
             {
                 //1.创建单元刚度矩阵                
-                matrix_ptr = Compute_PBES_NS(E[n-1]->attribute,errorID,S);//入栈
+                matrix_ptr = Compute_PBES_NS(((E + n - 1)->attribute->data),errorID,S);//入栈
                 if( matrix_ptr == nullptr || matrix_ptr->p == nullptr)
                 {
                     *errorID = _ERROR_CREATE_MATRIX_FAILED;
@@ -199,43 +198,59 @@ namespace pre
                 TSM_element_ptr = TSM->p;//得到总体刚度矩阵的元素指针
                 
                 //2.取Kii分块矩阵，也就是单元刚度矩阵的左上角矩阵。
-                for(int i = 1，unsigned int i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
+                for(int i = 1 ; i <= 3 ; i++)
                 {
-                    for(int j = 1, unsigned int j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
+                    unsigned int i_index = (E + n - 1)->ptri->index;
+                    for(int j = 1 ; j <= 3 ; j++ )
                     {
+                        unsigned int j_index = (E + n - 1)->ptrj->index;
                         *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * i_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        j_index++;
                     } 
+                    i_index++;
                 }
                 
                 //3.取Kij分块矩阵，也就是单元刚度矩阵的右上角矩阵。
-                for(int i = 1，unsigned int i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
+                for(int i = 1 ; i <= 3 ; i++)
                 {
-                    for(int j = 1, unsigned int j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
+                    unsigned int i_index = (E + n - 1)->ptri->index;
+                    for(int j = 1 ; j <= 3 ; j++ )
                     {
+                        unsigned int j_index = (E + n - 1)->ptrj->index;
                         *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * i_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        j_index++;
                     } 
+                    i_index++;
                 }
 
                 //4.取Kji分块矩阵，也就是单元刚度矩阵的左下角矩阵。
-                for(int i = 1，unsigned int i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
+                for(int i = 1 ; i <= 3 ; i++)
                 {
-                    for(int j = 1, unsigned int j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)    
+                    unsigned int i_index = (E + n - 1)->ptri->index;
+                    for(int j = 1 ; j <= 3 ; j++ )
                     {
+                        unsigned int j_index = (E + n - 1)->ptrj->index;
                         *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * j_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        j_index++;
                     } 
+                    i_index++;
                 }
 
                 //5.取Kjj分块矩阵，也就是单元刚度矩阵的右下角矩阵。
-                for(int i = 1，unsigned int i_index = E[n-1]->ptri->index;i <= 3 ; i++ ， i_index++)
+                for(int i = 1 ; i <= 3 ; i++)
                 {
-                    for(int j = 1, unsigned int j_index = E[n-1]->ptrj->index;j <= 3 ; j++ , j_index++)
+                    unsigned int i_index = (E + n - 1)->ptri->index;
+                    for(int j = 1 ; j <= 3 ; j++ )
                     {
+                        unsigned int j_index = (E + n - 1)->ptrj->index;
                         *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * j_index - 4 ) 
                         = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        j_index++;
                     } 
+                    i_index++;
                 }
                 //这里需要调整栈指针（出栈）！！！！！！！！！10.28还未实现
                 //出栈后释放内存
@@ -252,9 +267,9 @@ namespace pre
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT POINT_LOAD_STACKS* S)
+    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT NO_POINT_LOAD_STACKS* S)
     {
-        double L = E->attribute->L;//取单元长度
+        double L = E->attribute->data->L;//取单元长度
         double P = F->size;//取集中力大小
         double a = F->position;//取集中力距离i端的长度
         double b = L - a;
@@ -266,83 +281,83 @@ namespace pre
         double qejy = -P*a*a*(L+2*b)/pow(L,3);
         double qej  = -P*a*a*b/pow(L,2);
         
-        POINT_LOAD* point_load = nullptr;
-        POINT_LOAD_NODE* point_load_node = nullptr;
+        NO_POINT_LOAD* no_point_load = nullptr;
+        NO_POINT_LOAD_NODE* no_point_load_node = nullptr;
         
-        point_load = (POINT_LOAD*)malloc(sizeof(POINT_LOAD));
-        point_load_node = (POINT_LOAD_NODE*)malloc(sizeof(POINT_LOAD_NODE));
+        no_point_load = (NO_POINT_LOAD*)malloc(sizeof(NO_POINT_LOAD));
+        no_point_load_node = (NO_POINT_LOAD_NODE*)malloc(sizeof(NO_POINT_LOAD_NODE));
         
-        if(point_load == nullptr || point_load_node == nullptr)
+        if(no_point_load == nullptr || no_point_load_node == nullptr)
         {
-            *errorID = _ERROR_POINT_ERROR;
+            *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
             return nullptr;
         }
         
-        point_load->ui = qeix;
-        point_load->vi = qeiy;
-        point_load->thetai = qei;
-        point_load->uj = qejx;
-        point_load->vj = qejy;
-        point_load->thetaj = qej;
+        no_point_load->ui = qeix;
+        no_point_load->vi = qeiy;
+        no_point_load->thetai = qei;
+        no_point_load->uj = qejx;
+        no_point_load->vj = qejy;
+        no_point_load->thetaj = qej;
         
-        point_load_node->data = point_load;
-        point_load_node->next = S->point_load_node;
-        S->point_load_node = point_load_node;
+        no_point_load_node->data = no_point_load;
+        no_point_load_node->next = S->Node;
+        S->Node = no_point_load_node;
 
-        return point_load;
+        return no_point_load;
     }
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力矩结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* M,_OUT ERROR_ID* errorID, _OUT POINT_LOAD_STACKS* S);
+    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* CM,_OUT ERROR_ID* errorID, _OUT NO_POINT_LOAD_STACKS* S)
     {
-        double L = E->attribute->L;//取单元长度
-        double M = M->size;//取集中力矩大小
-        double a = M->position;//取集中力距离i端的长度
+        double L = E->attribute->data->L;///取单元长度
+        double M = CM->size;//取集中力矩大小
+        double a = CM->position;//取集中力距离i端的长度
         double b = L - a;
         
         double qeix = 0;
         double qeiy = 6*a*b*M/pow(L,3);
-        double qei  = -b*(3*a-l)*M/pow(L,2);
+        double qei  = -b*(3*a-L)*M/pow(L,2);
         double qejx = 0;
         double qejy = -qeiy;
-        double qej  = -a*(3*b-l)*M/pow(L,2);
+        double qej  = -a*(3*b-L)*M/pow(L,2);
         
-        POINT_LOAD* point_load = nullptr;
-        POINT_LOAD_NODE* point_load_node = nullptr;
+        NO_POINT_LOAD* no_point_load = nullptr;
+        NO_POINT_LOAD_NODE* no_point_load_node = nullptr;
         
-        point_load = (POINT_LOAD*)malloc(sizeof(POINT_LOAD));
-        point_load_node = (POINT_LOAD_NODE*)malloc(sizeof(POINT_LOAD_NODE));
+        no_point_load = (NO_POINT_LOAD*)malloc(sizeof(NO_POINT_LOAD));
+        no_point_load_node = (NO_POINT_LOAD_NODE*)malloc(sizeof(NO_POINT_LOAD_NODE));
         
-        if(point_load == nullptr || point_load_node == nullptr)
+        if(no_point_load == nullptr || no_point_load_node == nullptr)
         {
-            *errorID = _ERROR_POINT_ERROR;
+            *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
             return nullptr;
         }
         
-        point_load->ui = qeix;
-        point_load->vi = qeiy;
-        point_load->thetai = qei;
-        point_load->uj = qejx;
-        point_load->vj = qejy;
-        point_load->thetaj = qej;
+        no_point_load->ui = qeix;
+        no_point_load->vi = qeiy;
+        no_point_load->thetai = qei;
+        no_point_load->uj = qejx;
+        no_point_load->vj = qejy;
+        no_point_load->thetaj = qej;
         
-        point_load_node->data = point_load;
-        point_load_node->next = S->point_load_node;
-        S->point_load_node = point_load_node;
+        no_point_load_node->data = no_point_load;
+        no_point_load_node->next = S->Node;
+        S->Node = no_point_load_node;
 
-        return point_load;
+        return no_point_load;
     }
 
     //节点载荷计算：compute-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元均布载荷结构体指针
     //输出：该单元节点载荷结构体指针
-    POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID , _OUT POINT_LOAD_STACKS* S)
+    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT NO_POINT_LOAD_STACKS* S)
      {
-        double L = E->attribute->L;//取单元长度
+        double L = E->attribute->data->L;///取单元长度
         double q = Q->size;//取均布载荷大小
         double Li = Q->positioni;//取集中力距离i端的长度
         double Lj = Q->positionj;//取集中力距离i端的长度
@@ -356,33 +371,30 @@ namespace pre
         double qejy = -q*pow(a,3)*(2*L - a)/2/pow(L,3);
         double qej  = q*pow(a,3)*(4*L - 3*a)/12/pow(L,2);
         
-        POINT_LOAD* point_load = nullptr;
-        POINT_LOAD_NODE* point_load_node = nullptr;
+        NO_POINT_LOAD* no_point_load = nullptr;
+        NO_POINT_LOAD_NODE* no_point_load_node = nullptr;
         
-        point_load = (POINT_LOAD*)malloc(sizeof(POINT_LOAD));
-        point_load_node = (POINT_LOAD_NODE*)malloc(sizeof(POINT_LOAD_NODE));
+        no_point_load = (NO_POINT_LOAD*)malloc(sizeof(NO_POINT_LOAD));
+        no_point_load_node = (NO_POINT_LOAD_NODE*)malloc(sizeof(NO_POINT_LOAD_NODE));
         
-        if(point_load == nullptr || point_load_node == nullptr)
+        if(no_point_load == nullptr || no_point_load_node == nullptr)
         {
-            *errorID = _ERROR_POINT_ERROR;
+            *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
             return nullptr;
         }
         
-        point_load->ui = qeix;
-        point_load->vi = qeiy;
-        point_load->thetai = qei;
-        point_load->uj = qejx;
-        point_load->vj = qejy;
-        point_load->thetaj = qej;
+        no_point_load->ui = qeix;
+        no_point_load->vi = qeiy;
+        no_point_load->thetai = qei;
+        no_point_load->uj = qejx;
+        no_point_load->vj = qejy;
+        no_point_load->thetaj = qej;
         
-        point_load_node->data = point_load;
-        point_load_node->next = S->point_load_node;
-        S->point_load_node = point_load_node;
+        no_point_load_node->data = no_point_load;
+        no_point_load_node->next = S->Node;
+        S->Node = no_point_load_node;
 
-        return point_load;
-     }
-
-} // namespace pre
-
-
+        return no_point_load;
+    }
+} //namespace wwj
 

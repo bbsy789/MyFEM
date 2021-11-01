@@ -4,19 +4,23 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build", //相当与名字，与后面launch.json中preLaunchTask参数要保持一致
+            "label": "build",
             "type": "shell",
-            "command": "g++", 
-            "args": [     //编译所需要的参数，包括编译方式，源文件，和生成的可执行文件
+            "command": "g++",
+            "args": [
                 "-g",
-                "-Wall",
                 "-std=c++17",
                 "${file}",
-                "-I${workspaceFolder}\\include\\",
+                "${workspaceFolder}\\src\\matrix.cpp",
+                "${workspaceFolder}\\src\\common.cpp",
+                "${workspaceFolder}\\src\\pre.cpp",
+                "${workspaceFolder}\\src\\point.cpp",
+                "${workspaceFolder}\\src\\element.cpp",
+                "-I${workspaceFolder}\\include",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],
-            "presentation": {   //控制终端显示
+            "presentation": {
                 "echo": true,
                 "reveal": "always",
                 "focus": false,
@@ -24,26 +28,83 @@
                 "showReuseMessage": false,
                 "clear": true
             },
+            "problemMatcher": [
+                "$gcc"
+            ]
         },
         {
             "label": "run",
             "type": "shell",
-            "dependsOn": ["build"], //依赖的配置，运行之前需要编译链接形成可执行文件
+            "dependsOn": [
+                "build"
+            ],
             "command": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [],
-            "presentation": {   //控制终端显示
-                "echo": false,  // 执行命令是否输出到集成终端
+            "presentation": {
+                "echo": false,
                 "reveal": "always",
                 "focus": false,
-                "panel": "shared", //控制是否共享面板
-                "showReuseMessage": false, //是否显示"终端终端将被重用，是否显示"的提示
-                "clear": true  //执行任务前是否清除终端
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
             },
-            //"problemMatcher": [],
-            "group": {           
-                "kind": "test", 
+            "group": {
+                "kind": "test",
                 "isDefault": true
             }
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe 生成预编译文件",
+            "command": "E:\\mingw64\\bin\\g++.exe",
+            "args": [
+                "-Wall",
+                "-std=c++17",
+                "${file}",
+                "${workspaceFolder}\\src\\matrix.cpp",
+                "${workspaceFolder}\\src\\common.cpp",
+                "${workspaceFolder}\\src\\pre.cpp",
+                "${workspaceFolder}\\src\\point.cpp",
+                "${workspaceFolder}\\src\\element.cpp",
+                "-I${workspaceFolder}\\include\\",
+                "-E",
+                ">${workspaceFolder}\\src\\pre_test.i"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "编译器: E:\\mingw64\\bin\\g++.exe"
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe 生成汇编文件",
+            "command": "E:\\mingw64\\bin\\g++.exe",
+            "args": [
+                "-Wall",
+                "-std=c++17",
+                "${file}",
+                "${workspaceFolder}\\src\\matrix.cpp",
+                "${workspaceFolder}\\src\\common.cpp",
+                "${workspaceFolder}\\src\\pre.cpp",
+                "${workspaceFolder}\\src\\point.cpp",
+                "${workspaceFolder}\\src\\element.cpp",
+                "-E",
+                ">${workspaceFolder}\\src\\pre_test.i",
+                "-S",
+                ">${workspaceFolder}\\src\\pre_test.s"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "编译器: E:\\mingw64\\bin\\g++.exe"
         }
     ]
 }

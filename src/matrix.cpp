@@ -46,7 +46,7 @@
 * (8)Function Define Section
 *******************************************************************************/
 
-void print_matrix(MATRIX* a, const STRING string)
+void print_matrix(MATRIX* a, STRING string)
 {
 	INDEX i, j;
 	printf("matrix %s:", string);
@@ -429,7 +429,7 @@ ERROR_ID matrix_inverse(_IN MATRIX* A, _OUT MATRIX* invA)
 		return errorID;
 	}
 
-	init_stack<matrix_node,matrix_element_node>(&S);
+	init_stack2<matrix_node,matrix_element_node>(&S);
 
 	n = A->rows;
 	ATemp = creat_matrix(n, n, &errorID, &S);
@@ -445,7 +445,7 @@ ERROR_ID matrix_inverse(_IN MATRIX* A, _OUT MATRIX* invA)
 	errorID = solve_matrix_equation_by_lup_decomposition(ATemp, invA);
 
 EXIT:
-	free_stack<matrix_node,matrix_element_node>(&S);
+	free_stack2<matrix_node,matrix_element_node>(&S);
 	return errorID;
 }
 
@@ -655,7 +655,7 @@ ERROR_ID solve_matrix_equation_by_lup_decomposition(_IN MATRIX* A, _IN_OUT MATRI
 		return errorID;
 	}
 
-	init_stack<matrix_node,matrix_element_node>(&S);
+	init_stack2<matrix_node,matrix_element_node>(&S);
 
 	n = A->rows;
 	m = B->columns;
@@ -775,6 +775,6 @@ ERROR_ID solve_matrix_equation_by_lup_decomposition(_IN MATRIX* A, _IN_OUT MATRI
 	}
 
 EXIT:
-	free_stack<matrix_node,matrix_element_node>(&S);
+	free_stack2<matrix_node,matrix_element_node>(&S);
 	return errorID;
 }

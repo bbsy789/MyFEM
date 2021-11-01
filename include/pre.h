@@ -8,13 +8,9 @@
 #include <matrix.h>
 #include <point.h>
 #include <common.h>
-#include <vector>
+#include <cstdio>
 
-using std::vector;
-
-using namespace base;
-
-namespace pre
+namespace wwj
 {
     //pre.h头文件的架构
 
@@ -66,7 +62,7 @@ namespace pre
     //等带宽存储，DD=(节点号插值最大+1)*节点自由度号；变带宽存储和一维变带宽存储.目的是减少总刚矩阵在内存中存放的空间。本算例忽略
     //输入：坐标变换后的总体坐标系下的单元刚度矩阵vector数组
     //输出：总体刚度矩阵
-    MATRIX* Component_TSM(_IN vector<ELEMENT*> E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
+    MATRIX* Component_TSM(_IN ELEMENT* E , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
 
     //前处理第四个模块
     //非节点节点载荷计算：compute-no-point-load
@@ -102,10 +98,9 @@ namespace pre
     //每一次遍历进行如下操作：1.节点载荷直接进行坐标转换，再按照自由度编号法，赋值累加进总节点载荷向量。
     //                      2.非节点载荷先进行等效转换，再进行坐标转换，再按照自由度编号法，赋值累加进总节点载荷向量。
     //最后输出总节点载荷向量。
-    TOTAL_LOAD* Compute_TL(_IN ELEMENT_STACKS* S,_IN LOAD_STACKS* S,_OUT ERROR_ID* errorID);
+    TOTAL_LOAD* Compute_TL(_IN ELEMENT_STACKS* element_stacks,_IN LOAD_STACKS* load_stacks,_OUT ERROR_ID* errorID);
 
     //前处理第五个模块
-    //单元杆端内力与支座反力计算。
     //在结构整体刚度方程中引入边界条件。一般有限元求解中引入的是位移边界条件。
     //位移边界条件就需要特别注意结构自由度的问题，避免无法求解。
     //选取适当方法求解平衡方程得到节点位移.
@@ -117,27 +112,27 @@ namespace pre
     //只要将初始刚度矩阵中已知位移项所对应的主元素乘以一个大系数或用更高数量级的某个大数代替，
     //同时将对应的载荷项作适当的变化，即可直接对方程求解。
 
-    //已知位移边界条件修改位移向量displacement
-    //输入：初始化的位移向量引用
-    //输出：添加了位移边界条件的位移向量
-    template <typename T>
-    vector<double>& D_ADD_boundary_condition(_IN vector<T>&,_OUT ERROR_ID* errorID);
+    // //已知位移边界条件修改位移向量displacement
+    // //输入：初始化的位移向量引用
+    // //输出：添加了位移边界条件的位移向量
+    // template <typename T>
+    // vector<double>& D_ADD_boundary_condition(_IN ,_OUT ERROR_ID* errorID);
 
-    //总体刚度矩阵引入边界条件
-    //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
-    //目的：根据约束信息改变相应刚度系数（主元素）和载荷项。
-    //输入：总体刚度矩阵指针，载荷项向量，约束节点的结构体（编号，六个自由度的位移)
-    //输出：引入边界条件后的总体刚度矩阵指针，载荷项向量
-    template <typename T>
-    ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN PPOINT_DISPLACEMENT,_OUT ERROR_ID* errorID);
+    // //总体刚度矩阵引入边界条件
+    // //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
+    // //目的：根据约束信息改变相应刚度系数（主元素）和载荷项。
+    // //输入：总体刚度矩阵指针，载荷项向量，约束节点的结构体（编号，六个自由度的位移)
+    // //输出：引入边界条件后的总体刚度矩阵指针，载荷项向量
+    // template <typename T>
+    // ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN ,_IN PPOINT_DISPLACEMENT,_OUT ERROR_ID* errorID);
 
-    //总体刚度矩阵引入边界条件
-    //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
-    //目的：根据约束信息改变相应刚度系数（主元素）和载荷项。
-    //输入：总体刚度矩阵指针，载荷项向量，约束节点的结构体（编号，六个自由度的位移)vector数组
-    //输出：引入边界条件后的总体刚度矩阵指针，载荷项向量
-    template <typename T>
-    ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN vector<T>& P,_IN vector<PPOINT_DISPLACEMENT>&,_OUT ERROR_ID* errorID);
+    // //总体刚度矩阵引入边界条件
+    // //方法：置大数法，n个方程，i行i列主对角元素置大数、右端项修改为大数和已知位移的乘积。
+    // //目的：根据约束信息改变相应刚度系数（主元素）和载荷项。
+    // //输入：总体刚度矩阵指针，载荷项向量，约束节点的结构体（编号，六个自由度的位移)vector数组
+    // //输出：引入边界条件后的总体刚度矩阵指针，载荷项向量
+    // template <typename T>
+    // ERROR_ID TSM_ADD_boundary_condition(_IN MATRIX* K,_IN ,_IN vector<PPOINT_DISPLACEMENT>&,_OUT ERROR_ID* errorID);
 } //namespace pre
 
 #endif

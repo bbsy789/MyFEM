@@ -1,5 +1,5 @@
 {
-    "C_Cpp.default.cppStandard": "c++14",
+    "C_Cpp.default.cppStandard": "c++17",
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled",
     "editor.mouseWheelZoom": true,
@@ -10,7 +10,9 @@
     "files.associations": {
         "iostream": "cpp",
         "*.tcc": "cpp",
-        "climits": "cpp"
+        "climits": "cpp",
+        "cstdio": "cpp",
+        "cmath": "cpp"
     },
     "cmake.debugConfig": {
         "externalConsole": true

@@ -9,14 +9,11 @@ using namespace wwj;
 
 int main()
 {
-    NW = 1;
     ERROR_ID errorID = _ERROR_NO_ERROR;
     MATRIX_STACKS matrix_stacks;
-    ELEMENT_ATTRIBUTE_STACKS element_attribute_stacks;
     ELEMENT_STACKS element_stacks;
 
     init_stack2<MATRIX_NODE,MATRIX_ELEMENT_NODE>(&matrix_stacks);
-    init_stack1<ELEMENT_ATTRIBUTE_NODE>(&element_attribute_stacks);
     init_stack1<ELEMENT_NODE>(&element_stacks);
 
     POINT* p1 = nullptr;
@@ -28,11 +25,10 @@ int main()
     p1 = PtCreate(0,0,1);
     p2 = PtCreate(10,0,2);
 
-    ea1 = Input_E_A(10,20000,1000,1000,&errorID,&element_attribute_stacks);
-    e1 = Input_E(2,ea1,1,e1->ptri,e1->ptrj,&errorID,&element_stacks);
+    ea1 = Input_E_A(10,20000,1000,1000,&errorID);
+    e1 = Input_E(2,ea1,1,p1,p2,&errorID,&element_stacks);
     TSM = Component_TSM(e1,&errorID,&matrix_stacks);
     print_matrix(TSM,"TSM:");
     free_stack2<MATRIX_NODE,MATRIX_ELEMENT_NODE>(&matrix_stacks);
-    free_stack1<ELEMENT_ATTRIBUTE_NODE>(&element_attribute_stacks);
     free_stack1<ELEMENT_NODE>(&element_stacks);
 }

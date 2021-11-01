@@ -1,35 +1,24 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}", //程序可执行文件的路径
+            "program": "D:\\MyFEM\\demo\\pre_test\\pre_test.exe",        //可执行文件的完整路径，文件名与 build.json 中生成的可执行文件名保持一致
             "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}", 
+            "stopAtEntry": false,           //是否在 main 函数处暂定执行
+            "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": false, //设为false时使用集成终端，true为外置终端
-            "linux": {
-                "MIMode": "gdb",
-                "miDebuggerPath": "/usr/bin/gdb"
-            },
-            "windows": {
-                "MIMode": "gdb",
-                "miDebuggerPath": "E:\\mingw64\\bin\\gdb.exe"
-            },
+            "externalConsole": true,        //在打开外部终端执行程序,而不是在 VSCode 的控制台中运行
+            "MIMode": "gdb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 }
-            ],
-            "preLaunchTask": "build"
+            ]
         }
     ]
 }

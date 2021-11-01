@@ -6,10 +6,9 @@ namespace wwj
     //梁单元属性的输入:
     //输入：平面梁单元属性  (包括E,  A,  I,  l)  
     //输出：平面梁单元属性矩阵指针,  错误代码,  堆栈指针。
-    ELEMENT_ATTRIBUTE *Input_E_A(_IN REAL A, _IN REAL E, _IN REAL I, _IN REAL L, _OUT ERROR_ID *errorID, _OUT ELEMENT_ATTRIBUTE_STACKS *S)
+    ELEMENT_ATTRIBUTE *Input_E_A(_IN REAL A, _IN REAL E, _IN REAL I, _IN REAL L, _OUT ERROR_ID *errorID)
     {
         ELEMENT_ATTRIBUTE *element_attribute = nullptr; //定义一个结构体指针,  初始化为nullptr
-        ELEMENT_ATTRIBUTE_NODE *element_attribute_node = nullptr;
 
         if (errorID == nullptr)
         {
@@ -25,15 +24,10 @@ namespace wwj
         }
 
         element_attribute = (ELEMENT_ATTRIBUTE *)malloc(sizeof(ELEMENT_ATTRIBUTE)); //分配内存空间,  注意释放
-        element_attribute_node = (ELEMENT_ATTRIBUTE_NODE *)malloc(sizeof(ELEMENT_ATTRIBUTE_NODE));
-
-        if (element_attribute == nullptr || element_attribute_node == nullptr)
+        if (element_attribute == nullptr)
         {
             free(element_attribute);
-            element_attribute == nullptr;
-            free(element_attribute_node);
-            element_attribute_node = nullptr;
-
+            element_attribute = nullptr;
             *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
             return nullptr;
         }
@@ -42,10 +36,6 @@ namespace wwj
         element_attribute->E = _IN E;
         element_attribute->I = _IN I;
         element_attribute->L = _IN L;
-
-        element_attribute_node->data = element_attribute;
-        element_attribute_node->next = S->Node;
-        S->Node = element_attribute_node;
 
         return element_attribute;
     }
@@ -70,7 +60,7 @@ namespace wwj
         if (element == nullptr || element_node == nullptr)
         {
             free(element);
-            element == nullptr;
+            element = nullptr;
             free(element_node);
             element_node = nullptr;
 
@@ -79,7 +69,7 @@ namespace wwj
         }
 
         //赋值
-        element->attribute->data   = _IN attribute;
+        element->attribute   = _IN attribute;
         element->index       = _IN index;
         element->NODE_NUMBER = _IN NODE_NUMBER;
         element->ptri        = _IN ptri;

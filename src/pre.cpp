@@ -20,7 +20,7 @@ namespace wwj
         const REAL I = element_attribute->L;
         const REAL A = element_attribute->A;
         const REAL L = element_attribute->L;
-        const REAL EA_L = E*I/L;
+        const REAL EA_L = E*A/L;
         const REAL EI_L3 = E*I/pow(L,3);
         const REAL EI_L2 = E*I/pow(L,2);
         const REAL EI_L = E*I/L;
@@ -73,7 +73,7 @@ namespace wwj
         const REAL yi = e->ptri->Y;
         const REAL xj = e->ptrj->X;
         const REAL yj = e->ptrj->Y;
-        const REAL Le = e->attribute->data->L;
+        const REAL Le = e->attribute->L;
         const REAL a11 = (xj - xi) / Le;
         const REAL a12 = (yj - yi) / Le;
         const REAL a21 = -a12;
@@ -185,10 +185,10 @@ namespace wwj
             //Kj_indexj_index:12 * j_index * NW - 12 * NW + 4 * j_index - 4           
             //Vscode部分替换方法：1.选中区域，2.cmd+opt+L
             //第n个单元的左上角矩阵
-            for(int n = 1 ; n <= NW ; n++)
+            for(unsigned int n = 1 ; n <= NW ; n++)
             {
                 //1.创建单元刚度矩阵                
-                matrix_ptr = Compute_PBES_NS(((E + n - 1)->attribute->data),errorID,S);//入栈
+                matrix_ptr = Compute_PBES_NS(((E + n - 1)->attribute),errorID,S);//入栈
                 if( matrix_ptr == nullptr || matrix_ptr->p == nullptr)
                 {
                     *errorID = _ERROR_CREATE_MATRIX_FAILED;
@@ -205,7 +205,7 @@ namespace wwj
                     {
                         unsigned int j_index = (E + n - 1)->ptrj->index;
                         *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * i_index - 4 ) 
-                        = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        += *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
                         j_index++;
                     } 
                     i_index++;
@@ -219,7 +219,7 @@ namespace wwj
                     {
                         unsigned int j_index = (E + n - 1)->ptrj->index;
                         *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * i_index - 4 ) 
-                        = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        += *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
                         j_index++;
                     } 
                     i_index++;
@@ -233,7 +233,7 @@ namespace wwj
                     {
                         unsigned int j_index = (E + n - 1)->ptrj->index;
                         *( TSM_element_ptr + 12 * i_index * NW - 12 * NW + 4 * j_index - 4 ) 
-                        = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        += *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
                         j_index++;
                     } 
                     i_index++;
@@ -247,17 +247,17 @@ namespace wwj
                     {
                         unsigned int j_index = (E + n - 1)->ptrj->index;
                         *( TSM_element_ptr + 12 * j_index * NW - 12 * NW + 4 * j_index - 4 ) 
-                        = *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
+                        += *( matrix_element_ptr + 6 * i + j - 7 );//核心算法
                         j_index++;
                     } 
                     i_index++;
                 }
                 //这里需要调整栈指针（出栈）！！！！！！！！！10.28还未实现
-                //出栈后释放内存
-                free(matrix_element_ptr);
-                matrix_element_ptr = nullptr;
-                free(matrix_ptr);//赋值完毕立刻释放
-                matrix_ptr = nullptr;//每次循环结束变为nullptr
+                //出栈后释放内存,此处出错！！！11.1
+                //free(matrix_element_ptr);
+                //matrix_element_ptr = nullptr;
+                //free(matrix_ptr);//赋值完毕立刻释放
+                //matrix_ptr = nullptr;//每次循环结束变为nullptr
             }
             *errorID = _ERROR_NO_ERROR;
             return TSM;
@@ -269,7 +269,7 @@ namespace wwj
     //输出：该单元节点载荷结构体指针
     NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT NO_POINT_LOAD_STACKS* S)
     {
-        double L = E->attribute->data->L;//取单元长度
+        double L = E->attribute->L;//取单元长度
         double P = F->size;//取集中力大小
         double a = F->position;//取集中力距离i端的长度
         double b = L - a;
@@ -313,7 +313,7 @@ namespace wwj
     //输出：该单元节点载荷结构体指针
     NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* CM,_OUT ERROR_ID* errorID, _OUT NO_POINT_LOAD_STACKS* S)
     {
-        double L = E->attribute->data->L;///取单元长度
+        double L = E->attribute->L;///取单元长度
         double M = CM->size;//取集中力矩大小
         double a = CM->position;//取集中力距离i端的长度
         double b = L - a;
@@ -357,12 +357,12 @@ namespace wwj
     //输出：该单元节点载荷结构体指针
     NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT NO_POINT_LOAD_STACKS* S)
      {
-        double L = E->attribute->data->L;///取单元长度
+        double L = E->attribute->L;///取单元长度
         double q = Q->size;//取均布载荷大小
-        double Li = Q->positioni;//取集中力距离i端的长度
+        //double Li = Q->positioni;//取集中力距离i端的长度
         double Lj = Q->positionj;//取集中力距离i端的长度
         double a = L - Lj;//默认Li = 0
-        double b = Lj;
+        //double b = Lj;
         
         double qeix = 0;
         double qeiy = -q*a*(2*pow(L,3)-2*L*pow(a,2)+pow(a,3))/pow(L,3);

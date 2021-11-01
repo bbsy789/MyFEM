@@ -12,7 +12,7 @@ namespace wwj
     //平面梁单元属性的输入:
     //输入：平面梁单元属性（包括E，A，I，l）
     //输出：平面梁单元属性矩阵指针，错误代码，堆栈指针。
-    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID,_OUT ELEMENT_ATTRIBUTE_STACKS* S);
+    ELEMENT_ATTRIBUTE* Input_E_A(_IN REAL A,_IN REAL E,_IN REAL I,_IN REAL L,_OUT ERROR_ID* errorID);
 
     //平面梁单元的输入：
     //输入：平面梁单元的属性

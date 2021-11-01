@@ -6,17 +6,21 @@
 #define _OUT
 #define _IN_OUT
 
+#define NW_VALUE 1
+#define NR_VALUE 1
+#define NU_VALUE 1
+#define QQ_VALUE 1
+
 #include <common.h>
 
 namespace wwj
 {
     typedef double REAL;//
 
-    static unsigned int NW = 0;//定义总节点数NW
-    static unsigned int NR = 0;//定义受约束的节点总数
-
-    static unsigned int NU = 0;//定义总单元数NU
-    static unsigned int QQ = 0;//定义总荷载数QQ
+    static unsigned int NW = NW_VALUE;//定义总节点数NW
+    static unsigned int NR = NR_VALUE;//定义受约束的节点总数
+    static unsigned int NU = NU_VALUE;//定义总单元数NU
+    static unsigned int QQ = QQ_VALUE;//定义总荷载数QQ
 
     typedef struct element_attribute
     {
@@ -26,14 +30,6 @@ namespace wwj
         double I;//极惯性矩
         double L;//单元长度
     }ELEMENT_ATTRIBUTE;//单元属性
-
-    typedef ELEMENT_ATTRIBUTE* PELEMENT_ATTRIBUTE;
-
-    typedef struct element_attribute_node
-    {
-        PELEMENT_ATTRIBUTE data;
-        struct element_attribute_node* next;
-    }ELEMENT_ATTRIBUTE_NODE;
 
     enum point_dof
     {   full_dof,
@@ -85,7 +81,7 @@ namespace wwj
     {
         //unsigned char KEYOPT;//关键选项
         unsigned char NODE_NUMBER;//节点数
-        struct element_attribute_node* attribute;//单元材料属性结构体指针
+        struct element_attribute* attribute;//单元材料属性结构体指针
         //char* ELEMENT_NAME;//单元名
         unsigned int index;//单元号
         PPOINT ptri;//指向i端节点的指针
@@ -190,7 +186,6 @@ namespace wwj
 
     //使用using定义栈别名
     using POINT_STACKS = stacks1<POINT_NODE>;
-    using ELEMENT_ATTRIBUTE_STACKS = stacks1<ELEMENT_ATTRIBUTE_NODE>;
     using ELEMENT_STACKS = stacks1<ELEMENT_NODE>;
     using POINT_LOAD_STACKS = stacks1<POINT_LOAD_NODE>;
     using NO_POINT_LOAD_STACKS = stacks1<NO_POINT_LOAD_NODE>;

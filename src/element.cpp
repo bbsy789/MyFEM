@@ -75,6 +75,8 @@ namespace wwj
         element->ptri        = _IN ptri;
         element->ptrj        = _IN ptrj;
 
+        NU++;
+
         element_node->data = element;
         element_node->next = S->Node;
         S->Node = element_node;

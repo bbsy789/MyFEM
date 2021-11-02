@@ -105,29 +105,38 @@ namespace wwj
     //对单元刚度矩阵进行坐标变换的函数：Transform-element-stiffness-matrix
     //输入：该单元的坐标转换矩阵，该单元局部坐标系下的单元刚度矩阵
     //输出：该单元整体坐标系下的单元刚度矩阵
-    MATRIX* Transform_ESM(_IN const MATRIX* T , _IN const MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
+    MATRIX* Transform_ESM(_IN MATRIX *T , _IN MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
     {
         //1.创建两个零矩阵存放转换后的矩阵，注意这里分配了内存
         MATRIX* Process_Matrix = nullptr;
         MATRIX* Transformed_Matrix = nullptr;
+        MATRIX* Transformed_Matrix_T = nullptr;
+        
         const INTEGER rows = 6;
         const INTEGER columns = 6;
 
         Process_Matrix = creat_zero_matrix(rows,columns,errorID,S);//已入栈
         Transformed_Matrix = creat_zero_matrix(rows,columns,errorID,S);//已入栈
+        Transformed_Matrix_T  = creat_zero_matrix(rows,columns,errorID,S);//已入栈
 
         if(Transformed_Matrix == nullptr || Process_Matrix == nullptr)
         {
             *errorID = _ERROR_CREATE_MATRIX_FAILED;//创建矩阵失败
             return nullptr;
         }
-        //2.执行两步矩阵乘法，分别用变换矩阵左乘和右乘单元刚度矩阵
+        //2.执行两步矩阵乘法，第一步使用旋转矩阵左乘单元刚度矩阵
         *errorID = matrix_multiplication(T,ESM,Process_Matrix);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
             return nullptr;
         }
-        *errorID = matrix_multiplication(Process_Matrix,T,Transformed_Matrix);
+        //计算旋转矩阵的转置
+        *errorID = matrix_transpose(T,Transformed_Matrix_T);
+        if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
+        {
+            return nullptr;
+        }
+        *errorID = matrix_multiplication(Process_Matrix,Transformed_Matrix_T,Transformed_Matrix);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
             return nullptr;
@@ -194,6 +203,7 @@ namespace wwj
                 element_data_ptr = element_node_ptr->data;
                 //1.创建单元刚度矩阵                
                 ESM = Compute_PBES_NS((element_data_ptr->attribute),errorID,S);//入栈
+                print_matrix(ESM,"ESM");
                 //if( ESM == nullptr || ESM->p == nullptr)
                 //{
                 //   *errorID = _ERROR_CREATE_MATRIX_FAILED;
@@ -201,7 +211,9 @@ namespace wwj
                 //}
                 //2.创建该单元的坐标变换矩阵并对单元刚度矩阵进行坐标转换
                 T = Compute_CTM(element_data_ptr,ESM,errorID,S);
+                print_matrix(T,"T");
                 TESM = Transform_ESM(T,ESM,errorID,S);
+                print_matrix(TESM,"TESM");
                 TESM_data = TESM->p;//得到总体坐标单元刚度矩阵的元素指针
                 TSM_data = TSM->p;//得到总体刚度矩阵的元素指针
                 
@@ -218,7 +230,7 @@ namespace wwj
                     } 
                     i_index++;
                 }
-                print_matrix(TSM, "Kii赋值后的TSM：");
+                print_matrix(TSM, "Kii赋值后的TSM");
                 //4.取Kij分块矩阵，也就是单元刚度矩阵的右上角矩阵。
                 i_index = element_data_ptr->ptri->index;
                 for(int i = 1 ; i <= 3 ; i++)
@@ -232,7 +244,7 @@ namespace wwj
                     } 
                     i_index++;
                 }
-                print_matrix(TSM, "Kij赋值后的TSM：");
+                print_matrix(TSM, "Kij赋值后的TSM");
                 //5.取Kji分块矩阵，也就是单元刚度矩阵的左下角矩阵。
                 i_index = element_data_ptr->ptri->index;
                 for(int i = 1 ; i <= 3 ; i++)
@@ -246,7 +258,7 @@ namespace wwj
                     } 
                     i_index++;
                 }
-                print_matrix(TSM, "Kji赋值后的TSM：");
+                print_matrix(TSM, "Kji赋值后的TSM");
                 //6.取Kjj分块矩阵，也就是单元刚度矩阵的右下角矩阵。
                 i_index = element_data_ptr->ptri->index;
                 for(int i = 1 ; i <= 3 ; i++)
@@ -260,7 +272,7 @@ namespace wwj
                     } 
                     i_index++;
                 }
-                print_matrix(TSM, "Kjj赋值后的TSM：");
+                print_matrix(TSM, "Kjj赋值后的TSM");
                 //7.释放单元刚度矩阵
                 //这里需要调整栈指针（出栈）！！！！！！！！！10.28还未实现
                 //出栈后释放内存,暂时先不释放内存11.1

@@ -115,7 +115,7 @@ Input_Output: 无
 Return: 错误号
 Author: Marc Pony(marc_pony@163.com)
 ***********************************************************************************************/
-ERROR_ID matrix_multiplication(_IN const MATRIX* A, _IN const MATRIX* B, _OUT MATRIX* C);
+ERROR_ID matrix_multiplication(_IN  MATRIX* A, _IN  MATRIX* B, _OUT MATRIX* C);
 
 
 /**********************************************************************************************

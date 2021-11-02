@@ -50,7 +50,7 @@ namespace wwj
     //对单元刚度矩阵进行坐标变换的函数：Transform-element-stiffness-matrix
     //输入：该单元的坐标转换矩阵，该单元局部坐标系下的单元刚度矩阵
     //输出：该单元整体坐标系下的单元刚度矩阵
-    MATRIX* Transform_ESM(_IN const MATRIX* T , _IN const MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
+    MATRIX* Transform_ESM(_IN MATRIX* T , _IN MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
     
 
     //前处理第三个模块：总体刚度矩阵形成: component-total-stiffness-matrix

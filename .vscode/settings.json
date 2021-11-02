@@ -12,7 +12,8 @@
         "*.tcc": "cpp",
         "climits": "cpp",
         "cstdio": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "string": "cpp"
     },
     "cmake.debugConfig": {
         "externalConsole": true

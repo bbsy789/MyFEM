@@ -7,10 +7,10 @@
 
 using namespace wwj;
 
-unsigned int NW;//定义总节点数NW
-unsigned int NR;//定义受约束的节点总数
-unsigned int NU;//定义总单元数NU
-unsigned int QQ;//定义总荷载数QQ
+unsigned int NW;//锟斤拷锟斤拷锟杰节碉拷锟斤拷NW
+unsigned int NR;//锟斤拷锟斤拷锟斤拷约锟斤拷锟侥节碉拷锟斤拷锟斤拷
+unsigned int NU;//锟斤拷锟斤拷锟杰碉拷元锟斤拷NU
+unsigned int QQ;//锟斤拷锟斤拷锟杰猴拷锟斤拷锟斤拷QQ
 
 
 int main()
@@ -46,10 +46,10 @@ int main()
     ea2 = Input_E_A(5, 3 * pow(10, 7), 1 / 24, 5, &errorID);
 
     e1 = Input_E(2, ea1, 1, p1, p2, &errorID, &element_stacks);
-    e2 = Input_E(2, ea2, 2, p3, p1, &errorID, &element_stacks);
+    e2 = Input_E(2, ea2, 2, p1, p3, &errorID, &element_stacks);
 
     TSM = Component_TSM(&element_stacks,&errorID,&matrix_stacks);
-    print_matrix(TSM,"TSM:");
+    print_matrix(TSM,"TSM");
 
     free_stack2<MATRIX_NODE,MATRIX_ELEMENT_NODE>(&matrix_stacks);
     free_stack1<ELEMENT_NODE>(&element_stacks);

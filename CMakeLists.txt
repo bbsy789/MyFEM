@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(MyFEM VERSION 0.1.0)#工程名字必须与代码路径文件夹名称一致，其导出文件也必须一致
 
-set( CMAKE_CXX_COMPLIER "g++")#设置g++编译器
-set( CMAKE_CXX_FLAGS "-std=c++11")#参数含义是 set compliler for c++ language
-set( CMAKE_BUILD_TYPE "Release")#debug/release两种编译模式
+set( CMAKE_CXX_COMPLIER "E:/mingw64/bin/g++.exe")#设置g++编译器
+set( CMAKE_CXX_FLAGS "-std=c++17")#参数含义是 set compliler for c++ language
+set( CMAKE_BUILD_TYPE "debug")#debug/release两种编译模式
 #${PROJECT_SOURCE_DIR}代表了CMakeLists.txt的绝对路径
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)#包含头文件
 INCLUDE_DIRECTORIES(E:/mingw64/include)
@@ -32,9 +32,15 @@ add_subdirectory(src)#增加子文件夹
 # 设置MSVC编译编码
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>")
 
-ADD_EXECUTABLE(MyFEM src/main.cpp)
+ADD_EXECUTABLE(MyFEM demo/pre_test/pre_test.cpp
+								   src/point.cpp
+								   src/pre.cpp
+								   src/point.cpp 
+								   src/matrix.cpp 
+								   src/common.cpp 
+								   src/element.cpp)
 #输出exe文件
-target_link_libraries(${PROJECT_NAME} graphics64 uuid msimg32 gdi32 imm32 ole32 oleaut32 winmm gdiplus)#链接关键指令
+#target_link_libraries(${PROJECT_NAME})#链接关键指令
 set(CMAKE_BUILD_TYPE DEBUG)#配置build模式
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

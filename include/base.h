@@ -6,21 +6,16 @@
 #define _OUT
 #define _IN_OUT
 
-#define NW_VALUE 1
-#define NR_VALUE 1
-#define NU_VALUE 1
-#define QQ_VALUE 1
-
 #include <common.h>
+
+extern unsigned int NW;//定义总节点数NW
+extern unsigned int NR;//定义受约束的节点总数
+extern unsigned int NU;//定义总单元数NU
+extern unsigned int QQ;//定义总荷载数QQ
 
 namespace wwj
 {
-    typedef double REAL;//
-
-    static unsigned int NW = NW_VALUE;//定义总节点数NW
-    static unsigned int NR = NR_VALUE;//定义受约束的节点总数
-    static unsigned int NU = NU_VALUE;//定义总单元数NU
-    static unsigned int QQ = QQ_VALUE;//定义总荷载数QQ
+    typedef double REAL;
 
     typedef struct element_attribute
     {

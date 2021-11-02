@@ -7,7 +7,6 @@
 
 namespace wwj
 {
-
     static char * DuplicateString(const char *s);
 
     POINT* PtCreate(_IN int x, _IN int y, _IN unsigned int index)
@@ -16,6 +15,7 @@ namespace wwj
         t->X = x;
         t->Y = y;
         t->index = index;
+        NW++;
         return t;
     }
 

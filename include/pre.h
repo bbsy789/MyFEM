@@ -26,9 +26,9 @@ namespace wwj
     //前处理第一个模块：单元刚度矩阵形成
 
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
-    //输入：梁单元属性结构体
+    //输入：梁单元属性结构体，已分配好空间的数组指针
     //输出：不考虑剪切变形的平面梁单元刚度矩阵
-    MATRIX* Compute_PBES_NS(_IN const ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
+    MATRIX* Compute_PBES_NS(_IN const ELEMENT_ATTRIBUTE* element_attribute , _IN REAL* ESM_element, _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S);
 
 
     /* //不考虑剪切变形的空间梁单元刚度矩阵计算：compute-space-beam-element-stiffness-matrix
@@ -43,9 +43,9 @@ namespace wwj
     //方法：采用SO（3）进行坐标变换
 
     //计算坐标变换矩阵：compute-coordinate-transfer-matrix
-    //输入：梁单元的指针
+    //输入：梁单元的指针,已分配好空间的数组指针
     //输出：该梁单元的局部坐标转整体坐标的SO（3）矩阵
-    MATRIX* Compute_CTM(_IN const ELEMENT* e, _IN const MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
+    MATRIX* Compute_CTM(_IN const ELEMENT* e,_IN REAL* rotation_matrix_element, _IN const MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S);
 
     //对单元刚度矩阵进行坐标变换的函数：Transform-element-stiffness-matrix
     //输入：该单元的坐标转换矩阵，该单元局部坐标系下的单元刚度矩阵

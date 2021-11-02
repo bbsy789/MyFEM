@@ -8,7 +8,7 @@ namespace wwj
     //不考虑剪切变形的平面梁单元刚度矩阵计算：compute-plan-beam-element-stiffness-matrix-not-shear
     //输入：梁单元属性结构体
     //输出：不考虑剪切变形的平面梁单元刚度矩阵
-    MATRIX* Compute_PBES_NS(_IN const ELEMENT_ATTRIBUTE* element_attribute , _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
+    MATRIX* Compute_PBES_NS(_IN const ELEMENT_ATTRIBUTE* element_attribute , _IN REAL* ESM_element, _OUT ERROR_ID* errorID , _OUT MATRIX_STACKS* S)
     {
         if(element_attribute == nullptr)
         {
@@ -17,21 +17,42 @@ namespace wwj
         }
         // 1.直接计算EA/l，EI/I^3,EI/l^2,EI/l
         const REAL E = element_attribute->E;
-        const REAL I = element_attribute->L;
+        const REAL I = element_attribute->I;
         const REAL A = element_attribute->A;
         const REAL L = element_attribute->L;
         const REAL EA_L = E*A/L;
         const REAL EI_L3 = E*I/pow(L,3);
         const REAL EI_L2 = E*I/pow(L,2);
         const REAL EI_L = E*I/L;
-    
-        //2.存放矩阵元素:                     1            2            3            4            5             6
-        static REAL ESM_element[6*6] = {    EA_L        ,0           ,0           ,-EA_L       ,0            ,0           //1
-                                           ,0           ,12*EI_L3    ,6*EI_L2     ,0           ,-12*EI_L3    ,6*EI_L2     //2
-                                           ,0           ,6*EI_L2     ,4*EI_L      ,0           ,-6*EI_L2     ,2*EI_L      //3
-                                           ,-EA_L       ,0           ,0           ,EA_L        ,0            ,0           //4
-                                           ,0           ,-12*EI_L3   ,-6*EI_L2    ,0           ,12*EI_L3     ,-6*EI_L2    //5
-                                           ,0           ,6*EI_L2     ,2*EI_L      ,0           ,-6*EI_L2     ,4*EI_L   }; //6
+        
+        *(ESM_element+0) = EA_L;
+        *(ESM_element+3) = -EA_L;
+        *(ESM_element+7) = 12*EI_L3;
+        *(ESM_element+8) = 6*EI_L2;
+        *(ESM_element+10) = -12*EI_L3;
+        *(ESM_element+11) = 6*EI_L2;
+        *(ESM_element+13) = 6*EI_L2;
+        *(ESM_element+14) = 4*EI_L;
+        *(ESM_element+16) = -6*EI_L2;
+        *(ESM_element+17) = 2*EI_L;
+        *(ESM_element+18) = -EA_L;
+        *(ESM_element+21) = EA_L;
+        *(ESM_element+25) = -12*EI_L3;
+        *(ESM_element+26) = -6*EI_L2;
+        *(ESM_element+28) = 12*EI_L3;
+        *(ESM_element+29) = -6*EI_L2;
+        *(ESM_element+31) = 6*EI_L2;
+        *(ESM_element+32) = 2*EI_L;
+        *(ESM_element+34) = -6*EI_L2;
+        *(ESM_element+35) = 4*EI_L;
+
+        /* //2.存放矩阵元素:        1            2            3            4            5             6
+        ESM_element = {    EA_L        ,0           ,0           ,-EA_L       ,0            ,0           //1
+                          ,0           ,12*EI_L3    ,6*EI_L2     ,0           ,-12*EI_L3    ,6*EI_L2     //2
+                          ,0           ,6*EI_L2     ,4*EI_L      ,0           ,-6*EI_L2     ,2*EI_L      //3
+                          ,-EA_L       ,0           ,0           ,EA_L        ,0            ,0           //4
+                          ,0           ,-12*EI_L3   ,-6*EI_L2    ,0           ,12*EI_L3     ,-6*EI_L2    //5
+                          ,0           ,6*EI_L2     ,2*EI_L      ,0           ,-6*EI_L2     ,4*EI_L   }; //6 */
         //上述矩阵即为单元刚度矩阵的元素
 
         //3.定义传入create_matrix的参数
@@ -55,7 +76,7 @@ namespace wwj
     //计算坐标变换矩阵：compute-coordinate-transfer-matrix
     //输入：梁单元的指针
     //输出：该梁单元的局部坐标转整体坐标的SO（3）矩阵
-    MATRIX* Compute_CTM(_IN const ELEMENT* e,_IN const MATRIX* ESM,_OUT ERROR_ID* errorID,_OUT MATRIX_STACKS* S)
+    MATRIX* Compute_CTM(_IN const ELEMENT* e,_IN REAL* rotation_matrix_element, _IN const MATRIX* ESM, _OUT ERROR_ID* errorID, _OUT MATRIX_STACKS* S)
     {
         //1.判断野指针
         if(e == nullptr)
@@ -79,13 +100,24 @@ namespace wwj
         const REAL a21 = -a12;
         const REAL a22 = a11;
         
-        //3.得到旋转矩阵                                 1            2            3            4            5             6
-        static REAL rotation_matrix_element[6*6] = {   a11         ,a12         ,0           ,0           ,0            ,0           //1
-                                                      ,a21         ,a22         ,0           ,0           ,0            ,0           //2
-                                                      ,0           ,0           ,1           ,0           ,0            ,0           //3
-                                                      ,0           ,0           ,0           ,a11         ,a12          ,0           //4
-                                                      ,0           ,0           ,0           ,a21         ,a22          ,0           //5
-                                                      ,0           ,0           ,0           ,0           ,0            ,1   };      //6
+        *(rotation_matrix_element+0) = a11;
+        *(rotation_matrix_element+1) = a12;
+        *(rotation_matrix_element+6) = a21;
+        *(rotation_matrix_element+7) = a22;
+        *(rotation_matrix_element+14) = 1;
+        *(rotation_matrix_element+21) = a11;
+        *(rotation_matrix_element+22) = a12;
+        *(rotation_matrix_element+27) = a21;
+        *(rotation_matrix_element+28) = a22;
+        *(rotation_matrix_element+35) = 1;
+
+        /* //3.得到旋转矩阵                    1            2            3            4            5             6
+        rotation_matrix_element[6*6] = {   a11         ,a12         ,0           ,0           ,0            ,0           //1
+                                          ,a21         ,a22         ,0           ,0           ,0            ,0           //2
+                                          ,0           ,0           ,1           ,0           ,0            ,0           //3
+                                          ,0           ,0           ,0           ,a11         ,a12          ,0           //4
+                                          ,0           ,0           ,0           ,a21         ,a22          ,0           //5
+                                          ,0           ,0           ,0           ,0           ,0            ,1   };  */     //6
 
         const INTEGER rows = 6;
         const INTEGER columns = 6;
@@ -161,6 +193,9 @@ namespace wwj
             INTEGER rows = 3 * NW;//定义总体刚度矩阵的行数
             INTEGER columns = 3 * NW;//定义总体刚度矩阵的列数
 
+            REAL ESM_element[36] = {0};//定义存放单元刚度矩阵元素的数组
+            REAL rotation_matrix_element[36] = {0};//定义存放旋转矩阵元素的数组
+
             ELEMENT_NODE* element_node_ptr = nullptr;
             ELEMENT* element_data_ptr = nullptr;//定义遍历单元栈的指针
             
@@ -202,7 +237,7 @@ namespace wwj
             {
                 element_data_ptr = element_node_ptr->data;
                 //1.创建单元刚度矩阵                
-                ESM = Compute_PBES_NS((element_data_ptr->attribute),errorID,S);//入栈
+                ESM = Compute_PBES_NS((element_data_ptr->attribute),ESM_element,errorID,S);//入栈
                 print_matrix(ESM,"ESM");
                 //if( ESM == nullptr || ESM->p == nullptr)
                 //{
@@ -210,7 +245,7 @@ namespace wwj
                 //    return nullptr;
                 //}
                 //2.创建该单元的坐标变换矩阵并对单元刚度矩阵进行坐标转换
-                T = Compute_CTM(element_data_ptr,ESM,errorID,S);
+                T = Compute_CTM(element_data_ptr,rotation_matrix_element,ESM,errorID,S);
                 print_matrix(T,"T");
                 TESM = Transform_ESM(T,ESM,errorID,S);
                 print_matrix(TESM,"TESM");
@@ -221,18 +256,16 @@ namespace wwj
                 unsigned int i_index = element_data_ptr->ptri->index;
                 for(int i = 1 ; i <= 3 ; i++)
                 {
-                    unsigned int j_index = element_data_ptr->ptrj->index;
+                    //unsigned int j_index = element_data_ptr->ptrj->index;
                     for(int j = 1 ; j <= 3 ; j++ )
                     {
                         *( TSM_data + NW * (9 * i_index + 3 * i - 12) + 3 * i_index + j - 4)
                         += *( TESM_data + 6 * i + j - 7);//核心算法
-                        j_index++;
                     } 
-                    i_index++;
                 }
-                print_matrix(TSM, "Kii赋值后的TSM");
+                //print_matrix(TSM, "added(Kjj)-TSM");
                 //4.取Kij分块矩阵，也就是单元刚度矩阵的右上角矩阵。
-                i_index = element_data_ptr->ptri->index;
+                //i_index = element_data_ptr->ptri->index;
                 for(int i = 1 ; i <= 3 ; i++)
                 {
                     unsigned int j_index = element_data_ptr->ptrj->index;
@@ -240,13 +273,11 @@ namespace wwj
                     {
                         *( TSM_data + NW * (9 * j_index + 3 * i - 12) + 3 * i_index + j - 4)
                         += *( TESM_data + 6 * i + j - 4);//核心算法
-                        j_index++;
                     } 
-                    i_index++;
                 }
-                print_matrix(TSM, "Kij赋值后的TSM");
+                //print_matrix(TSM, "added(Kij)-TSM");
                 //5.取Kji分块矩阵，也就是单元刚度矩阵的左下角矩阵。
-                i_index = element_data_ptr->ptri->index;
+                //i_index = element_data_ptr->ptri->index;
                 for(int i = 1 ; i <= 3 ; i++)
                 {
                     unsigned int j_index = element_data_ptr->ptrj->index;
@@ -254,13 +285,11 @@ namespace wwj
                     {
                         *( TSM_data + NW * (9 * i_index + 3 * i - 12) + 3 * j_index + j - 4)
                         += *( TESM_data + 6 * i + j + 11);//核心算法
-                        j_index++;
                     } 
-                    i_index++;
                 }
-                print_matrix(TSM, "Kji赋值后的TSM");
+                //print_matrix(TSM, "added(Kji)-TSM");
                 //6.取Kjj分块矩阵，也就是单元刚度矩阵的右下角矩阵。
-                i_index = element_data_ptr->ptri->index;
+                //i_index = element_data_ptr->ptri->index;
                 for(int i = 1 ; i <= 3 ; i++)
                 {
                     unsigned int j_index = element_data_ptr->ptrj->index;
@@ -268,16 +297,14 @@ namespace wwj
                     {
                         *( TSM_data + NW * (9 * j_index + 3 * i - 12) + 3 * j_index + j - 4)
                         += *( TESM_data + 6 * i + j + 14);//核心算法
-                        j_index++;
                     } 
-                    i_index++;
                 }
-                print_matrix(TSM, "Kjj赋值后的TSM");
+                //print_matrix(TSM, "added(Kjj)-TSM");
                 //7.释放单元刚度矩阵
                 //这里需要调整栈指针（出栈）！！！！！！！！！10.28还未实现
                 //出栈后释放内存,暂时先不释放内存11.1
                 
-                    element_node_ptr = element_node_ptr->next;
+                element_node_ptr = element_node_ptr->next;
             }
             *errorID = _ERROR_NO_ERROR;
             return TSM;

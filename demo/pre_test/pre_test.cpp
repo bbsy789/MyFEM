@@ -12,7 +12,6 @@ unsigned int NR;//定义受约束的节点总数
 unsigned int NU;//定义总单元数NU
 unsigned int QQ;//定义总荷载数QQ
 
-
 int main()
 {
     NW = 0;

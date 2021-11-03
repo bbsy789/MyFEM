@@ -3,7 +3,8 @@ project(MyFEM VERSION 0.1.0)#工程名字必须与代码路径文件夹名称一
 
 set( CMAKE_CXX_COMPLIER "E:/mingw64/bin/g++.exe")#设置g++编译器
 set( CMAKE_CXX_FLAGS "-std=c++17")#参数含义是 set compliler for c++ language
-set( CMAKE_BUILD_TYPE "debug")#debug/release两种编译模式
+set( CMAKE_BUILD_TYPE "release")#debug/release两种编译模式
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 #${PROJECT_SOURCE_DIR}代表了CMakeLists.txt的绝对路径
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)#包含头文件
 INCLUDE_DIRECTORIES(E:/mingw64/include)

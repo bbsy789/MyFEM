@@ -102,8 +102,17 @@ template<typename T1,typename T2>
 struct stacks2
 {
 	T1* Node;
-	T2* ElementNode;
+	T2* Element1Node;
 };
+
+template<typename T1,typename T2,typename T3,typename T4>
+struct stacks4
+{
+	T1* Node;
+	T2* Element1Node;
+	T3* Element2Node;
+	T4* Element3Node;
+}
 
 using MATRIX_STACKS = stacks2<MATRIX_NODE,MATRIX_ELEMENT_NODE>;
 
@@ -119,16 +128,6 @@ Input_Output: 栈指针
 Return: 无
 Author: Marc Pony(marc_pony@163.com),wwj(bbsy789@126.com)modify
 ***********************************************************************************************/
-template<typename T1,typename T2>
-void init_stack2(_IN_OUT stacks2<T1,T2>* S)
-{
-	if (S == nullptr)
-	{
-		return;
-	}
-
-	memset(S, 0, sizeof(stacks2<T1,T2>));
-}
 
 template<typename T>
 void init_stack1(_IN_OUT stacks1<T>* S)
@@ -141,6 +140,28 @@ void init_stack1(_IN_OUT stacks1<T>* S)
 	memset(S, 0, sizeof(stacks1<T>));
 }
 
+template<typename T1,typename T2>
+void init_stack2(_IN_OUT stacks2<T1,T2>* S)
+{
+	if (S == nullptr)
+	{
+		return;
+	}
+
+	memset(S, 0, sizeof(stacks2<T1,T2>));
+}
+
+template<typename T1,typename T2,typename T3,typename T4>
+void init_stack4(_IN_OUT stacks4<T1,T2,T3,T4>* S)
+{
+	if (S == nullptr)
+	{
+		return;
+	}
+
+	memset(S, 0, sizeof(stacks4<T1,T2,T3,T4>));
+}
+
 /**********************************************************************************************
 Function: free_stack
 Description: 释放栈
@@ -150,11 +171,33 @@ Input_Output: 无
 Return: 无
 Author: Marc Pony(marc_pony@163.com),wwj(bbsy789@126.com)modify
 ***********************************************************************************************/
+template<typename T>
+void free_stack1(_IN stacks1<T>* S)
+{
+	T* Node = nullptr;
+
+	if (S == nullptr)
+	{
+		return;
+	}
+
+	while (S->Node != nullptr)
+	{
+		Node = S->Node;
+		S->Node = Node->next;
+
+		free(Node->ptr);
+		Node->ptr = nullptr;
+		free(Node);
+		Node = nullptr;
+	}
+}
+
 template<typename T1,typename T2>
 void free_stack2(_IN stacks2<T1,T2>* S)
 {
 	T1* Node = nullptr;
-	T2* ElementNode = nullptr;
+	T2* Element1Node = nullptr;
 
 	if (S == nullptr)
 	{
@@ -172,15 +215,15 @@ void free_stack2(_IN stacks2<T1,T2>* S)
 		Node = nullptr;
 	}
 
-	while (S->ElementNode != nullptr)
+	while (S->Element1Node != nullptr)
 	{
-		ElementNode = S->ElementNode;
-		S->ElementNode = ElementNode->next;
+		Element1Node = S->Element1Node;
+		S->Element1Node = Element1Node->next;
 
-		free(ElementNode->ptr);
-		ElementNode->ptr = nullptr;
-		free(ElementNode);
-		ElementNode = nullptr;
+		free(Element1Node->ptr);
+		Element1Node->ptr = nullptr;
+		free(Element1Node);
+		Element1Node = nullptr;
 	}
 }
 
@@ -206,15 +249,60 @@ void free_stack1(_IN stacks1<T>* S)
 	}
 }
 
-/**********************************************************************************************
-Function: Is_NoError
-Description: 判断是否错误
-Input: 错误号指针
-Output: 无
-Input_Output: 无
-Return: true or false
-Author: wwj(bbsy789@126.com)
-***********************************************************************************************/
-bool Is_no_Error(_IN ERROR_ID* errorID);
+template<typename T1,typename T2,typename T3,typename T4>
+void free_stack2(_IN stacks4<T1,T2,T3,T4>* S)
+{
+	T1* Node = nullptr;
+	T2* Element1Node = nullptr;
+	T3* Element2Node = nullptr;
+	T4* Element3Node = nullptr;
+	
+	if (S == nullptr)
+	{
+		return;
+	}
+
+	while (S->Node != nullptr)
+	{
+		Node = S->Node;
+		S->Node = Node->next;
+
+		free(Node->ptr);
+		Node->ptr = nullptr;
+		free(Node);
+		Node = nullptr;
+	}
+
+	while (S->Element1Node != nullptr)
+	{
+		Element1Node = S->Element1Node;
+		S->Element1Node = Element1Node->next;
+
+		free(Element1Node->ptr);
+		Element1Node->ptr = nullptr;
+		free(Element1Node);
+		Element1Node = nullptr;
+	}
+	while (S->Element2Node != nullptr)
+	{
+		Element2Node = S->Element2Node;
+		S->Element2Node = Element2Node->next;
+
+		free(Element2Node->ptr);
+		Element2Node->ptr = nullptr;
+		free(Element2Node);
+		Element2Node = nullptr;
+	}
+	while (S->Element3Node != nullptr)
+	{
+		Element3Node = S->Element3Node;
+		S->Element3Node = Element3Node->next;
+
+		free(Element3Node->ptr);
+		Element3Node->ptr = nullptr;
+		free(Element3Node);
+		Element3Node = nullptr;
+	}
+}
 
 #endif

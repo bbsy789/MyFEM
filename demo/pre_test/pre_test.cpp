@@ -4,6 +4,7 @@
 #include <common.h>
 #include <element.h>
 #include <point.h>
+#include <cstring>
 
 using namespace wwj;
 
@@ -47,10 +48,12 @@ int main()
     e2 = Input_E(2, ea2, 2, p1, p3, &errorID, &element_stacks);
 
     TSM = Component_TSM(&element_stacks,&errorID,&matrix_stacks);
-    print_matrix(TSM,"TSM");
+
+    print_matrix(TSM,(char *)"TSM");
 
     free_stack2<MATRIX_NODE,MATRIX_ELEMENT_NODE>(&matrix_stacks);
     free_stack2<ELEMENT_NODE,ELEMENT_ATTRIBUTE_NODE>(&element_stacks);
+    
     PtDestroy(p1);
     PtDestroy(p2);
     PtDestroy(p3);

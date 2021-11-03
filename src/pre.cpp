@@ -238,7 +238,7 @@ namespace wwj
                 element_data_ptr = element_node_ptr->ptr;
                 //1.创建单元刚度矩阵                
                 ESM = Compute_PBES_NS((element_data_ptr->attribute),ESM_element,errorID,S);//入栈
-                print_matrix(ESM,"ESM");
+                print_matrix(ESM,(char *)"ESM");
                 //if( ESM == nullptr || ESM->p == nullptr)
                 //{
                 //   *errorID = _ERROR_CREATE_MATRIX_FAILED;
@@ -246,9 +246,9 @@ namespace wwj
                 //}
                 //2.创建该单元的坐标变换矩阵并对单元刚度矩阵进行坐标转换
                 T = Compute_CTM(element_data_ptr,rotation_matrix_element,ESM,errorID,S);
-                print_matrix(T,"T");
+                print_matrix(T,(char *)"T");
                 TESM = Transform_ESM(T,ESM,errorID,S);
-                print_matrix(TESM,"TESM");
+                print_matrix(TESM,(char *)"TESM");
                 TESM_data = TESM->p;//得到总体坐标单元刚度矩阵的元素指针
                 TSM_data = TSM->p;//得到总体刚度矩阵的元素指针
                 
@@ -310,11 +310,11 @@ namespace wwj
             return TSM;
     }
     
-    //节点载荷计算：compute-point-load
+    //非节点载荷计算：compute-no-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力结构体指针
     //输出：该单元节点载荷结构体指针
-    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT NO_POINT_LOAD_STACKS* S)
+    NO_POINT_LOAD* Compute_NPL(_IN ELEMENT* E , _IN CONCENTRATED_FORCE* F , _OUT ERROR_ID* errorID , _OUT NO_POINT_LOAD_STACKS* S)
     {
         double L = E->attribute->L;//取单元长度
         double P = F->size;//取集中力大小
@@ -354,11 +354,11 @@ namespace wwj
         return no_point_load;
     }
 
-    //节点载荷计算：compute-point-load
+    //非节点载荷计算：compute-no-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元集中力矩结构体指针
     //输出：该单元节点载荷结构体指针
-    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E,CONCENTRATED_MOMENT* CM,_OUT ERROR_ID* errorID, _OUT NO_POINT_LOAD_STACKS* S)
+    NO_POINT_LOAD* Compute_NPL(_IN ELEMENT* E,CONCENTRATED_MOMENT* CM,_OUT ERROR_ID* errorID, _OUT NO_POINT_LOAD_STACKS* S)
     {
         double L = E->attribute->L;///取单元长度
         double M = CM->size;//取集中力矩大小
@@ -398,11 +398,11 @@ namespace wwj
         return no_point_load;
     }
 
-    //节点载荷计算：compute-point-load
+    //非节点载荷计算：compute-no-point-load
     //按照四元载荷等效原理，等效到节点载荷，
     //输入：某一单元结构体指针，该单元均布载荷结构体指针
     //输出：该单元节点载荷结构体指针
-    NO_POINT_LOAD* Compute_PL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT NO_POINT_LOAD_STACKS* S)
+    NO_POINT_LOAD* Compute_NPL(_IN ELEMENT* E,UNIFORM_LOAD* Q,_OUT ERROR_ID* errorID,_OUT NO_POINT_LOAD_STACKS* S)
      {
         double L = E->attribute->L;///取单元长度
         double q = Q->size;//取均布载荷大小

@@ -127,6 +127,7 @@ namespace wwj
         CONCENTRATED_FORCE* CONCENTRATED_FORCE_ptr;//集中力的结构体指针
         CONCENTRATED_MOMENT* CONCENTRATED_MOMENT_ptr;//集中力矩的结构体指针
         UNIFORM_LOAD* UNIFORM_LOAD_ptr;//均布载荷的结构体指针
+        //还可以继续增加其他载荷类型
     }LOAD;
     
     typedef LOAD* PLOAD;
@@ -136,6 +137,24 @@ namespace wwj
         PLOAD ptr;
         struct load_node* next;
     }LOAD_NODE;
+
+    typedef struct load_element1_node
+    {
+        struct concentrated_force* ptr;
+        struct load_element1_node* next;
+    }LOAD_ELEMENT1_NODE;
+
+    typedef struct load_element2_node
+    {
+        struct concentrated_moment* ptr;
+        struct load_element2_node* next;
+    }LOAD_ELEMENT2_NODE;
+
+    typedef struct load_element3_node
+    {
+        struct uniform_load* ptr;
+        struct load_element3_node* next;
+    }LOAD_ELEMENT3_NODE;
 
     //定义节点载荷结构体： POINT_LOAD
     typedef struct point_load
@@ -190,6 +209,6 @@ namespace wwj
     using ELEMENT_STACKS = stacks2<ELEMENT_NODE,ELEMENT_ATTRIBUTE_NODE>;
     using POINT_LOAD_STACKS = stacks1<POINT_LOAD_NODE>;
     using NO_POINT_LOAD_STACKS = stacks1<NO_POINT_LOAD_NODE>;
-    using LOAD_STACKS = stacks1<LOAD_NODE>;
+    using LOAD_STACKS = stacks4<LOAD_NODE,LOAD_ELEMENT1_NODE,LOAD_ELEMENT2_NODE,LOAD_ELEMENT3_NODE>;
 }
  #endif

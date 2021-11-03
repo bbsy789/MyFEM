@@ -17,6 +17,7 @@
 #include "matrix.h"
 #include "common.h"
 #include <cstdio>
+
 /*******************************************************************************
 * (3)Macro Define Section
 *******************************************************************************/
@@ -46,7 +47,7 @@
 * (8)Function Define Section
 *******************************************************************************/
 
-void print_matrix(MATRIX* a, STRING string)
+void print_matrix(MATRIX* a, _IN const STRING __restrict__ string)
 {
 	INDEX i, j;
 	printf("matrix %s:", string);

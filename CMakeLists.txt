@@ -38,7 +38,6 @@ ADD_EXECUTABLE(MyFEM demo/pre_test/pre_test.cpp
 								   src/pre.cpp
 								   src/point.cpp 
 								   src/matrix.cpp 
-								   src/common.cpp 
 								   src/element.cpp)
 #输出exe文件
 #target_link_libraries(${PROJECT_NAME})#链接关键指令

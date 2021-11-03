@@ -7,10 +7,10 @@
 
 using namespace wwj;
 
-unsigned int NW;//�����ܽڵ���NW
-unsigned int NR;//������Լ���Ľڵ�����
-unsigned int NU;//�����ܵ�Ԫ��NU
-unsigned int QQ;//�����ܺ�����QQ
+unsigned int NW;//定义总节点数NW
+unsigned int NR;//定义受约束的节点总数
+unsigned int NU;//定义总单元数NU
+unsigned int QQ;//定义总荷载数QQ
 
 
 int main()

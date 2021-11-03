@@ -17,15 +17,6 @@ namespace wwj
 {
     typedef double REAL;
 
-    typedef struct element_attribute
-    {
-        double A;//截面面积
-        double E;//拉压弹性模量
-        //double G;//剪切弹性模量
-        double I;//极惯性矩
-        double L;//单元长度
-    }ELEMENT_ATTRIBUTE;//单元属性
-
     enum point_dof
     {   full_dof,
         no_ux,
@@ -50,7 +41,7 @@ namespace wwj
 
     typedef struct point_node
     {
-        PPOINT data;
+        PPOINT ptr;
         struct point_node* next;
     }POINT_NODE;
 
@@ -68,9 +59,18 @@ namespace wwj
 
     typedef struct point_displacement_node
     {
-        PPOINT_DISPLACEMENT data;
+        PPOINT_DISPLACEMENT ptr;
         struct point_displacement_node* next;
     }POINT_DISPLACEMENT_NODE;
+
+    typedef struct element_attribute
+    {
+        double A;//截面面积
+        double E;//拉压弹性模量
+        //double G;//剪切弹性模量
+        double I;//极惯性矩
+        double L;//单元长度
+    }ELEMENT_ATTRIBUTE;//单元属性
 
     typedef struct element
     {
@@ -87,9 +87,15 @@ namespace wwj
 
     typedef struct element_node
     {
-        PELEMENT data;
+        PELEMENT ptr;
         struct element_node* next;
     }ELEMENT_NODE;
+
+    typedef struct element_attribute_node
+    {
+        struct element_attribute* ptr;
+        struct element_attribute_node* next;
+    }ELEMENT_ATTRIBUTE_NODE;
 
     //定义集中力载荷结构体：Concentrated force
     typedef struct concentrated_force
@@ -127,7 +133,7 @@ namespace wwj
 
     typedef struct load_node
     {
-        PLOAD data;
+        PLOAD ptr;
         struct load_node* next;
     }LOAD_NODE;
 
@@ -146,7 +152,7 @@ namespace wwj
 
     typedef struct point_load_node
     {
-        PPOINT_LOAD data;
+        PPOINT_LOAD ptr;
         struct point_load_node* next;
     }POINT_LOAD_NODE;
 
@@ -165,7 +171,7 @@ namespace wwj
 
     typedef struct no_point_load_node
     {
-        PNO_POINT_LOAD data;
+        PNO_POINT_LOAD ptr;
         struct no_point_load_node* next;
     }NO_POINT_LOAD_NODE;
 
@@ -181,7 +187,7 @@ namespace wwj
 
     //使用using定义栈别名
     using POINT_STACKS = stacks1<POINT_NODE>;
-    using ELEMENT_STACKS = stacks1<ELEMENT_NODE>;
+    using ELEMENT_STACKS = stacks2<ELEMENT_NODE,ELEMENT_ATTRIBUTE_NODE>;
     using POINT_LOAD_STACKS = stacks1<POINT_LOAD_NODE>;
     using NO_POINT_LOAD_STACKS = stacks1<NO_POINT_LOAD_NODE>;
     using LOAD_STACKS = stacks1<LOAD_NODE>;

@@ -235,7 +235,7 @@ namespace wwj
             //第n个单元的左上角矩阵
             while(element_node_ptr!=nullptr)
             {
-                element_data_ptr = element_node_ptr->data;
+                element_data_ptr = element_node_ptr->ptr;
                 //1.创建单元刚度矩阵                
                 ESM = Compute_PBES_NS((element_data_ptr->attribute),ESM_element,errorID,S);//入栈
                 print_matrix(ESM,"ESM");
@@ -347,7 +347,7 @@ namespace wwj
         no_point_load->vj = qejy;
         no_point_load->thetaj = qej;
         
-        no_point_load_node->data = no_point_load;
+        no_point_load_node->ptr = no_point_load;
         no_point_load_node->next = S->Node;
         S->Node = no_point_load_node;
 
@@ -391,7 +391,7 @@ namespace wwj
         no_point_load->vj = qejy;
         no_point_load->thetaj = qej;
         
-        no_point_load_node->data = no_point_load;
+        no_point_load_node->ptr = no_point_load;
         no_point_load_node->next = S->Node;
         S->Node = no_point_load_node;
 
@@ -437,7 +437,7 @@ namespace wwj
         no_point_load->vj = qejy;
         no_point_load->thetaj = qej;
         
-        no_point_load_node->data = no_point_load;
+        no_point_load_node->ptr = no_point_load;
         no_point_load_node->next = S->Node;
         S->Node = no_point_load_node;
 

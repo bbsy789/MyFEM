@@ -199,8 +199,8 @@ void free_stack1(_IN stacks1<T>* S)
 		Node = S->Node;
 		S->Node = Node->next;
 
-		free(Node->data);
-		Node->data = nullptr;
+		free(Node->ptr);
+		Node->ptr = nullptr;
 		free(Node);
 		Node = nullptr;
 	}

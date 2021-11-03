@@ -6,9 +6,10 @@ namespace wwj
     //梁单元属性的输入:
     //输入：平面梁单元属性  (包括E,  A,  I,  l)  
     //输出：平面梁单元属性矩阵指针,  错误代码,  堆栈指针。
-    ELEMENT_ATTRIBUTE *Input_E_A(_IN REAL A, _IN REAL E, _IN REAL I, _IN REAL L, _OUT ERROR_ID *errorID)
+    ELEMENT_ATTRIBUTE_NODE *Input_E_A(_IN REAL A, _IN REAL E, _IN REAL I, _IN REAL L, _OUT ERROR_ID *errorID,_OUT ELEMENT_STACKS* S)
     {
         ELEMENT_ATTRIBUTE *element_attribute = nullptr; //定义一个结构体指针,  初始化为nullptr
+        ELEMENT_ATTRIBUTE_NODE* element_attribute_node = nullptr;
 
         if (errorID == nullptr)
         {
@@ -17,33 +18,44 @@ namespace wwj
 
         *errorID = _ERROR_NO_ERROR;
 
-        if (A <= 0)
+        if (A <= 0.0 || E <= 0.0 || I <= 0.0 || L <= 0.0 )
         {
             *errorID = _ERROR_INPUT_PARAMETERS_ERROR;
             return nullptr; //输入参数错误
         }
 
         element_attribute = (ELEMENT_ATTRIBUTE *)malloc(sizeof(ELEMENT_ATTRIBUTE)); //分配内存空间,  注意释放
-        if (element_attribute == nullptr)
+        element_attribute_node = (ELEMENT_ATTRIBUTE_NODE*)malloc(sizeof(ELEMENT_ATTRIBUTE_NODE));
+
+        if (element_attribute == nullptr || element_attribute_node == nullptr)
         {
             free(element_attribute);
             element_attribute = nullptr;
+            free(element_attribute_node);
+            element_attribute_node = nullptr;
+
             *errorID = _ERROR_FAILED_TO_ALLOCATE_HEAP_MEMORY;
             return nullptr;
         }
+
         //赋值
         element_attribute->A = _IN A;
         element_attribute->E = _IN E;
         element_attribute->I = _IN I;
         element_attribute->L = _IN L;
 
-        return element_attribute;
+        element_attribute_node->ptr = element_attribute;
+	    element_attribute_node->next = S->ElementNode;
+	    S->ElementNode = element_attribute_node;
+
+        return element_attribute_node;
     }
 
     //平面梁单元的输入：
     //输入：平面梁单元的属性
-    //输出：平面梁单元属性指针,  错误代码,  堆栈指针。
-    ELEMENT *Input_E(_IN unsigned char NODE_NUMBER, _IN ELEMENT_ATTRIBUTE *attribute, _IN unsigned int index, _IN PPOINT ptri, _IN PPOINT ptrj, _OUT ERROR_ID *errorID, _OUT ELEMENT_STACKS *S)
+    //输出： 错误代码,  堆栈指针。
+    //返回类型：ELEMENT*
+    ELEMENT *Input_E(_IN unsigned char NODE_NUMBER, _IN ELEMENT_ATTRIBUTE_NODE* element_attribute_node, _IN unsigned int index, _IN PPOINT ptri, _IN PPOINT ptrj, _OUT ERROR_ID *errorID, _OUT ELEMENT_STACKS *S)
     {
         ELEMENT * element  = nullptr;
         ELEMENT_NODE * element_node = nullptr;
@@ -69,7 +81,7 @@ namespace wwj
         }
 
         //赋值
-        element->attribute   = _IN attribute;
+        element->attribute   = _IN element_attribute_node->ptr;
         element->index       = _IN index;
         element->NODE_NUMBER = _IN NODE_NUMBER;
         element->ptri        = _IN ptri;
@@ -77,7 +89,7 @@ namespace wwj
 
         NU++;
 
-        element_node->data = element;
+        element_node->ptr = element;
         element_node->next = S->Node;
         S->Node = element_node;
 

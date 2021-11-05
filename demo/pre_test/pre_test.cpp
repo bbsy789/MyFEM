@@ -5,6 +5,7 @@
 #include <element.h>
 #include <point.h>
 #include <cstring>
+#include <windows.h>
 
 using namespace wwj;
 
@@ -15,6 +16,7 @@ unsigned int QQ;//定义总荷载数QQ
 
 int main()
 {
+    system("color f0");
     NW = 0;
     NU = 0;
     QQ = 0;
@@ -26,9 +28,9 @@ int main()
     init_stack2<MATRIX_NODE,MATRIX_ELEMENT_NODE>(&matrix_stacks);
     init_stack2<ELEMENT_NODE,ELEMENT_ATTRIBUTE_NODE>(&element_stacks);
     
-    POINT* p1 = nullptr;
-    POINT* p2 = nullptr;
-    POINT* p3 = nullptr;
+    wwj::POINT* p1 = nullptr;
+    wwj::POINT* p2 = nullptr;
+    wwj::POINT* p3 = nullptr;
 
     ELEMENT_ATTRIBUTE_NODE* ea1 = nullptr;
     ELEMENT_ATTRIBUTE_NODE* ea2 = nullptr;

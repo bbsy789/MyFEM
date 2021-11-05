@@ -102,7 +102,7 @@ template<typename T1,typename T2>
 struct stacks2
 {
 	T1* Node;
-	T2* Element1Node;
+	T2* ElementNode;
 };
 
 template<typename T1,typename T2,typename T3,typename T4>
@@ -112,7 +112,7 @@ struct stacks4
 	T2* Element1Node;
 	T3* Element2Node;
 	T4* Element3Node;
-}
+};
 
 using MATRIX_STACKS = stacks2<MATRIX_NODE,MATRIX_ELEMENT_NODE>;
 
@@ -197,7 +197,7 @@ template<typename T1,typename T2>
 void free_stack2(_IN stacks2<T1,T2>* S)
 {
 	T1* Node = nullptr;
-	T2* Element1Node = nullptr;
+	T2* ElementNode = nullptr;
 
 	if (S == nullptr)
 	{
@@ -215,42 +215,20 @@ void free_stack2(_IN stacks2<T1,T2>* S)
 		Node = nullptr;
 	}
 
-	while (S->Element1Node != nullptr)
+	while (S->ElementNode != nullptr)
 	{
-		Element1Node = S->Element1Node;
-		S->Element1Node = Element1Node->next;
+		ElementNode = S->ElementNode;
+		S->ElementNode = ElementNode->next;
 
-		free(Element1Node->ptr);
-		Element1Node->ptr = nullptr;
-		free(Element1Node);
-		Element1Node = nullptr;
-	}
-}
-
-template<typename T>
-void free_stack1(_IN stacks1<T>* S)
-{
-	T* Node = nullptr;
-
-	if (S == nullptr)
-	{
-		return;
-	}
-
-	while (S->Node != nullptr)
-	{
-		Node = S->Node;
-		S->Node = Node->next;
-
-		free(Node->ptr);
-		Node->ptr = nullptr;
-		free(Node);
-		Node = nullptr;
+		free(ElementNode->ptr);
+		ElementNode->ptr = nullptr;
+		free(ElementNode);
+		ElementNode = nullptr;
 	}
 }
 
 template<typename T1,typename T2,typename T3,typename T4>
-void free_stack2(_IN stacks4<T1,T2,T3,T4>* S)
+void free_stack4(_IN stacks4<T1,T2,T3,T4>* S)
 {
 	T1* Node = nullptr;
 	T2* Element1Node = nullptr;

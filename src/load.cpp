@@ -252,4 +252,29 @@ namespace wwj
 
         return uniform_load_node;
     }
+    //函数名Input_LOAD
+    //输入：单元指针
+    //输出：错误ID，LOAD栈
+    //返回类型：无
+    LOAD_NODE* Input_LOAD(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT LOAD_STACKS* load_stacks)
+    {
+        if (errorID == nullptr)
+	    {
+		    return nullptr;
+	    }
+
+        if(*errorID != _ERROR_NO_ERROR)
+        {
+            return nullptr;
+        }
+        LOAD_ELEMENT1_NODE* load_element1_node = nullptr;
+        LOAD_ELEMENT2_NODE* load_element2_node = nullptr;
+        LOAD_ELEMENT3_NODE* load_element3_node = nullptr;
+        
+        load_element1_node = Input_CONCENTRATED_FORCE(errorID,load_stacks);
+        if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
+        {
+            printf("输入参数有误")
+        }
+    }
 } //namespace wwj

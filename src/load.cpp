@@ -274,7 +274,15 @@ namespace wwj
         load_element1_node = Input_CONCENTRATED_FORCE(errorID,load_stacks);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
-            printf("输入参数有误")
+            printf("输入参数有误！")；
+            return nullptr;
         }
+        LOAD_ELEMENT2_NODE* load_element2_node = nullptr;
+        if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
+        {
+            printf("输入参数有误！");
+            return nullptr;
+        } 
+        
     }
 } //namespace wwj

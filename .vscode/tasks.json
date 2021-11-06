@@ -106,6 +106,6 @@
             ],
             "group": "build",
             "detail": "编译器: E:\\mingw64\\bin\\g++.exe"
-        },
+        }
     ]
 }

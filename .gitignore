@@ -84,21 +84,4 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-compile_commands.json.tmpee18f
-CTestTestfile.cmake
-_deps
-output/main.exe
-CPackConfig.cmake
-CPackSourceConfig.cmake
-./build/*
 
-*.json

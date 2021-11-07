@@ -1,0 +1,11 @@
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/CMakeFiles/rebuild_cache.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/CMakeFiles/test.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/CMakeFiles/edit_cache.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/CMakeFiles/MyFEM.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/CMakeFiles/package_source.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/CMakeFiles/package.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/src/CMakeFiles/rebuild_cache.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/src/CMakeFiles/edit_cache.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/src/CMakeFiles/test.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/src/CMakeFiles/package.dir
+/home/admin/workspace/codeup.aliyun.com/61767aa9ec3d2c4a303ceaca/bbsy789/MyFEM/build/src/CMakeFiles/package_source.dir

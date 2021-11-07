@@ -278,11 +278,20 @@ namespace wwj
             return nullptr;
         }
         LOAD_ELEMENT2_NODE* load_element2_node = nullptr;
+        load_element2_node = Input_CONCENTRATED_MOMENT(errorID,load_stacks);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
             printf("输入参数有误！");
             return nullptr;
         } 
-        
+        LOAD_ELEMENT3_NODE* load_element3_node = nullptr;
+        load_element3_node = Input_UNIFORM_LOAD(errorID,load_stacks);
+        if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
+        {
+            printf("输入参数有误！");
+            return nullptr;
+        }
+        //写到这里出现了新的问题，这里需要根据载荷的111111向量来决定调用什么函数！！！
+        //利用多态实现代码的多态性
     }
 } //namespace wwj

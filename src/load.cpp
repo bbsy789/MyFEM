@@ -5,15 +5,15 @@
 namespace wwj
 {
     //无输入默认无集中力
-    LOAD_ELEMENT1_NODE* Input_CONCENTRATED_FORCE(_OUT ERROR_ID* errorID, _OUT LOAD_STACKS* load_stacks)
+    void Input_CONCENTRATED_FORCE(_OUT ERROR_ID* errorID, _OUT LOAD_STACKS* load_stacks)
     {
         if (errorID == nullptr)
 	    {
-		    return nullptr;
+		    return;
 	    }
         if(*errorID != _ERROR_NO_ERROR)
         {
-            return nullptr;
+            return;
         }
         CONCENTRATED_FORCE* concentrated_force = nullptr;
         LOAD_ELEMENT1_NODE* concentrated_force_node = nullptr;
@@ -39,10 +39,10 @@ namespace wwj
         concentrated_force_node->next = S->Element1Node;
         S->Element1Node = concentrated_force_node;
 
-        return concentrated_force_node;
+        return;
     }
 
-    //有输入参数则输入参数
+    //有载荷则输入参数
     LOAD_ELEMENT1_NODE* Input_CONCENTRATED_FORCE(_IN double size, _IN double position, _IN ELEMENT* E, _OUT ERROR_ID* errorID, _OUT LOAD_STACKS* load_stacks)
     {
         if (errorID == nullptr)
@@ -88,7 +88,7 @@ namespace wwj
         return concentrated_force_node;
     }
 
-    LOAD_ELEMENT2_NODE* Input_CONCENTRATED_MOMENT(_OUT ERROR_ID* errorID, _OUT LOAD_STACKS* load_stacks)
+    void Input_CONCENTRATED_MOMENT(_OUT ERROR_ID* errorID, _OUT LOAD_STACKS* load_stacks)
     {
         if (errorID == nullptr)
 	    {
@@ -170,7 +170,7 @@ namespace wwj
         return concentrated_moment_node;
     }
 
-    LOAD_ELEMENT3_NODE* Input_UNIFORM_LOAD(_OUT ERROR_ID* errorID, _OUT LOAD_STACKS* load_stacks)
+    void Input_UNIFORM_LOAD(_OUT ERROR_ID* errorID, _OUT LOAD_STACKS* load_stacks)
     {
         if (errorID == nullptr)
 	    {
@@ -291,7 +291,6 @@ namespace wwj
             printf("输入参数有误！");
             return nullptr;
         }
-        //写到这里出现了新的问题，这里需要根据载荷的111111向量来决定调用什么函数！！！
-        //利用多态实现代码的多态性
+        
     }
 } //namespace wwj

@@ -1,6 +1,15 @@
+
+IF (WIN32)
+	MESSAGE(STATUS "Now is windows")
+ELSEIF (APPLE)
+	MESSAGE(STATUS "Now is Apple systens.")
+ELSEIF (UNIX)
+	MESSAGE(STATUS "Now is UNIX-like OS's.")
+ENDIF ()
+
+IF(WIN32)
 cmake_minimum_required(VERSION 3.0.0)
 project(MyFEM VERSION 0.1.0)#工程名字必须与代码路径文件夹名称一致，其导出文件也必须一致
-
 set( CMAKE_CXX_COMPLIER "E:/mingw64/bin/g++.exe")#设置g++编译器
 set( CMAKE_CXX_FLAGS "-std=c++17")#参数含义是 set compliler for c++ language
 set( CMAKE_BUILD_TYPE "release")#debug/release两种编译模式
@@ -41,9 +50,34 @@ ADD_EXECUTABLE(MyFEM demo/pre_test/pre_test.cpp
 								   src/element.cpp)
 #输出exe文件
 #target_link_libraries(${PROJECT_NAME})#链接关键指令
-set(CMAKE_BUILD_TYPE DEBUG)#配置build模式
+set(CMAKE_BUILD_TYPE release)#配置build模式
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output/bin)#设置生成的可执行二进制文件存放的存放目录
 #set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output/lib)
 include(CPack)
+ENDIF()
+
+IF(UNIX)
+set( CMAKE_CXX_COMPLIER "g++")
+cmake_minimum_required(VERSION 3.0.0)
+PROJECT(MyFEM VERSION 0.1.0)
+ADD_SUBDIRECTORY(src)
+set( CMAKE_CXX_COMPLIER "g++")#设置g++编译器
+set( CMAKE_CXX_FLAGS "-std=c++17")#参数含义是 set compliler for c++ language
+set( CMAKE_BUILD_TYPE "release")#debug/release两种编译模式
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
+enable_testing()
+ADD_EXECUTABLE(MyFEM demo/pre_test/pre_test.cpp
+								   src/point.cpp
+								   src/pre.cpp
+								   src/point.cpp 
+								   src/matrix.cpp 
+								   src/element.cpp)
+set(CMAKE_BUILD_TYPE release)#配置build模式
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output/bin)#设置生成的可执行二进制文件存放的存放目录
+include(CPack)
+ENDIF

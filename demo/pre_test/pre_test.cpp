@@ -5,7 +5,7 @@
 #include <element.h>
 #include <point.h>
 #include <cstring>
-#include <windows.h>
+
 
 using namespace wwj;
 
@@ -16,7 +16,6 @@ unsigned int QQ;//定义总荷载数QQ
 
 int main()
 {
-    system("color f0");
     NW = 0;
     NU = 0;
     QQ = 0;
@@ -59,7 +58,5 @@ int main()
     PtDestroy(p1);
     PtDestroy(p2);
     PtDestroy(p3);
-
-    system("pause");
     return 0;
 }

@@ -1,11 +1,18 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/MyFEM.dir/demo/pre_test/pre_test.cpp.o"
-  "CMakeFiles/MyFEM.dir/src/point.cpp.o"
-  "CMakeFiles/MyFEM.dir/src/pre.cpp.o"
-  "CMakeFiles/MyFEM.dir/src/matrix.cpp.o"
-  "CMakeFiles/MyFEM.dir/src/element.cpp.o"
+  "../output/bin/MyFEM.exe"
+  "../output/bin/MyFEM.exe.manifest"
   "../output/bin/MyFEM.pdb"
-  "../output/bin/MyFEM"
+  "../output/bin/libMyFEM.dll.a"
+  "CMakeFiles/MyFEM.dir/demo/pre_test/pre_test.cpp.obj"
+  "CMakeFiles/MyFEM.dir/demo/pre_test/pre_test.cpp.obj.d"
+  "CMakeFiles/MyFEM.dir/src/element.cpp.obj"
+  "CMakeFiles/MyFEM.dir/src/element.cpp.obj.d"
+  "CMakeFiles/MyFEM.dir/src/matrix.cpp.obj"
+  "CMakeFiles/MyFEM.dir/src/matrix.cpp.obj.d"
+  "CMakeFiles/MyFEM.dir/src/point.cpp.obj"
+  "CMakeFiles/MyFEM.dir/src/point.cpp.obj.d"
+  "CMakeFiles/MyFEM.dir/src/pre.cpp.obj"
+  "CMakeFiles/MyFEM.dir/src/pre.cpp.obj.d"
 )
 
 # Per-language clean rules from dependency scanning.

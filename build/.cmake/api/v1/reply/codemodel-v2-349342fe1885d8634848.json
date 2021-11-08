@@ -10,7 +10,7 @@
 					[
 						1
 					],
-					"jsonFile" : "directory-.-DEBUG-d0094a50bb2071803777.json",
+					"jsonFile" : "directory-.-release-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.0.0"
@@ -24,7 +24,7 @@
 				},
 				{
 					"build" : "src",
-					"jsonFile" : "directory-src-DEBUG-c94b7c2814d5a21df52c.json",
+					"jsonFile" : "directory-src-release-c94b7c2814d5a21df52c.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.0.0"
@@ -34,7 +34,7 @@
 					"source" : "src"
 				}
 			],
-			"name" : "DEBUG",
+			"name" : "release",
 			"projects" : 
 			[
 				{
@@ -55,7 +55,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "MyFEM::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MyFEM-DEBUG-975f250f2e360dcf38b5.json",
+					"jsonFile" : "target-MyFEM-release-a4fa12b4c26bc86a88d7.json",
 					"name" : "MyFEM",
 					"projectIndex" : 0
 				}

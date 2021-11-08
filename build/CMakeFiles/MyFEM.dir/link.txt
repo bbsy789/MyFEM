@@ -1,1 +1,3 @@
-/usr/bin/c++  -std=c++17 -O3 -DNDEBUG  -static-libgcc -static-libstdc++ -rdynamic CMakeFiles/MyFEM.dir/demo/pre_test/pre_test.cpp.o CMakeFiles/MyFEM.dir/src/point.cpp.o CMakeFiles/MyFEM.dir/src/pre.cpp.o CMakeFiles/MyFEM.dir/src/matrix.cpp.o CMakeFiles/MyFEM.dir/src/element.cpp.o  -o ../output/bin/MyFEM 
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\MyFEM.dir/objects.a
+E:\mingw64\bin\ar.exe qc CMakeFiles\MyFEM.dir/objects.a @CMakeFiles\MyFEM.dir\objects1.rsp
+E:\mingw64\bin\x86_64-w64-mingw32-g++.exe -std=c++17 -O3 -DNDEBUG -static-libgcc -static-libstdc++ -Wl,--whole-archive CMakeFiles\MyFEM.dir/objects.a -Wl,--no-whole-archive -o ..\output\bin\MyFEM.exe -Wl,--out-implib,..\output\bin\libMyFEM.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\MyFEM.dir\linklibs.rsp

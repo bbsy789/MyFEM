@@ -1446,18 +1446,6 @@
 			"value" : "ON"
 		},
 		{
-			"name" : "EGE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "The directory containing a CMake configuration file for EGE."
-				}
-			],
-			"type" : "PATH",
-			"value" : "EGE_DIR-NOTFOUND"
-		},
-		{
 			"name" : "MyFEM_BINARY_DIR",
 			"properties" : 
 			[
@@ -1492,18 +1480,6 @@
 			],
 			"type" : "STATIC",
 			"value" : "D:/MyFEM/src"
-		},
-		{
-			"name" : "MyFEM_lib",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Path to a library."
-				}
-			],
-			"type" : "FILEPATH",
-			"value" : "MyFEM_lib-NOTFOUND"
 		}
 	],
 	"kind" : "cache",

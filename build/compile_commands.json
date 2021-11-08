@@ -1,27 +1,27 @@
 [
 {
   "directory": "D:/MyFEM/build",
-  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -g -o CMakeFiles\\MyFEM.dir\\demo\\pre_test\\pre_test.cpp.obj -c D:\\MyFEM\\demo\\pre_test\\pre_test.cpp",
+  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -O3 -DNDEBUG -o CMakeFiles\\MyFEM.dir\\demo\\pre_test\\pre_test.cpp.obj -c D:\\MyFEM\\demo\\pre_test\\pre_test.cpp",
   "file": "D:/MyFEM/demo/pre_test/pre_test.cpp"
 },
 {
   "directory": "D:/MyFEM/build",
-  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -g -o CMakeFiles\\MyFEM.dir\\src\\point.cpp.obj -c D:\\MyFEM\\src\\point.cpp",
+  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -O3 -DNDEBUG -o CMakeFiles\\MyFEM.dir\\src\\point.cpp.obj -c D:\\MyFEM\\src\\point.cpp",
   "file": "D:/MyFEM/src/point.cpp"
 },
 {
   "directory": "D:/MyFEM/build",
-  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -g -o CMakeFiles\\MyFEM.dir\\src\\pre.cpp.obj -c D:\\MyFEM\\src\\pre.cpp",
+  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -O3 -DNDEBUG -o CMakeFiles\\MyFEM.dir\\src\\pre.cpp.obj -c D:\\MyFEM\\src\\pre.cpp",
   "file": "D:/MyFEM/src/pre.cpp"
 },
 {
   "directory": "D:/MyFEM/build",
-  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -g -o CMakeFiles\\MyFEM.dir\\src\\matrix.cpp.obj -c D:\\MyFEM\\src\\matrix.cpp",
+  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -O3 -DNDEBUG -o CMakeFiles\\MyFEM.dir\\src\\matrix.cpp.obj -c D:\\MyFEM\\src\\matrix.cpp",
   "file": "D:/MyFEM/src/matrix.cpp"
 },
 {
   "directory": "D:/MyFEM/build",
-  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -g -o CMakeFiles\\MyFEM.dir\\src\\element.cpp.obj -c D:\\MyFEM\\src\\element.cpp",
+  "command": "E:\\mingw64\\bin\\x86_64-w64-mingw32-g++.exe  @CMakeFiles/MyFEM.dir/includes_CXX.rsp -std=c++17 -O3 -DNDEBUG -o CMakeFiles\\MyFEM.dir\\src\\element.cpp.obj -c D:\\MyFEM\\src\\element.cpp",
   "file": "D:/MyFEM/src/element.cpp"
 }
 ]

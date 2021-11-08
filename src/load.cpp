@@ -252,11 +252,51 @@ namespace wwj
 
         return uniform_load_node;
     }
+
+    _CRT_STDIO_INLINE int __CRTDECL myscanf(_In_z_ _Scanf_format_string_ char const* const _Format, ...)
+    {
+        int _Result = 0;
+        va_list _ArgList;//va_list 定义参数表
+        __crt_va_start(_ArgList, _Format);//va_start
+
+        std::string sFormat = _Format;
+        void* ptr = _ArgList;
+        int nPos = sFormat.find('%');
+        while (nPos != -1) {//遍历参数表，寻找格式化输入参数
+            if (sFormat[nPos + 1] == 'f') {
+                CONCENTRATED_FORCE** p = (CONCENTRATED_FORCE**)ptr;//p指向当前参数
+                (*p)->position = 1;
+                (*p)->size = 1;
+                ptr = (char*)ptr + sizeof(CONCENTRATED_FORCE**);//更新ptr指针
+            }
+            else if (sFormat[nPos + 1] == 'm') {
+                CONCENTRATED_MOMENT** p = (CONCENTRATED_MOMENT**)ptr;
+                (*p)->position = 2;
+                (*p)->size = 2;
+                ptr = (char*)ptr + sizeof(CONCENTRATED_MOMENT**);
+            }
+            else if (sFormat[nPos + 1] == 'p') {
+                UNIFORM_LOAD** p = (UNIFORM_LOAD**)ptr;
+                (*p)->positioni = 3;
+                (*p)->positionj = 3;
+                (*p)->size = 3;
+                ptr = (char*)ptr + sizeof(UNIFORM_LOAD**);
+            } //...
+            else if (1)
+            {
+
+            }
+            nPos = sFormat.find('%', nPos + 1);
+        }
+        __crt_va_end(_ArgList);
+        return _Result;   
+    }
+
     //函数名Input_LOAD
     //输入：单元指针
     //输出：错误ID，LOAD栈
     //返回类型：无
-    LOAD_NODE* Input_LOAD(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT LOAD_STACKS* load_stacks)
+    LOAD_NODE* Input_LOAD(_IN ELEMENT* e,_In_z_ _Scanf_format_string_ char const* const _Format, _OUT ERROR_ID* errorID,_OUT LOAD_STACKS* load_stacks)
     {
         if (errorID == nullptr)
 	    {

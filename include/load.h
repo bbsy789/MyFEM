@@ -1,5 +1,8 @@
 //定义输入载荷的函数声明
 #include <base.h>
+#include <stdarg.h>
+#include <string>
+#include <iostream>
 
 namespace wwj
 {
@@ -43,6 +46,6 @@ namespace wwj
     //输入：无
     //输出：错误ID，LOAD栈
     //返回类型：无
-    LOAD_NODE* Input_LOAD(_IN ELEMENT* e,_OUT ERROR_ID* errorID,_OUT LOAD_STACKS* load_stacks);
+    LOAD_NODE* Input_LOAD(_IN ELEMENT* e,_In_z_ _Scanf_format_string_ char const* const _Format, _OUT ERROR_ID* errorID,_OUT LOAD_STACKS* load_stacks);
 
 }

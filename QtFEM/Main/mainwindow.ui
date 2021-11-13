@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>829</width>
+    <height>582</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QtFEM</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>前处理</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>选择单元类型</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>输入单元属性</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="text">
+             <string>输入节点</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_4">
+            <property name="text">
+             <string>输入单元</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_5">
+            <property name="text">
+             <string>输入载荷</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_6">
+            <property name="text">
+             <string>输入边界条件</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>求解模块</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QPushButton" name="pushButton_7">
+            <property name="text">
+             <string>求解</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>后处理</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QPushButton" name="pushButton_8">
+            <property name="text">
+             <string>单元内力</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_9">
+            <property name="text">
+             <string>支座反力</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>829</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>新建</string>
+     </property>
+     <addaction name="newFile"/>
+     <addaction name="newProject"/>
+     <addaction name="newFolder"/>
+    </widget>
+    <widget class="QMenu" name="menu_3">
+     <property name="title">
+      <string>打开</string>
+     </property>
+     <addaction name="actOpenFile"/>
+     <addaction name="actOpenProject"/>
+     <addaction name="actOpenFolder"/>
+    </widget>
+    <addaction name="menu_2"/>
+    <addaction name="menu_3"/>
+    <addaction name="actClose"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>编辑</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>窗口</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menu_6">
+    <property name="title">
+     <string>关于</string>
+    </property>
+    <addaction name="actionaboutThis"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_4"/>
+   <addaction name="menu_5"/>
+   <addaction name="menu_6"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="newFile"/>
+   <addaction name="newProject"/>
+   <addaction name="newFolder"/>
+   <addaction name="actClose"/>
+  </widget>
+  <action name="newFile">
+   <property name="icon">
+    <iconset resource="Resource.qrc">
+     <normaloff>:/images/prefix1/images/newFile.svg</normaloff>:/images/prefix1/images/newFile.svg</iconset>
+   </property>
+   <property name="text">
+    <string>新建文件</string>
+   </property>
+   <property name="toolTip">
+    <string>新建文件</string>
+   </property>
+  </action>
+  <action name="newProject">
+   <property name="icon">
+    <iconset resource="Resource.qrc">
+     <normaloff>:/images/prefix1/images/newProject.svg</normaloff>:/images/prefix1/images/newProject.svg</iconset>
+   </property>
+   <property name="text">
+    <string>新建项目</string>
+   </property>
+  </action>
+  <action name="newFolder">
+   <property name="icon">
+    <iconset resource="Resource.qrc">
+     <normaloff>:/images/prefix1/images/newFolder.svg</normaloff>:/images/prefix1/images/newFolder.svg</iconset>
+   </property>
+   <property name="text">
+    <string>新建文件夹</string>
+   </property>
+   <property name="toolTip">
+    <string>新建文件夹</string>
+   </property>
+  </action>
+  <action name="actClose">
+   <property name="icon">
+    <iconset resource="Resource.qrc">
+     <normaloff>:/images/prefix1/images/close.svg</normaloff>:/images/prefix1/images/close.svg</iconset>
+   </property>
+   <property name="text">
+    <string>关闭</string>
+   </property>
+  </action>
+  <action name="actOpenFile">
+   <property name="icon">
+    <iconset resource="Resource.qrc">
+     <normaloff>:/images/prefix1/images/openFile.svg</normaloff>:/images/prefix1/images/openFile.svg</iconset>
+   </property>
+   <property name="text">
+    <string>打开文件</string>
+   </property>
+  </action>
+  <action name="actOpenProject">
+   <property name="icon">
+    <iconset resource="Resource.qrc">
+     <normaloff>:/images/prefix1/images/openProject.svg</normaloff>:/images/prefix1/images/openProject.svg</iconset>
+   </property>
+   <property name="text">
+    <string>打开项目</string>
+   </property>
+  </action>
+  <action name="actOpenFolder">
+   <property name="icon">
+    <iconset resource="Resource.qrc">
+     <normaloff>:/images/prefix1/images/openFolder.svg</normaloff>:/images/prefix1/images/openFolder.svg</iconset>
+   </property>
+   <property name="text">
+    <string>打开文件夹</string>
+   </property>
+  </action>
+  <action name="actionaboutThis">
+   <property name="text">
+    <string>关于这个项目</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="Resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actClose</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>959</x>
+     <y>539</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

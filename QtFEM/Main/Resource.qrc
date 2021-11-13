@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/images/prefix1">
+        <file>images/new.svg</file>
+        <file>images/newFile.svg</file>
+        <file>images/newFolder.svg</file>
+        <file>images/newProject.svg</file>
+        <file>images/close.svg</file>
+        <file>images/openFile.svg</file>
+        <file>images/openFolder.svg</file>
+        <file>images/openProject.svg</file>
+    </qresource>
+</RCC>

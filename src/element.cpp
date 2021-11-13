@@ -126,7 +126,7 @@ namespace wwj
         //赋值需要重载多种 = 运算符
 
 
-        t2->data = t1;
+        t2->data = t1;
         t2->next = S->Node;
         S->Node = t2;
 

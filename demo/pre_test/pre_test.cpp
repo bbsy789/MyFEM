@@ -4,7 +4,6 @@
 #include <common.h>
 #include <element.h>
 #include <point.h>
-#include <cstring>
 
 
 using namespace wwj;

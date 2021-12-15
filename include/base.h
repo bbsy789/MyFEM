@@ -34,7 +34,6 @@ namespace wwj
         double X;//X轴坐标
         double Y;//Y轴坐标
         //double Z;//Z轴坐标
-
     }POINT;
 
     typedef POINT* PPOINT;//定义指向POINT的指针类型为PPOINT

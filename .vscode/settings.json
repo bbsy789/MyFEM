@@ -12,7 +12,6 @@
         "iostream": "cpp",
         "*.tcc": "cpp",
         "climits": "cpp",
-        
         "cstdio": "cpp",
         "cmath": "cpp",
         "string": "cpp",
@@ -50,7 +49,8 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "concepts": "cpp"
     },
     "cmake.debugConfig": {
         "externalConsole": true

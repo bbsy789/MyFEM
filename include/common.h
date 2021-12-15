@@ -17,7 +17,7 @@
 * (2)Include File Section
 *******************************************************************************/
 #include <math.h>
-#include <stdio.h>
+#include <fast_io.h>
 #include <malloc.h>
 #include <stdlib.h>
 #include <time.h>

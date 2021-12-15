@@ -16,7 +16,7 @@
 *******************************************************************************/
 #include "matrix.h"
 #include "common.h"
-#include <cstdio>
+#include <fast_io.h>
 
 /*******************************************************************************
 * (3)Macro Define Section
@@ -50,18 +50,17 @@
 void print_matrix(MATRIX* a, _IN const STRING __restrict__ string)
 {
 	INDEX i, j;
-	printf("matrix %s:", string);
-	printf("\n");
+	fast_io::c_io_observer ciob{.fp=stdout};
+	println(ciob,"matrix:", string);
 	for (i = 0; i < a->rows; i++)
 	{
 		for (j = 0; j < a->columns; j++)
 		{
-			printf("%.5e  ", a->p[i * a->columns + j]);
+			print(ciob,a->p[i * a->columns + j]);
 		}
-		printf("\n");
+		println(ciob);
 	}
-
-	printf("\n");
+	println(ciob);
 }
 
 

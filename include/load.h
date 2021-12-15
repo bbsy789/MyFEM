@@ -1,8 +1,6 @@
 //定义输入载荷的函数声明
 #include <base.h>
 #include <stdarg.h>
-#include <string>
-#include <iostream>
 
 namespace wwj
 {

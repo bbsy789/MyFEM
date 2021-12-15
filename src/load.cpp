@@ -314,21 +314,21 @@ namespace wwj
         load_element1_node = Input_CONCENTRATED_FORCE(errorID,load_stacks);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
-            printf("输入参数有误！")；
+            print("输入参数有误！")；
             return nullptr;
         }
         LOAD_ELEMENT2_NODE* load_element2_node = nullptr;
         load_element2_node = Input_CONCENTRATED_MOMENT(errorID,load_stacks);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
-            printf("输入参数有误！");
+            print("输入参数有误！");
             return nullptr;
         } 
         LOAD_ELEMENT3_NODE* load_element3_node = nullptr;
         load_element3_node = Input_UNIFORM_LOAD(errorID,load_stacks);
         if(*errorID == _ERROR_INPUT_PARAMETERS_ERROR)
         {
-            printf("输入参数有误！");
+            print("输入参数有误！");
             return nullptr;
         }
         

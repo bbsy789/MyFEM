@@ -1,15 +1,16 @@
 IF(WIN32)
 cmake_minimum_required(VERSION 3.0.0)
-set( CMAKE_CXX_COMPLIER "D:/x86_64-w64-mingw32/bin/g++.exe")#设置g++编译器,必须写在project之前否则无效
-set( CMAKE_CXX_FLAGS "-std=c++20")#参数含义是 set compliler for c++ language
+set(CMAKE_CXX_STANDARD 20)
 set( CMAKE_BUILD_TYPE "release")#debug/release两种编译模式
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 project(MyFEM VERSION 0.1.0)#工程名字必须与代码路径文件夹名称一致，其导出文件也必须一致
 #${PROJECT_SOURCE_DIR}代表了CMakeLists.txt的绝对路径
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)#包含头文件
 INCLUDE_DIRECTORIES(D:/x86_64-w64-mingw32/include)
+INCLUDE_DIRECTORIES(C:/Users/wwj/Desktop/CodeProjects/fast_io/include)
 LINK_DIRECTORIES( D:/x86_64-w64-mingw32/lib)
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/lib )#把${PROJECT_SOURCE_DIR}设为链接目录
+
 #find_package(OpenCV REQUIRED)添加依赖，去寻找该库头文件位置以及库文件名称，将其设为变量，返回提供给CMakeLists.txt
 #在CMakeLists.txt中使用第三方库的三部曲
 #find_package 、include_directories、target_link_libraries
@@ -34,9 +35,7 @@ add_subdirectory(src)#增加子文件夹
 #add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/source-charset:utf-8>")
 
 ADD_EXECUTABLE(MyFEM demo/pre_test/pre_test.cpp
-								   src/point.cpp
-								   src/pre.cpp
-								   src/point.cpp 
+								   src/pre.cpp 
 								   src/matrix.cpp 
 								   src/element.cpp)
 #输出exe文件
@@ -45,6 +44,8 @@ set(CMAKE_BUILD_TYPE release)#配置build模式
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output/bin)#设置生成的可执行二进制文件存放的存放目录
+install(TARGETS MyFEM
+		)
 #set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/output/lib)
 include(CPack)
 ENDIF()
@@ -59,12 +60,11 @@ set( CMAKE_CXX_COMPLIER "g++")#设置g++编译器
 set( CMAKE_CXX_FLAGS "-std=c++20")#参数含义是 set compliler for c++ language
 set( CMAKE_BUILD_TYPE "release")#debug/release两种编译模式
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
 enable_testing()
 ADD_EXECUTABLE(MyFEM demo/pre_test/pre_test.cpp
-								   src/point.cpp
 								   src/pre.cpp
-								   src/point.cpp 
 								   src/matrix.cpp 
 								   src/element.cpp)
 set(CMAKE_BUILD_TYPE release)#配置build模式

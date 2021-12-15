@@ -6,9 +6,8 @@
 //包含头文件
 #include <base.h>
 #include <matrix.h>
-#include <point.h>
 #include <common.h>
-#include <cstdio>
+#include <fast_io.h>
 
 namespace wwj
 {

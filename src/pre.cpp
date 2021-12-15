@@ -238,7 +238,8 @@ namespace wwj
                 element_data_ptr = element_node_ptr->ptr;
                 //1.创建单元刚度矩阵                
                 ESM = Compute_PBES_NS((element_data_ptr->attribute),ESM_element,errorID,S);//入栈
-                print_matrix(ESM,(char *)"ESM");
+                println("Matrix ESM:");
+                print_matrix(ESM);
                 //if( ESM == nullptr || ESM->p == nullptr)
                 //{
                 //   *errorID = _ERROR_CREATE_MATRIX_FAILED;
@@ -246,9 +247,11 @@ namespace wwj
                 //}
                 //2.创建该单元的坐标变换矩阵并对单元刚度矩阵进行坐标转换
                 T = Compute_CTM(element_data_ptr,rotation_matrix_element,ESM,errorID,S);
-                print_matrix(T,(char *)"T");
+                println("Matrix T:");
+                print_matrix(T);
                 TESM = Transform_ESM(T,ESM,errorID,S);
-                print_matrix(TESM,(char *)"TESM");
+                println("Matrix TESM:");
+                print_matrix(TESM);
                 TESM_data = TESM->p;//得到总体坐标单元刚度矩阵的元素指针
                 TSM_data = TSM->p;//得到总体刚度矩阵的元素指针
                 

@@ -4,7 +4,6 @@
 #include <common.h>
 #include <element.h>
 
-
 using namespace wwj;
 
 unsigned int NW;//定义总节点数NW
@@ -14,7 +13,7 @@ unsigned int QQ;//定义总荷载数QQ
 
 int main()
 {
-    NW = 0;
+    NW = 3;
     NU = 0;
     QQ = 0;
     NR = 0;
@@ -44,8 +43,8 @@ int main()
     e2 = Input_E(2, ea2, 2, &p1, &p3, &errorID, &element_stacks);
 
     TSM = Component_TSM(&element_stacks,&errorID,&matrix_stacks);
-
-    print_matrix(TSM,(char *)"TSM");
+    println("Matrix TSM:");
+    print_matrix(TSM);
 
     free_stack2<MATRIX_NODE,MATRIX_ELEMENT_NODE>(&matrix_stacks);
     free_stack2<ELEMENT_NODE,ELEMENT_ATTRIBUTE_NODE>(&element_stacks);

@@ -33,7 +33,7 @@
 * (5)Prototype Declare Section
 *******************************************************************************/
 
-void print_matrix(_IN MATRIX* m,_IN const STRING __restrict__ string);
+void print_matrix(_IN MATRIX* m);
 
 /**********************************************************************************************
 Function: creat_matrix

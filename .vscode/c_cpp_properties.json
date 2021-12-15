@@ -56,14 +56,14 @@
             "includePath": [
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/include",
-                "E:/mingw64/bin/"
+                "D:/x86_64-w64-mingw32"
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "E:/mingw64/bin/gcc.exe",
+            "compilerPath": "D:\\x86_64-w64-mingw32\\bin\\gcc.exe",
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [

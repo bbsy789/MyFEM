@@ -1,7 +1,8 @@
 {
-    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.cppStandard": "c++20",
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled",
+    "cmake.generator": "MinGW Makefiles",
     "editor.mouseWheelZoom": true,
     "files.autoSave": "afterDelay",
     "files.autoSaveDelay": 100,
@@ -11,6 +12,7 @@
         "iostream": "cpp",
         "*.tcc": "cpp",
         "climits": "cpp",
+        
         "cstdio": "cpp",
         "cmath": "cpp",
         "string": "cpp",

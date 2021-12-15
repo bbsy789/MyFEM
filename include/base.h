@@ -1,7 +1,7 @@
 #ifndef _BASE_H
 #define _BASE_H
 //基本数据的定义
-
+#include <limits.h>
 #define _IN
 #define _OUT
 #define _IN_OUT

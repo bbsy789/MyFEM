@@ -10,3 +10,21 @@ So this project maybe possess plenty of bugs. In the future, I will as far as po
 这个程序采用了有限元法来计算结构力学问题，它的理论基础是变分原理和数值分析。
 它还不完整，目前还在抽空完成中。我是机械工程硕士研究生。
 所以这个项目可能有很多bug。将来，我会尽可能使这个项目更加完整。谢谢！
+
+Modify on Dec 18, 2021
+修改于2021.12.18日
+
+Need:
+依赖：
+[fast_io](https://gitee.com/qabeowjbtkwb/fast_io or https://github.com/tearosccebe/fast_io)
+[gcc 12.0](https://gitee.com/qabeowjbtkwb/mingw-gcc)
+
+Quick Start:
+
+快速开始
+```
+git clone
+cd build
+cmake -GNinja .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=On -DCMAKE_C_COMPILER=D:/x86_64-w64-mingw32/bin/gcc.exe -DCMAKE_CXX_COMPILER=D:/x86_64-w64-mingw32/bin/g++.exe
+Ninja install/strip
+
